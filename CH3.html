@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第三章 消费者行为密码 · 读懂所有人的"花钱逻辑"</title>
+<style>
+  :root{
+    --ink:#23302b; --green:#2f6b5a; --green-d:#224e42; --orange:#d2703c;
+    --gold:#e0a93b; --cream:#faf5ea; --card:#ffffff; --mute:#6b7a72;
+    --line:#ece3d2; --soft:#f3ece0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+    color:var(--ink); background:var(--cream); line-height:1.75; font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit}
+  .wrap{max-width:980px;margin:0 auto;padding:0 18px}
+  /* 顶部导航 */
+  .nav{
+    position:sticky;top:0;z-index:50;background:rgba(250,245,234,.94);
+    backdrop-filter:blur(6px);border-bottom:2px solid var(--line);
+    display:flex;gap:6px;overflow-x:auto;padding:9px 14px;font-size:14px;
+  }
+  .nav a{
+    text-decoration:none;color:var(--green-d);padding:6px 11px;border-radius:20px;
+    white-space:nowrap;font-weight:600;transition:.2s;
+  }
+  .nav a:hover{background:var(--green);color:#fff}
+  .progressbar{height:5px;background:var(--line);position:sticky;top:46px;z-index:49}
+  .progressbar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--orange));transition:width .25s}
+  /* 通用卡片 */
+  section{padding:46px 0 8px}
+  h2.title{
+    font-size:27px;color:var(--green-d);margin-bottom:6px;display:flex;align-items:center;gap:10px;
+  }
+  h2.title .badge{
+    background:var(--orange);color:#fff;font-size:13px;padding:3px 11px;border-radius:20px;font-weight:700;
+  }
+  .lead{color:var(--mute);margin-bottom:22px;font-size:15.5px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 22px;
+    box-shadow:0 6px 18px rgba(40,60,50,.06);margin-bottom:18px;
+  }
+  .pill{display:inline-block;background:var(--soft);color:var(--green-d);border-radius:20px;
+    padding:4px 13px;font-size:13.5px;font-weight:700;margin:0 6px 8px 0}
+  .tip{background:var(--soft);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;
+    padding:13px 16px;margin:14px 0;color:var(--ink);font-size:15px}
+  .warn{background:#fdeee3;border-left:5px solid var(--orange);border-radius:0 12px 12px 0;padding:13px 16px;margin:14px 0}
+  .truth{background:#e7f1ec;border-left:5px solid var(--green);border-radius:0 12px 12px 0;padding:13px 16px;margin:14px 0}
+  .btn{
+    display:inline-block;cursor:pointer;border:none;border-radius:14px;padding:13px 22px;
+    font-size:16px;font-weight:700;font-family:inherit;transition:.18s;
+  }
+  .btn-green{background:var(--green);color:#fff}
+  .btn-green:hover{background:var(--green-d);transform:translateY(-1px)}
+  .btn-gold{background:var(--gold);color:#3a2c08}
+  .btn-gold:hover{filter:brightness(1.05);transform:translateY(-1px)}
+  .btn-ghost{background:var(--soft);color:var(--green-d)}
+  .btn-ghost:hover{background:#e7dcc7}
+  .center{text-align:center}
+  /* 封面 */
+  .hero{
+    background:linear-gradient(135deg,var(--green-d),var(--green));
+    color:#fff;border-radius:0 0 30px 30px;padding:54px 0 60px;position:relative;overflow:hidden;
+  }
+  .hero .tagrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .hero .tagrow span{background:rgba(255,255,255,.16);padding:5px 13px;border-radius:20px;font-size:13.5px;font-weight:600}
+  .hero h1{font-size:38px;line-height:1.3;margin-bottom:12px}
+  .hero p.sub{font-size:18px;opacity:.92;max-width:620px}
+  .hero .meta{margin-top:22px;display:flex;gap:14px;flex-wrap:wrap;font-size:14.5px;opacity:.95}
+  .hero .meta b{font-size:22px;display:block}
+  .hero svg.deco{position:absolute;right:-30px;top:-20px;opacity:.16;width:320px;height:320px}
+  /* 时间轴 */
+  .period{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .period .pcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+  .period .pcard h4{color:var(--orange);font-size:17px;margin-bottom:10px}
+  .period .pcard ul{list-style:none;font-size:14.5px}
+  .period .pcard li{padding:6px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px}
+  .period .pcard li:last-child{border:none}
+  .period .pcard li b{color:var(--green-d);min-width:54px}
+  /* 目标 */
+  .goals{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .goals .g{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center}
+  .goals .g .num{width:42px;height:42px;line-height:42px;border-radius:50%;background:var(--gold);
+    color:#3a2c08;font-weight:800;margin:0 auto 10px}
+  /* 模块头 */
+  .mod-head{display:flex;align-items:center;gap:14px;margin:8px 0 18px}
+  .mod-head .mk{width:54px;height:54px;border-radius:16px;background:var(--green);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;text-align:center;line-height:1.2;flex:none}
+  .mod-head.orange .mk{background:var(--orange)}
+  .mod-head.gold .mk{background:var(--gold);color:#3a2c08}
+  .mod-head h3{font-size:23px;color:var(--green-d)}
+  .mod-head.orange h3{color:#b85423}
+  .mod-head.gold h3{color:#9a6f12}
+  .mod-head.teal .mk{background:#2f7d8a;color:#fff}
+  .mod-head.teal h3{color:#1f5a64}
+  .mod-head.plum .mk{background:#9a5b6e;color:#fff}
+  .mod-head.plum h3{color:#6e3f4e}
+  /* 案例条 */
+  .case{display:flex;gap:12px;align-items:flex-start;background:var(--soft);border-radius:14px;padding:14px 16px;margin:10px 0}
+  .case .emoji{font-size:26px;flex:none;line-height:1}
+  .case b{color:var(--green-d)}
+  /* 游戏区 */
+  .game{background:#fff;border:2px dashed var(--orange);border-radius:18px;padding:22px;margin:18px 0}
+  .game h4{color:var(--orange);font-size:19px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+  .game .gsub{color:var(--mute);font-size:14px;margin-bottom:14px}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .tile{border:2px solid var(--line);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;transition:.15s;background:#fff;user-select:none}
+  .tile:hover{border-color:var(--orange)}
+  .tile.sel{border-color:var(--orange);background:#fff4ea}
+  .tile .pn{font-size:14px;color:var(--mute);margin-bottom:6px}
+  .tile .pp{font-size:21px;font-weight:800;color:var(--ink)}
+  .tile.ok{border-color:var(--green);background:#e7f1ec}
+  .tile.no{border-color:#d9534f;background:#fdecec}
+  .opts{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0}
+  .opt{flex:1;min-width:150px;border:2px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;
+    text-align:center;font-weight:700;transition:.15s;background:#fff}
+  .opt:hover{border-color:var(--green)}
+  .opt.pick{border-color:var(--green);background:#e7f1ec}
+  .opt.wrong{border-color:#d9534f;background:#fdecec}
+  .fb{margin-top:12px;padding:13px 16px;border-radius:12px;font-size:15px;display:none}
+  .fb.show{display:block}
+  .fb.good{background:#e7f1ec;border-left:5px solid var(--green)}
+  .fb.bad{background:#fdecec;border-left:5px solid #d9534f}
+  .score{font-weight:800;color:var(--orange)}
+  /* 闯关 */
+  .quiz-q{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+  .quiz-q .qq{font-weight:700;margin-bottom:12px}
+  .quiz-q .qo{display:block;width:100%;text-align:left;border:2px solid var(--line);border-radius:12px;
+    padding:11px 14px;margin:7px 0;cursor:pointer;background:#fff;font-size:15.5px;font-family:inherit;transition:.15s}
+  .quiz-q .qo:hover{border-color:var(--green)}
+  .quiz-q .qo.right{border-color:var(--green);background:#e7f1ec}
+  .quiz-q .qo.wrong{border-color:#d9534f;background:#fdecec}
+  .quiz-q .qex{font-size:14px;color:var(--mute);margin-top:8px;display:none}
+  .quiz-q .qex.show{display:block}
+  .badgebox{text-align:center;padding:26px;border-radius:18px;background:#fff;border:2px solid var(--gold);margin-top:10px;display:none}
+  .badgebox.show{display:block}
+  .badgebox .medal{font-size:54px}
+  /* 锦囊 */
+  .tips3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .tips3 .t{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;border-top:5px solid var(--gold)}
+  .tips3 .t h5{color:var(--green-d);font-size:17px;margin-bottom:8px}
+  /* 作业 */
+  .homewk{background:linear-gradient(135deg,#fff,#fbf3e6);border:1px solid var(--line);border-radius:18px;padding:22px}
+  .homewk ol{margin-left:20px}
+  .homewk li{margin:8px 0}
+  /* 教师说明 */
+  details.teacher{background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px 18px;margin-top:10px}
+  details.teacher summary{cursor:pointer;font-weight:700;color:var(--green-d);padding:12px 0;font-size:16px}
+  details.teacher table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 16px}
+  details.teacher td,details.teacher th{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  details.teacher th{background:var(--soft);color:var(--green-d)}
+  /* 完成标记 */
+  .doneflag{font-size:13px;color:var(--green);font-weight:700;margin-left:8px;opacity:0;transition:.3s}
+  .doneflag.on{opacity:1}
+  footer{text-align:center;color:var(--mute);font-size:13.5px;padding:30px 0 50px}
+  @media(max-width:720px){
+    .period,.goals,.tips3{grid-template-columns:1fr}
+    .tiles{grid-template-columns:repeat(2,1fr)}
+    .hero h1{font-size:29px}
+    h2.title{font-size:23px}
+  }
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<nav class="nav" id="nav">
+  <a href="#cover">封面</a>
+  <a href="#map">80分钟</a>
+  <a href="#goals">目标</a>
+  <a href="#m1">密码①尾数</a>
+  <a href="#m2">密码②免费</a>
+  <a href="#m3">密码③从众</a>
+  <a href="#m4">投资者视角</a>
+  <a href="#m5">销售视角</a>
+  <a href="#quiz">闯关</a>
+  <a href="#tips">锦囊</a>
+  <a href="#homework">作业</a>
+  <a href="#teacher">教案</a>
+</nav>
+<div class="progressbar"><i id="bar"></i></div>
+
+<!-- 封面 -->
+<header class="hero" id="cover">
+  <svg class="deco" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="35" width="55" height="42" rx="4" stroke="#fff" stroke-width="3"/>
+    <path d="M20 35 L30 22 L52 22 L62 35" stroke="#fff" stroke-width="3" fill="none"/>
+    <circle cx="74" cy="64" r="16" stroke="#fff" stroke-width="3"/>
+    <line x1="85" y1="75" x2="94" y2="84" stroke="#fff" stroke-width="4"/>
+  </svg>
+  <div class="wrap">
+    <div class="tagrow">
+      <span>通识选修 · 金融心理</span><span>第三章</span><span>适用：中学生</span><span>80分钟 · 两课时</span>
+    </div>
+    <h1>消费者行为密码<br>读懂所有人的"花钱逻辑"</h1>
+    <p class="sub">为什么 9.9 比 10 块更想买？为什么"免费"最贵？为什么排队越长越想排？这一章，我们把商家和人群藏在价格里的三把"密码锁"一一撬开。</p>
+    <div class="meta">
+      <div><b>80</b>分钟总时长</div>
+      <div><b>2</b>个课时</div>
+      <div><b>3</b>把消费密码</div>
+      <div><b>5+</b>个互动游戏</div>
+    </div>
+    <p style="margin-top:26px"><a class="btn btn-gold" href="#map">开始上课 ▾</a></p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- 80分钟时间轴 -->
+<section id="map">
+  <h2 class="title">这一节怎么上<span class="badge">80分钟 · 两课时</span></h2>
+  <p class="lead">两节课连上或分两天都行。下面是建议节奏，老师可按班级情况微调。</p>
+  <div class="period">
+    <div class="pcard">
+      <h4>第 1 课时（40 分钟）</h4>
+      <ul>
+        <li><b>0–5</b><span>开场导入：抛出"9.9 为什么比 10 香"</span></li>
+        <li><b>5–20</b><span>密码① 尾数定价（讲解+案例+游戏）</span></li>
+        <li><b>20–35</b><span>密码② 免费的代价（讲解+案例+游戏）</span></li>
+        <li><b>35–40</b><span>本课时小结 + 三句口诀领读</span></li>
+      </ul>
+    </div>
+    <div class="pcard">
+      <h4>第 2 课时（40 分钟）</h4>
+      <ul>
+        <li><b>0–3</b><span>复习前两把密码（快速提问）</span></li>
+        <li><b>3–20</b><span>密码③ 社会证明/从众（讲解+案例+游戏）</span></li>
+        <li><b>20–35</b><span>综合闯关：密码破译通关赛（全班 PK）</span></li>
+        <li><b>35–40</b><span>三张锦囊 + 课后任务布置</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tip">小提醒：每个"密码"都配了一个小游戏，建议先讲案例再玩游戏，学生边玩边发现自己刚才也中招，印象最深。</div>
+</section>
+
+<!-- 学习目标 -->
+<section id="goals">
+  <h2 class="title">学完这一章，你能做到</h2>
+  <p class="lead">三条目标，都能用在明天放学后的小卖部里。</p>
+  <div class="goals">
+    <div class="g"><div class="num">1</div><b>看穿价格把戏</b><br>看见 9.9、19.9 不再自动觉得"便宜一档"。</div>
+    <div class="g"><div class="num">2</div><b>对"免费"多想一步</b><br>分清真免费和引流诱饵，不再为凑单多花钱。</div>
+    <div class="g"><div class="num">3</div><b>在人堆里保持清醒</b><br>排队、好评、同学安利面前，先问"我自己想要吗"。</div>
+  </div>
+</section>
+
+<!-- ============ 模块1 尾数定价 ============ -->
+<section id="m1">
+  <div class="mod-head">
+    <div class="mk">密码<br>①</div>
+    <h3>尾数定价：9.9 为什么比 10 块更香</h3>
+    <span class="doneflag" id="f1">✔ 已通关</span>
+  </div>
+
+  <div class="card">
+    <span class="pill">概念</span>
+    <p style="margin:6px 0 10px">你扫一眼价格，大脑其实只认真数最左边的几位。¥<b>9</b>.9 和 ¥<b>10</b>.0，中间只差 1 毛钱，可你的第一反应会是"9 块多"和"10 块"——差了整整一档的感觉。商家把结尾写成 9、8、甚至 99，就是让你产生"还没到下一个整数"的错觉。</p>
+    <p>这叫<b>左位数效应</b>：人对价格的记忆和判断，被最左边的数字主导。美国营销学者 Schindler 等人早就发现，明明只便宜一两毛，标成 .9 的货就是比标成整数的卖得好。</p>
+    <div class="truth">记住一句话：<b>9.9 和 10，差的是感觉，不是钱。</b>真要省，看的是实际差额，不是小数点后面那一位。</div>
+  </div>
+
+  <div class="card">
+    <span class="pill">中学生身边的例子</span>
+    <div class="case"><div class="emoji">🥤</div><div><b>奶茶中杯 ¥9.9</b>。你觉得"才九块多"，可大杯 ¥13 你嫌贵。其实中杯和大杯差 3 块多，比那 1 毛的"整数门槛"重要多了。</div></div>
+    <div class="case"><div class="emoji">🎒</div><div><b>文具店标价 ¥19.9、¥29.9</b>。结账时你从"二十不到"的心理账户掏钱，毫无压力，结果一周买了三本用不上的手帐本。</div></div>
+    <div class="case"><div class="emoji">🎮</div><div><b>游戏皮肤 ¥30 整 vs ¥29.9</b>。只差 1 毛，可"二十多"和"三十"给你的手感完全不同，很多人因此多买好几个。</div></div>
+    <div class="case"><div class="emoji">📦</div><div><b>盲盒单抽 ¥59.9</b>。凑到"六十不到"，你顺手就抽了；等到集齐一套花掉几百，才回过神。</div></div>
+  </div>
+
+  <!-- 游戏1 -->
+  <div class="game">
+    <h4>🎯 小游戏：尾数大搜查</h4>
+    <div class="gsub">下面 8 件商品，把你认为"用了尾数定价"（价格结尾是 .9 / .8 / .99，故意卡在整数下面）的卡片点出来，再点"检查答案"。</div>
+    <div class="tiles" id="tiles1"></div>
+    <div class="opts" style="margin-top:14px">
+      <button class="btn btn-green" onclick="checkTail()">检查答案</button>
+      <button class="btn btn-ghost" onclick="resetTail()">重来</button>
+    </div>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">小结口诀</span>
+    <p style="margin-top:6px">看到 .9 结尾先停一秒：<b>问自己"如果它标成上面那个整数，我还想买吗？"</b>答案如果变犹豫，说明这 1 毛的错觉正在替你做决定。</p>
+  </div>
+</section>
+
+<!-- ============ 模块2 免费的代价 ============ -->
+<section id="m2">
+  <div class="mod-head orange">
+    <div class="mk">密码<br>②</div>
+    <h3>免费的代价：为什么"0 元"最贵</h3>
+    <span class="doneflag" id="f2">✔ 已通关</span>
+  </div>
+
+  <div class="card">
+    <span class="pill">概念</span>
+    <p style="margin:6px 0 10px">行为经济学家 Ariely 做过一个实验：巧克力 1 美分和免费（0 元）之间，人们的选择会突然跳变——明明只差 1 美分，可"免费"像开关一样，让人失去理智地去抢。<b>免费会屏蔽你的算账能力。</b></p>
+    <p>更常见的套路是<b>免费当诱饵</b>：先用"0 元"把你请进门，真正的收费藏在后面，或者靠"免费"逼你做原本不想做的事（比如为了免运费多买一堆）。免费的东西不花钱，但常常让你花更多别的东西。</p>
+    <div class="warn">记住一句话：<b>免费的东西不收钱，但它一定在某个地方收了你的"别的代价"——时间、注意力、或者为了它多花的钱。</b></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">中学生身边的例子</span>
+    <div class="case"><div class="emoji">🚚</div><div><b>满 99 包邮</b>。你本来只想买支 12 元的笔，为了省 6 元运费又挑了 87 元用不上的东西。免运费是诱饵，多花的 87 才是目的。</div></div>
+    <div class="case"><div class="emoji">🎁</div><div><b>会员首月 0 元</b>。次月起每月自动扣 25 元，取消入口藏得比作业还深。首月免费是鱼钩，钓的是后面每一年的沉默扣费。</div></div>
+    <div class="case"><div class="emoji">🌱</div><div><b>"0 元领养多肉"</b>。运费 19.9，之后每周推送付费养护套装。0 元是幌子，运费和后续推销才是真收入。</div></div>
+    <div class="case"><div class="emoji">📱</div><div><b>直播"9.9 福袋"</b>。说是福利，点进去要先付邮费、再被带入其他高价款。福利感让你放下戒备。</div></div>
+  </div>
+
+  <!-- 游戏2 -->
+  <div class="game">
+    <h4>🕵️ 小游戏：免费探测器</h4>
+    <div class="gsub">判断下面每个"免费"到底是真免费，还是引流诱饵。每题选完立刻有解析，最后看你能识破几个。</div>
+    <div id="freeGame"></div>
+    <div class="fb" id="freeScore"></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">小结口诀</span>
+    <p style="margin-top:6px">遇到"免费/0 元/包邮"，先问三句：<b>它要我额外花什么？取消方便吗？没有这个免费我本来会买吗？</b>三句有一句答不上，就先别动。</p>
+  </div>
+</section>
+
+<!-- ============ 模块3 社会证明/从众 ============ -->
+<section id="m3">
+  <div class="mod-head gold">
+    <div class="mk">密码<br>③</div>
+    <h3>社会证明：人多的地方一定对吗</h3>
+    <span class="doneflag" id="f3">✔ 已通关</span>
+  </div>
+
+  <div class="card">
+    <span class="pill">概念</span>
+    <p style="margin:6px 0 10px">人天生相信"大家都在做的事应该没错"。1951 年心理学家 Asch 做实验：让一群人（其实是托儿）故意选错答案，结果很多真正被试也跟着选错——哪怕答案明摆着在眼前。这叫<b>从众压力</b>。</p>
+    <p>放到消费里，就是<b>社会证明</b>：销量、排队、好评、网红打卡，都在替商家说话。问题是，这些"多数"常常能造假（刷单、雇人排队、只晒赚钱的），或者只是别人也在跟风。队伍长，不代表东西好，只代表队伍长。</p>
+    <div class="truth">记住一句话：<b>别人买，不等于别人知道；人多，不等于你对。</b>人堆里最该问的是"如果是我一个人，我还想要吗"。</div>
+  </div>
+
+  <div class="card">
+    <span class="pill">中学生身边的例子</span>
+    <div class="case"><div class="emoji">🧋</div><div><b>网红奶茶店排长队</b>。你也被同学拉去排。可那条队可能是开业雇人冲人气，或者"打卡"比"好喝"更重要。</div></div>
+    <div class="case"><div class="emoji">📺</div><div><b>直播间"已售 10 万件"</b>。数字越大越想抢，可销量和"最后 100 单"都能在后台改，专门制造稀缺逼你冲动。</div></div>
+    <div class="case"><div class="emoji">👯</div><div><b>同学全员安利同款鞋</b>。一个寝室六双同款，谁先买的没人记得，大家只是不想"落单"。</div></div>
+    <div class="case"><div class="emoji">⭐</div><div><b>评论区全是好评</b>。差评被沉底或刷掉，你看到的"大家说好"是被筛过的样本。</div></div>
+  </div>
+
+  <!-- 游戏3 -->
+  <div class="game">
+    <h4>🌊 小游戏：跟风探测器</h4>
+    <div class="gsub">下面这些"大家都在做"的场景，你是该跟着走，还是先打个问号？每题选完看解析。</div>
+    <div id="crowdGame"></div>
+    <div class="fb" id="crowdScore"></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">小结口诀</span>
+    <p style="margin-top:6px">想跟风前先做"独处想象"：<b>把人群、销量、好评全部关掉，只剩你一个人面对这件东西——你还想要它吗？</b>答案变犹豫，就说明是人群在替你拿主意。</p>
+  </div>
+</section>
+
+<!-- ============ 模块4 投资者视角 ============ -->
+<section id="m4">
+  <div class="mod-head teal">
+    <div class="mk">视角<br>④</div>
+    <h3>投资者视角：当别人用"密码"对准你时</h3>
+    <span class="doneflag" id="f4">✔ 已通关</span>
+  </div>
+
+  <div class="card">
+    <span class="pill">换个座位想一想</span>
+    <p style="margin:6px 0 10px">前面三把密码，是商家用来"让你多花钱"的。但同样的把戏一进到金融投资里，就会变成：<b>让你乱投、多交费、追高被套</b>。这一节我们换座位——假如你将来拿着工资、或者现在拿着压岁钱想理个财，怎么用策略保护自己，甚至反过来利用这些规律？</p>
+    <div class="truth">核心心法：<b>别人用密码吸引你"冲动"，你就用"算账 + 逆向 + 纪律"把主动权拿回来。</b></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">密码① 尾数定价 · 金融版</span>
+    <div class="case"><div class="emoji">🏷️</div><div><b>"1 元起投""7 日年化 3.88%""业绩比较基准 4.50%"</b>。小数字和 .88/.50 这种尾数，专门制造"便宜、收益高"的错觉——可 1 元起投不代表值得投，7 日年化也不代表全年都这水平。</div></div>
+    <div class="case"><div class="emoji">🧮</div><div><b>实例</b>：某"1 元起投"的基金，年管理费 1.5%。你投 1000 元，一年光管理费就被拿走 15 元；如果当年收益只有 3%（到手 30 元），管理费直接吞掉一半。再加申购费 0.15%、持有不到 7 天赎回费 1.5%——短线进出，手续费比收益还高。</div></div>
+    <p style="margin-top:8px"><b>投资策略</b>：看<b>真实年化</b>（不是 7 日、不是宣传片段），看<b>总费率</b>（管理费 + 申购赎回费），低门槛 ≠ 适合你。先把"1 元起投"翻译成"我愿不愿意为这笔费率买单"。</p>
+  </div>
+
+  <div class="card">
+    <span class="pill">密码② 免费的代价 · 金融版</span>
+    <div class="case"><div class="emoji">🆓</div><div><b>"免佣金开户""免费理财课"</b>。免佣金不表示券商不赚钱——它靠融资融券利息、靠把你的订单流卖给做市商（订单流付款）赚钱；免费课则是引流开户，后面推高佣金产品。</div></div>
+    <div class="case"><div class="emoji">📉</div><div><b>实例</b>：免佣券商 A 表面每笔省了 5 元佣金，但你的买入价平均比别家高 0.05%。一年下来，这点价差可能比省下的佣金还贵——免费，其实收的是"看不见的价差"。</div></div>
+    <p style="margin-top:8px"><b>投资策略</b>：免费 ≠ 无成本。开户前问一句：<b>"它不收这个钱，那它靠什么赚钱？"</b>把隐性成本算进账，再决定要不要去。</p>
+  </div>
+
+  <div class="card">
+    <span class="pill">密码③ 社会证明 · 金融版</span>
+    <div class="case"><div class="emoji">🔥</div><div><b>基金热销榜、网红荐股、群里喊单、晒盈利截图</b>。这些"大家都在赚"的画面，最容易让人脑子一热冲进去。问题是榜单能买、截图能 P、群里有托。</div></div>
+    <div class="case"><div class="emoji">📆</div><div><b>实例</b>：2021 年出现很多"日光基"（一天就卖光），不少人追高买入，随后市场回调被套；反而是坚持<b>定投</b>的人，靠"低位多捡便宜份额"的微笑曲线，慢慢摊平了成本。</div></div>
+    <p style="margin-top:8px"><b>投资策略</b>：用两句口诀对抗从众——<b>"别人贪婪我恐惧，别人恐惧我贪婪"</b>（逆向思考）+ <b>"用定投纪律代替择时冲动"</b>。热闹最盛时，先退半步。</p>
+  </div>
+
+  <!-- 游戏4 投资者自检站 -->
+  <div class="game">
+    <h4>🛡️ 小游戏：投资者自检站</h4>
+    <div class="gsub">下面 5 个金融场景，选出你作为投资者最该做的那一步。每题选完立刻看解析。</div>
+    <div id="investGame"></div>
+    <div class="fb" id="investScore"></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">给未来投资者的三句话</span>
+    <p style="margin-top:6px">① 看真实数字，别看尾数和小标签；② 免费的东西问清它靠什么赚钱；③ 人越狂热，你越要慢半拍。把这三句和前面的"三张锦囊"一起收好。</p>
+  </div>
+</section>
+
+<!-- ============ 模块5 销售视角 ============ -->
+<section id="m5">
+  <div class="mod-head plum">
+    <div class="mk">视角<br>⑤</div>
+    <h3>销售视角：公司/销售怎么用密码提升成交</h3>
+    <span class="doneflag" id="f5">✔ 已通关</span>
+  </div>
+
+  <div class="card">
+    <span class="pill">先划一条红线</span>
+    <p style="margin:6px 0 10px">反过来，假如你是开奶茶店、做电商、或者将来做销售——同样三把密码，怎么<b>合法、诚实</b>地用它提升成交率？记住：<b>用 ≠ 骗</b>。要在真实价值的基础上放大吸引力，而不是造假（刷单、P 图、虚假稀缺都违法又砸招牌）。</p>
+    <div class="warn">底线：可以放大真实优点，不能编造不存在的优点。</div>
+  </div>
+
+  <div class="card">
+    <span class="pill">密码① 尾数定价 · 销售用法</span>
+    <div class="case"><div class="emoji">💡</div><div>主价锚定 <b>.9 / .99</b>：¥99、¥199 比 ¥100、¥200 好卖；套餐和加购也用尾数。再用"<b>原价 ¥199，券后 ¥99</b>"拿整数当锚——顾客记住的是 99 的便宜，忘了 199 只是个对比用的高锚。</div></div>
+    <div class="case"><div class="emoji">🥤</div><div><b>实例</b>：奶茶店"第二杯半价"，第一杯原价 ¥15 是锚，第二杯 ¥7.5 显得超值，结果你顺手买了两杯——客单价反而上去了。</div></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">密码② 免费的代价 · 销售用法</span>
+    <div class="case"><div class="emoji">🎁</div><div>用 <b>免费试用 / 包邮 / 买一送一 / 小样</b> 当钩子，把人请进门，再引导买正装、办年卡、做复购。关键：<b>免费后面一定要有转化路径</b>，否则就是白送。</div></div>
+    <div class="case"><div class="emoji">🏋️</div><div><b>实例</b>：化妆品专柜"免费领小样"→ 顺势推荐正装；健身房"免费体验周"→ 体验完推年卡；教育机构"9.9 元体验课"→ 转化正价系统课。钩子越轻，进门越易，转化越顺。</div></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">密码③ 社会证明 · 销售用法</span>
+    <div class="case"><div class="emoji">📣</div><div>晒 <b>真实销量、真实好评、真实排队、限时"已售 X 件"、KOL/同学背书</b>。人越多说好，新顾客越敢买——前提是数据真实。</div></div>
+    <div class="case"><div class="emoji">🛒</div><div><b>实例</b>：直播间挂"3.2 万人在看""已抢 80%""明星同款"；校园奶茶店门口挂牌"本周已售 200 杯"。都是把"大家都在买"摆到台面上。</div></div>
+    <div class="warn">注意：用真实数据放大没问题；刷单、雇人排队、虚假库存是违规甚至违法，一旦被查，招牌比销量更贵。</div>
+  </div>
+
+  <!-- 游戏5a 文案诊所 -->
+  <div class="game">
+    <h4>🩺 小游戏：文案诊所</h4>
+    <div class="gsub">下面 3 组宣传文案，哪一句更"合规又有效"地用到了密码？选完看解析。</div>
+    <div id="copyGame"></div>
+    <div class="fb" id="copyScore"></div>
+  </div>
+
+  <!-- 练习：销售实战设计 -->
+  <div class="card">
+    <span class="pill">学生练习 · 销售实战设计</span>
+    <p style="margin:6px 0 12px"><b>情景</b>：你校园周边新开一家奶茶店"茶小满"，开业首月想提升销量。请分别用三把密码，各写一条<b>诚实可行</b>的方案（填在框里，再点"看参考方案"对照）。</p>
+    <div style="display:grid;gap:12px">
+      <div><b>① 尾数定价方案：</b><br><textarea id="exTail" rows="2" style="width:100%;border:2px solid var(--line);border-radius:12px;padding:10px;font-family:inherit;font-size:15px" placeholder="例：把主打款定价 ¥9.9 而非 ¥10……"></textarea></div>
+      <div><b>② 免费钩子方案：</b><br><textarea id="exFree" rows="2" style="width:100%;border:2px solid var(--line);border-radius:12px;padding:10px;font-family:inherit;font-size:15px" placeholder="例：新客首杯免费（限小杯），引导加会员……"></textarea></div>
+      <div><b>③ 社会证明方案：</b><br><textarea id="exSocial" rows="2" style="width:100%;border:2px solid var(--line);border-radius:12px;padding:10px;font-family:inherit;font-size:15px" placeholder="例：门口挂牌「本周已售 200 杯」+ 真实好评墙……"></textarea></div>
+    </div>
+    <div class="opts" style="margin-top:14px">
+      <button class="btn btn-gold" onclick="showRef()">看参考方案</button>
+    </div>
+    <div class="fb" id="exRef"></div>
+  </div>
+
+  <div class="card">
+    <span class="pill">小结</span>
+    <p style="margin-top:6px">三把密码，买方用来"防坑"，卖方用来"吸引"——<b>同一套人性规律，看你站在哪边、怎么用</b>。最稳的销售，是把真实价值讲清楚，再用密码让它被看见，而不是编造价值。</p>
+  </div>
+</section>
+
+<!-- ============ 综合闯关 ============ -->
+<section id="quiz">
+  <h2 class="title">密码破译通关赛<span class="badge">综合闯关</span></h2>
+  <p class="lead">12 道题，考考你三把密码和两种视角都认全了没。提交后立刻出徽章，可以重玩。</p>
+  <div class="game" style="border-color:var(--green)">
+    <h4 style="color:var(--green)">🏆 密码破译通关赛</h4>
+    <div class="gsub">每题单选，答完点"提交闯关"看成绩。</div>
+    <div id="quizBox"></div>
+    <div class="opts" style="margin-top:14px">
+      <button class="btn btn-green" onclick="gradeQuiz()">提交闯关</button>
+      <button class="btn btn-ghost" onclick="resetQuiz()">重玩</button>
+    </div>
+    <div class="badgebox" id="badgeBox"></div>
+  </div>
+</section>
+
+<!-- ============ 锦囊 ============ -->
+<section id="tips">
+  <h2 class="title">给中学生的三张防坑锦囊</h2>
+  <p class="lead">把这三张卡拍下来，下次花钱前扫一眼。</p>
+  <div class="tips3">
+    <div class="t"><h5>锦囊① 四舍五入法</h5>看到 .9、.99 结尾，心里自动把它"进位"成上面那个整数，再决定买不买。多出的一两毛，挡不住你，但能挡住错觉。</div>
+    <div class="t"><h5>锦囊② 免费三问</h5>免费/包邮/0元面前，问：要我额外花什么？取消方便吗？没有它我本来会买吗？有一句答不上，先放下。</div>
+    <div class="t"><h5>锦囊③ 独处想象</h5>把人群、销量、好评全关掉，只剩你一个人。你还想要它吗？犹豫，就说明是人群在替你做主。</div>
+  </div>
+</section>
+
+<!-- ============ 作业 ============ -->
+<section id="homework">
+  <h2 class="title">课后小任务</h2>
+  <p class="lead">不写长作文，做一周"花钱观察员"就好。</p>
+  <div class="homewk">
+    <ol>
+      <li><b>记 3 次</b>：这一周里，记录 3 次你"差点被密码影响"的消费瞬间（比如看到 9.9 想买、为了包邮凑单、想排网红店）。写下当时哪个密码在起作用。</li>
+      <li><b>拆 1 次</b>：挑其中一次，用三张锦囊分析：如果用了锦囊，你会不会换个决定？</li>
+      <li><b>晒一晒</b>：下节课开头，随机抽 3 位同学分享一条自己的观察，最好笑的算"最佳观察员"。</li>
+    </ol>
+    <div class="tip" style="margin-bottom:0">加分项：拍一张你身边"尾数定价/免费引流/排队从众"的实拍图，课上投屏大家一起辨认。</div>
+  </div>
+</section>
+
+<!-- ============ 教师说明 ============ -->
+<section id="teacher">
+  <h2 class="title">教师使用说明（点开）</h2>
+  <details class="teacher">
+    <summary>▸ 80 分钟逐分钟教案 + 互动操作提示</summary>
+    <table>
+      <tr><th>时段</th><th>内容</th><th>操作提示</th></tr>
+      <tr><td>第1课 0–5</td><td>导入：9.9 为什么比 10 香</td><td>先问全班"奶茶 9.9 和 10 你更想点哪个"，现场举手，不急着给答案。</td></tr>
+      <tr><td>第1课 5–20</td><td>密码① 尾数定价</td><td>讲左位数效应→举 4 个中学生案例→打开"尾数大搜查"游戏，全班一起点，错的最多的那张当场讲。</td></tr>
+      <tr><td>第1课 20–35</td><td>密码② 免费的代价</td><td>讲 Ariely 免费实验→4 案例→"免费探测器"逐题投屏，让学生喊答案再揭晓。</td></tr>
+      <tr><td>第1课 35–40</td><td>小结</td><td>领读三句口诀（9.9 差的是感觉/免费收的是别的代价/人多不等于你对）。</td></tr>
+      <tr><td>第2课 0–3</td><td>复习</td><td>快速提问前两把密码，点名 2 人。</td></tr>
+      <tr><td>第2课 3–20</td><td>密码③ 从众</td><td>讲 Asch 实验→4 案例→"跟风探测器"，重点讨论"独处想象"。</td></tr>
+      <tr><td>第2课 20–35</td><td>综合闯关</td><td>投屏"密码破译通关赛"，分组抢答计分，按徽章发小奖品。</td></tr>
+      <tr><td>第2课 35–40</td><td>锦囊+作业</td><td>三张锦囊拍图，布置"花钱观察员"一周任务。</td></tr>
+      <tr><td>拓展（第 3 课时 / 课后）</td><td>模块④ 投资者视角 + 模块⑤ 销售视角</td><td>各讲 15 分钟：m4 用"投资者自检站"游戏，m5 用"文案诊所"+ 销售实战设计练习（学生填三张方案，再看参考）。两模块也适合作为课后阅读材料 + 下节课 5 分钟分享。</td></tr>
+    </table>
+    <p style="font-size:14px;color:var(--mute)">技术说明：本课件为单文件 HTML，离线可用，所有插画为内联 SVG，无需联网或安装任何软件。游戏进度仅在本机浏览器内，刷新即重置，适合课堂即时互动。若机房电脑无法双击打开，可用浏览器（Edge/Chrome）拖入文件即可。</p>
+  </details>
+</section>
+
+</div>
+
+<footer>
+  第三章 · 消费者行为密码 — 互动课件（中学生版）　|　本页所有插画与游戏均为离线内置，可自由分发给学生
+</footer>
+
+<script>
+/* ---------- 进度条 + 完成标记 ---------- */
+var ticking=false;
+window.addEventListener('scroll',function(){
+  if(!ticking){requestAnimationFrame(function(){
+    var h=document.documentElement;
+    var p=h.scrollTop/(h.scrollHeight-h.clientHeight);
+    document.getElementById('bar').style.width=(p*100)+'%';
+    ticking=false;
+  });ticking=true;}
+});
+function markDone(id){var f=document.getElementById(id);if(f)f.classList.add('on');}
+
+/* ---------- 游戏1：尾数大搜查 ---------- */
+var products=[
+  {n:'奶茶（中杯）',p:'¥9.9',tail:true},
+  {n:'笔记本',p:'¥12.0',tail:false},
+  {n:'盲盒（单抽）',p:'¥59.9',tail:true},
+  {n:'游戏皮肤',p:'¥30.0',tail:false},
+  {n:'文具套装',p:'¥19.9',tail:true},
+  {n:'书包',p:'¥89.0',tail:false},
+  {n:'薯片',p:'¥6.9',tail:true},
+  {n:'运动水壶',p:'¥45.0',tail:false}
+];
+(function(){
+  var box=document.getElementById('tiles1');
+  products.forEach(function(pr,i){
+    var d=document.createElement('div');
+    d.className='tile';d.dataset.i=i;
+    d.innerHTML='<div class="pn">'+pr.n+'</div><div class="pp">'+pr.p+'</div>';
+    d.onclick=function(){if(!d.classList.contains('ok')&&!d.classList.contains('no'))d.classList.toggle('sel');};
+    box.appendChild(d);
+  });
+})();
+function checkTail(){
+  var tiles=document.querySelectorAll('#tiles1 .tile');
+  var right=0,total=0;
+  tiles.forEach(function(t){
+    var i=+t.dataset.i,pr=products[i],sel=t.classList.contains('sel');
+    if(pr.tail)total++;
+    if(sel&&pr.tail){t.classList.add('ok');right++;}
+    else if(sel&&!pr.tail){t.classList.add('no');}
+    else if(!sel&&pr.tail){t.classList.add('no');}
+  });
+  var fb=document.getElementById('fb1');
+  fb.className='fb show '+(right===total?'good':'bad');
+  fb.innerHTML='你找出了 <span class="score">'+right+'</span> / '+total+' 个尾数定价。'+
+    (right===total?' 全中！你现在已经能一眼看穿"卡在整数下面"的把戏了。':' 漏网或误伤的，标红的是你判断错的。尾数定价就是故意把价格停在整数下面一点点，制造"还没到下一档"的错觉。');
+  markDone('f1');
+}
+function resetTail(){
+  document.querySelectorAll('#tiles1 .tile').forEach(function(t){t.className='tile';});
+  var fb=document.getElementById('fb1');fb.className='fb';
+}
+
+/* ---------- 游戏2：免费探测器 ---------- */
+var freeScenes=[
+  {t:'某 App 首月会员 0 元，次月起每月 25 元自动扣费，取消入口藏得很深。',trap:true,
+   why:'首月免费是钩子，真正收费在后面，还把取消藏起来——典型的"免费引流+沉默扣费"。'},
+  {t:'学校门口试吃一小块新口味饼干，不要钱，吃完直接走人。',trap:false,
+   why:'这是真免费，商家用口碑换你下次再来，没有任何后续收费。'},
+  {t:'满 99 元包邮，你为了凑单多买了一支根本用不上的笔。',trap:true,
+   why:'免运费是诱饵，你为省 6 元运费多花 12 元，反而多掏了钱。'},
+  {t:'买手机写明送原装耳机，赠品随盒附送、无任何附加消费。',trap:false,
+   why:'这是真赠送，赠品价值已算进总价，没有后续套路。'},
+  {t:'"0 元领养多肉"，但要付 19.9 元运费，之后每周推送付费养护套装。',trap:true,
+   why:'0 元是幌子，运费和后续推销才是真实收入来源。'}
+];
+(function(){
+  var box=document.getElementById('freeGame');
+  freeScenes.forEach(function(s,i){
+    var d=document.createElement('div');d.className='card';d.style.marginBottom='12px';
+    d.innerHTML='<p style="margin-bottom:10px"><b>场景 '+(i+1)+'：</b>'+s.t+'</p>'+
+      '<div class="opts"><button class="opt" data-v="real">真免费</button>'+
+      '<button class="opt" data-v="trap">其实是诱饵</button></div>'+
+      '<div class="fb" id="ff'+i+'"></div>';
+    box.appendChild(d);
+    var btns=d.querySelectorAll('.opt');var done=false;
+    btns.forEach(function(b){
+      b.onclick=function(){
+        if(done)return;done=true;
+        var pick=b.dataset.v==='trap';
+        btns[0].classList.add(s.trap?'right':'wrong');
+        btns[1].classList.add(s.trap?'right':'wrong');
+        var fb=document.getElementById('ff'+i);
+        fb.className='fb show '+(pick===s.trap?'good':'bad');
+        fb.innerHTML=(pick===s.trap?'✔ 识破了。':'✘ 再想想。')+' '+s.why;
+      };
+    });
+  });
+})();
+(function(){
+  var box=document.getElementById('freeScore');
+  // 简单的完成检测：5题都展开即视为通关
+  var obs=new MutationObserver(function(){
+    var shown=document.querySelectorAll('#freeGame .fb.show').length;
+    if(shown>=freeScenes.length){box.className='fb show good';
+      box.innerHTML='五关都过了！你已经是"免费探测器"进阶选手。记住三问：额外花什么、取消方便吗、没有它我本来会买吗。';
+      markDone('f2');}
+  });
+  obs.observe(document.getElementById('freeGame'),{childList:true,subtree:true,attributes:true});
+})();
+
+/* ---------- 游戏3：跟风探测器 ---------- */
+var crowdScenes=[
+  {t:'校门口新开奶茶店，排队拐了三个弯，同学拉你也去排。',calm:false,
+   why:'排队可能是雇人冲人气或打卡文化，队伍长不等于好喝。先问：我自己想喝吗？'},
+  {t:'直播间显示"已售 10 万件"，主播喊"最后 100 单"。',calm:false,
+   why:'销量和库存都能后台改，制造稀缺逼你冲动。越热闹越要退半步。'},
+  {t:'同学说某食堂窗口好吃，你正好路过也想去尝。',calm:true,
+   why:'这种"大家说好"是真实口碑、信息也透明，跟着试试没问题。'},
+  {t:'网红"必买清单"全班人手一件同款鞋，不买怕落单。',calm:false,
+   why:'落单焦虑是跟风燃料，同款鞋不代表适合你。先做"独处想象"。'}
+];
+(function(){
+  var box=document.getElementById('crowdGame');
+  crowdScenes.forEach(function(s,i){
+    var d=document.createElement('div');d.className='card';d.style.marginBottom='12px';
+    d.innerHTML='<p style="margin-bottom:10px"><b>场景 '+(i+1)+'：</b>'+s.t+'</p>'+
+      '<div class="opts"><button class="opt" data-v="go">跟着走</button>'+
+      '<button class="opt" data-v="wait">先打个问号</button></div>'+
+      '<div class="fb" id="cf'+i+'"></div>';
+    box.appendChild(d);
+    var btns=d.querySelectorAll('.opt');var done=false;
+    btns.forEach(function(b){
+      b.onclick=function(){
+        if(done)return;done=true;
+        var pick=b.dataset.v==='wait';
+        btns[0].classList.add(s.calm?'right':'wrong');
+        btns[1].classList.add(s.calm?'wrong':'right');
+        var fb=document.getElementById('cf'+i);
+        fb.className='fb show '+(pick===s.calm?'good':'bad');
+        fb.innerHTML=(pick===s.calm?'✔ 清醒。':'✘ 再想想。')+' '+s.why;
+      };
+    });
+  });
+})();
+(function(){
+  var box=document.getElementById('crowdScore');
+  var obs=new MutationObserver(function(){
+    var shown=document.querySelectorAll('#crowdGame .fb.show').length;
+    if(shown>=crowdScenes.length){box.className='fb show good';
+      box.innerHTML='通关！下回看到人堆，先做个"独处想象"：把人群全关掉，只剩你一个人，还想要吗？';
+      markDone('f3');}
+  });
+  obs.observe(document.getElementById('crowdGame'),{childList:true,subtree:true,attributes:true});
+})();
+
+/* ---------- 游戏4：投资者自检站 ---------- */
+var investScenes=[
+  {t:'某基金广告写"1 元起投、7 日年化 3.88%"，你第一反应该是：',
+   o:['A 1 元起投太划算，闭眼买','B 看真实年化与总费率，再决定','C 7 日年化肯定全年都这高','D 大家买我就买'],
+   a:1, why:'低门槛和 7 日年化都是"感觉"指标，真正要算的是全年真实收益和申购赎回+管理费率。'},
+  {t:'券商说"免佣金开户"，最该问的一句是：',
+   o:['A 免佣金肯定最便宜','B 那它靠什么赚钱','C 直接开','D 介绍同学都开'],
+   a:1, why:'免佣可能靠订单流付款或融资利息赚钱，问清盈利方式才能算清真实成本。'},
+  {t:'群里都在晒某只股票赚钱截图，你应该：',
+   o:['A 马上跟买','B 先怀疑截图可造假、问自己懂不懂','C 借钱加仓','D 全仓冲'],
+   a:1, why:'晒盈利截图是社会证明的金融版，可能 P 图或只晒赚的；不懂的标的别盲从。'},
+  {t:'市场火热、基金发行一天卖光，你的做法应是：',
+   o:['A 赶紧追高','B 退半拍，考虑定投或观望','C 卖房全投','D 跟风喊单'],
+   a:1, why:'热闹最盛时往往风险最高，逆向+定投纪律比追涨更稳。'},
+  {t:'打算长期投一笔钱，"少交费"的关键做法是：',
+   o:['A 频繁短线进出','B 拉长持有期、避开短期高赎回费','C 天天择时买卖','D 追热点'],
+   a:1, why:'持有期太短会被赎回费和管理费吃掉收益，长期持有+定投才能省下摩擦成本。'}
+];
+(function(){
+  var box=document.getElementById('investGame');
+  investScenes.forEach(function(s,i){
+    var d=document.createElement('div');d.className='card';d.style.marginBottom='12px';
+    var html='<p style="margin-bottom:10px"><b>场景 '+(i+1)+'：</b>'+s.t+'</p><div class="opts">';
+    s.o.forEach(function(op,j){html+='<button class="opt" data-j="'+j+'">'+op+'</button>';});
+    html+='</div><div class="fb" id="iv'+i+'"></div>';
+    d.innerHTML=html;box.appendChild(d);
+    var btns=d.querySelectorAll('.opt');var done=false;
+    btns.forEach(function(b){
+      b.onclick=function(){
+        if(done)return;done=true;
+        var j=+b.dataset.j;
+        btns.forEach(function(x,k){x.classList.add(k===s.a?'right':'wrong');});
+        var fb=document.getElementById('iv'+i);
+        fb.className='fb show '+(j===s.a?'good':'bad');
+        fb.innerHTML=(j===s.a?'✔ 稳。':'✘ 再想想。')+' '+s.why;
+      };
+    });
+  });
+})();
+(function(){
+  var box=document.getElementById('investScore');
+  var obs=new MutationObserver(function(){
+    var shown=document.querySelectorAll('#investGame .fb.show').length;
+    if(shown>=investScenes.length){box.className='fb show good';
+      box.innerHTML='五关都过了！你已经是"投资者自检站"过关选手。记住：看真实数字、问清免费靠什么赚钱、人越狂热你越慢半拍。';
+      markDone('f4');}
+  });
+  obs.observe(document.getElementById('investGame'),{childList:true,subtree:true,attributes:true});
+})();
+
+/* ---------- 游戏5a：文案诊所 ---------- */
+var copyScenes=[
+  {t:'奶茶店开业，哪句更合规有效？',
+   o:['A 「绝对全网最低，不低我吃鞋」（无依据）','B 「新店开业，第二杯半价，老客实测好喝」','C 「再不买就倒闭了」（虚假紧迫）','D 「明星偷偷来喝」（编造）'],
+   a:1, why:'B 用半价锚+真实口碑，合规；A/C/D 要么无依据要么虚假，踩红线。'},
+  {t:'电商详情页，哪种写法更稳？',
+   o:['A 「原价 199 券后 99」（199 是虚高假锚）','B 「日常价 199，活动价 99」，且 199 真实发生过','C 「已售 10 万件」（后台随便改）','D 「限时 1 分钟」（根本没倒计时）'],
+   a:1, why:'B 的锚是真实历史价，合规；A 的原价若从未成交属虚假打折，C/D 属虚假宣传。'},
+  {t:'想放大"大家都在买"，正确做法是：',
+   o:['A 雇人排队拍照','B 晒真实销量与真实好评墙','C 刷单冲榜','D P 图改销量'],
+   a:1, why:'B 用真实社会证明，长期可信；A/C/D 造假，违规且一旦曝光反噬品牌。'}
+];
+(function(){
+  var box=document.getElementById('copyGame');
+  copyScenes.forEach(function(s,i){
+    var d=document.createElement('div');d.className='card';d.style.marginBottom='12px';
+    var html='<p style="margin-bottom:10px"><b>题 '+(i+1)+'：</b>'+s.t+'</p><div class="opts">';
+    s.o.forEach(function(op,j){html+='<button class="opt" data-j="'+j+'">'+op+'</button>';});
+    html+='</div><div class="fb" id="cp'+i+'"></div>';
+    d.innerHTML=html;box.appendChild(d);
+    var btns=d.querySelectorAll('.opt');var done=false;
+    btns.forEach(function(b){
+      b.onclick=function(){
+        if(done)return;done=true;
+        var j=+b.dataset.j;
+        btns.forEach(function(x,k){x.classList.add(k===s.a?'right':'wrong');});
+        var fb=document.getElementById('cp'+i);
+        fb.className='fb show '+(j===s.a?'good':'bad');
+        fb.innerHTML=(j===s.a?'✔ 对。':'✘ 不对。')+' '+s.why;
+      };
+    });
+  });
+})();
+(function(){
+  var box=document.getElementById('copyScore');
+  var obs=new MutationObserver(function(){
+    var shown=document.querySelectorAll('#copyGame .fb.show').length;
+    if(shown>=copyScenes.length){box.className='fb show good';
+      box.innerHTML='三题全对！你已经能分辨"合规放大"和"踩红线造假"。给未来销售的一句话：放大真实优点，不编造不存在的优点。';}
+  });
+  obs.observe(document.getElementById('copyGame'),{childList:true,subtree:true,attributes:true});
+})();
+function showRef(){
+  var ref='<b>参考方案（诚实版）：</b><br>'+
+   '① 尾数：主打款定价 ¥9.9（而非 ¥10），并用「第二杯半价」把第一杯 ¥15 当锚，提升客单价。<br>'+
+   '② 免费：新客首杯小杯免费（成本低），但需加会员才能领，引导复购与留资；免费后店员顺势介绍正价套餐。<br>'+
+   '③ 社会证明：门口挂真实「本周已售 200 杯」牌 + 真实顾客好评墙，直播「3.2 万人在看」仅限真实在线数。绝不刷单。<br><br>'+
+   '（注：以上为示例，你的方案只要"真实 + 合法 + 用到了对应密码"就算过关。）';
+  var fb=document.getElementById('exRef');
+  fb.className='fb show good';fb.innerHTML=ref;
+  markDone('f5');
+}
+
+/* ---------- 综合闯关 ---------- */
+var quizData=[
+  {q:'尾数定价利用了人的哪种心理？',o:['A 商品真的更便宜','B 左位数效应，9.9 比 10 感觉便宜一档','C 法律强制标低价','D 商家在亏本卖'],a:1,
+   e:'人只认真数最左边的数字，9.9 读成"九块多"、10 读成"十块"，差了一档的感觉。'},
+  {q:'¥9.9 和 ¥10.0 实际相差多少？',o:['A 1 元','B 0.1 元','C 9 元','D 差不多'],a:1,
+   e:'只差 1 毛钱，可给你的"便宜感"差了一整档。'},
+  {q:'Ariely 的"免费"实验说明：',o:['A 人永远理性','B 0 元会让选择突然跳变、失去理智','C 免费的东西质量差','D 免费不存在'],a:1,
+   e:'只差 1 美分，从"1 美分"到"免费"之间，人的选择会断崖式跳变。'},
+  {q:'"满 99 包邮"你为凑单多买，这更可能是：',o:['A 真省钱','B 被诱饵带动多消费','C 商家亏了','D 无所谓'],a:1,
+   e:'免邮费是诱饵，你为多省 6 元运费，反而多花几十元。'},
+  {q:'Asch 从众实验（1951）发现：',o:['A 人从不从众','B 群体压力下很多人会跟错','C 人群总是对的','D 排队一定好喝'],a:1,
+   e:'当一群托儿故意选错，真正的被试也会跟着选错。'},
+  {q:'直播间"已售 10 万件"最该做的是：',o:['A 立刻抢','B 先怀疑数据可造假','C 全信大家','D 借钱买'],a:1,
+   e:'销量和库存都能后台改，先质疑再决定。'},
+  {q:'全班都安利同款错题本，正确态度是：',o:['A 闭眼买','B 先问适不适合自己','C 不买就落伍','D 借钱买'],a:1,
+   e:'别人说好可能只是跟风，适不适合你的薄弱项得自己试。'},
+  {q:'盲盒定价 ¥59.9 而非 ¥60，目的是：',o:['A 真便宜 1 毛','B 制造"便宜一档"错觉','C 法律要求','D 亏本'],a:1,
+   e:'卡在"六十不到"的心理账户里，你更容易顺手抽。'},
+  {q:'免费试用自动续费，最好的预防办法：',o:['A 不介意扣费','B 设提醒+看清取消路径','C 关掉网络','D 多试几样'],a:1,
+   e:'看清取消入口、设个到期提醒，免费才不会被反咬一口。'},
+  {q:'学完三把密码，最好的日常习惯是：',o:['A 见促销就买','B 花钱前问"这是哪个密码在影响我"','C 一分不花','D 只信广告'],a:1,
+   e:'把三把密码变成"花钱前的三秒钟自检"，比记任何技巧都管用。'},
+  {q:'作为投资者，看到"1 元起投、7 日年化 3.88%"最该做的是：',o:['A 闭眼买','B 看真实年化与总费率再决定','C 全信热销榜','D 跟风喊单'],a:1,
+   e:'低门槛和 7 日年化都是感觉指标，真正要算的是全年真实收益和各类费率。'},
+  {q:'销售想用社会证明提升成交，正确做法是：',o:['A 刷单造假冲榜','B 晒真实销量与真实好评','C 只说假话','D 不展示任何数据'],a:1,
+   e:'真实的社会证明长期可信；刷单造假违规且一旦曝光反噬品牌。'}
+];
+(function(){
+  var box=document.getElementById('quizBox');
+  quizData.forEach(function(q,i){
+    var d=document.createElement('div');d.className='quiz-q';
+    var html='<div class="qq">'+(i+1)+'. '+q.q+'</div>';
+    q.o.forEach(function(op,j){
+      html+='<button class="qo" data-q="'+i+'" data-o="'+j+'">'+op+'</button>';
+    });
+    html+='<div class="qex" id="qx'+i+'"></div>';
+    d.innerHTML=html;box.appendChild(d);
+  });
+  box.addEventListener('click',function(ev){
+    var b=ev.target.closest('.qo');if(!b)return;
+    var i=+b.dataset.q;
+    if(b.parentNode.querySelector('.qo.right'))return; // 已答
+    var q=quizData[i];
+    b.classList.add('picked');
+    b.parentNode.querySelectorAll('.qo').forEach(function(x){
+      if(+x.dataset.o===q.a)x.classList.add('right');
+    });
+    if(+b.dataset.o!==q.a)b.classList.add('wrong');
+    var ex=document.getElementById('qx'+i);
+    ex.className='qex show';ex.textContent='解析：'+q.e;
+  });
+})();
+function gradeQuiz(){
+  var right=0;
+  quizData.forEach(function(q,i){
+    var picked=document.querySelector('#quizBox .quiz-q:nth-child('+(i+1)+') .qo.picked');
+    if(picked && +picked.dataset.o===q.a)right++;
+  });
+  var box=document.getElementById('badgeBox');
+  var medal,title,color;
+  if(right>=11){medal='🥇';title='黄金破译师';color='var(--gold)';}
+  else if(right>=9){medal='🥈';title='白银破译师';color='#9fb0ad';}
+  else if(right>=7){medal='🥉';title='青铜破译师';color='#c08457';}
+  else{medal='🔰';title='继续修炼';color='var(--orange)';}
+  box.className='badgebox show';
+  box.style.borderColor=color;
+  box.innerHTML='<div class="medal">'+medal+'</div><div style="font-size:22px;font-weight:800;color:'+color+'">'+title+'</div>'+
+    '<p style="margin-top:8px">你答对了 <span class="score">'+right+'</span> / 12 题。'+
+    (right>=9?' 三把密码全部认全，可以去教别人了！':(right>=5?' 不错，把答错的题再读一遍解析就稳了。':' 别急，回到上面三个密码重玩一遍小游戏，再来挑战。'))+'</p>';
+}
+function resetQuiz(){
+  document.getElementById('quizBox').innerHTML='';
+  document.getElementById('badgeBox').className='badgebox';
+  // 重新渲染
+  var box=document.getElementById('quizBox');
+  quizData.forEach(function(q,i){
+    var d=document.createElement('div');d.className='quiz-q';
+    var html='<div class="qq">'+(i+1)+'. '+q.q+'</div>';
+    q.o.forEach(function(op,j){html+='<button class="qo" data-q="'+i+'" data-o="'+j+'">'+op+'</button>';});
+    html+='<div class="qex" id="qx'+i+'"></div>';
+    d.innerHTML=html;box.appendChild(d);
+  });
+}
+</script>
+</body>
+</html>
