@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>赌徒谬误 · 行为金融学互动课件（40分钟）</title>
+<style>
+:root{
+  --navy:#0f2d4e;
+  --navy-deep:#081c33;
+  --navy-soft:#2c4d75;
+  --gold:#c9a227;
+  --gold-soft:#e9d489;
+  --bg:#f2f4f8;
+  --card:#ffffff;
+  --ink:#1d2b3a;
+  --muted:#5d6f82;
+  --right:#1e7a55;
+  --right-bg:#e1f1e9;
+  --wrong:#b03a2e;
+  --wrong-bg:#fae7e3;
+  --line:#d8e0ea;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.7;
+}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-soft));z-index:999;transition:width .1s linear}
+nav#topnav{
+  position:sticky;top:0;z-index:900;background:var(--navy);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px;
+  padding:8px 10px;box-shadow:0 2px 10px rgba(8,28,51,.35);
+}
+nav#topnav a{
+  color:#dce6f2;text-decoration:none;font-size:14px;padding:6px 12px;border-radius:20px;
+  transition:.2s;
+}
+nav#topnav a:hover{background:var(--navy-soft);color:var(--gold-soft)}
+header.hero{
+  background:linear-gradient(135deg,var(--navy-deep),var(--navy));
+  color:#fff;text-align:center;padding:56px 20px 44px;
+}
+header.hero .badge-line{font-size:14px;color:var(--gold-soft);letter-spacing:2px;margin-bottom:10px}
+header.hero h1{font-size:40px;letter-spacing:4px;margin-bottom:12px}
+header.hero h1 .gold{color:var(--gold)}
+header.hero p.sub{color:#c8d6e8;font-size:17px;max-width:760px;margin:0 auto 8px}
+header.hero .meta{margin-top:16px;display:inline-block;border:1px solid var(--gold);color:var(--gold-soft);padding:6px 18px;border-radius:24px;font-size:14px}
+.hero-svg{margin:22px auto 0;max-width:640px;display:block}
+.hook{
+  max-width:760px;margin:26px auto 0;background:rgba(201,162,39,.12);
+  border:1px dashed var(--gold);border-radius:14px;padding:14px 18px;font-size:16px;color:#f3e9c8;
+}
+main{max-width:980px;margin:0 auto;padding:26px 16px 60px}
+section{background:var(--card);border-radius:18px;padding:28px 26px;margin-bottom:26px;box-shadow:0 4px 14px rgba(15,45,78,.08)}
+section h2{font-size:24px;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+section h2 .min{font-size:13px;background:var(--gold);color:#fff;border-radius:12px;padding:2px 10px;font-weight:normal}
+h3{color:var(--navy);font-size:18px;margin:18px 0 8px}
+p{margin:8px 0}
+.hl{background:linear-gradient(transparent 60%,var(--gold-soft) 60%);font-weight:bold;padding:0 2px}
+.defbox{
+  border-left:5px solid var(--gold);background:#fbf7ea;border-radius:0 12px 12px 0;
+  padding:14px 18px;margin:14px 0;
+}
+.formula{
+  text-align:center;font-size:18px;color:var(--navy);background:#eef3f9;border:1px solid var(--line);
+  border-radius:12px;padding:12px;margin:12px 0;font-family:"Segoe UI",sans-serif;
+}
+.mnemonic{
+  margin-top:18px;background:#fbf6e3;border-left:6px solid var(--gold);border-radius:0 12px 12px 0;
+  padding:12px 16px;font-size:17px;color:#7a5f0e;font-weight:bold;
+}
+/* 时间轴 */
+.tl{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.tl .seg{
+  flex:1;min-width:90px;background:#eef3f9;border:1px solid var(--line);border-radius:10px;
+  padding:10px 8px;text-align:center;font-size:13px;transition:.2s;
+}
+.tl .seg:hover{transform:translateY(-3px);box-shadow:0 6px 12px rgba(15,45,78,.12)}
+.tl .seg b{display:block;color:var(--navy);font-size:14px}
+.tl .seg .t{color:var(--gold);font-weight:bold}
+/* 目标 */
+.goals{list-style:none}
+.goals li{padding:10px 14px;border:1px solid var(--line);border-radius:12px;margin:8px 0;background:#fbfcfe}
+.goals li::before{content:"🎯 ";margin-right:4px}
+/* 案例卡 */
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px}
+.case{
+  border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfcfe;
+  transition:.2s;
+}
+.case:hover{transform:translateY(-3px);box-shadow:0 8px 16px rgba(15,45,78,.12)}
+.case .em{font-size:26px}
+.case h4{color:var(--navy);margin:6px 0;font-size:16px}
+.case p{font-size:14px;color:var(--muted)}
+.case .tag{display:inline-block;font-size:12px;color:var(--gold);border:1px solid var(--gold);border-radius:10px;padding:0 8px;margin-top:8px}
+/* 游戏区 */
+.game{
+  border:2px dashed var(--gold);border-radius:16px;padding:20px;margin-top:16px;background:#fffdf6;
+}
+.game h3{margin-top:0}
+button.btn{
+  background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 20px;
+  font-size:15px;cursor:pointer;transition:.2s;font-family:inherit;
+}
+button.btn:hover{background:var(--navy-soft);transform:translateY(-2px);box-shadow:0 6px 12px rgba(15,45,78,.25)}
+button.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+button.btn.gold{background:var(--gold);color:var(--navy-deep);font-weight:bold}
+button.btn.gold:hover{background:#dab43a}
+button.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+button.btn.ghost:hover{background:#eef3f9}
+.coin-stage{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin:14px 0}
+#coinFace{
+  width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4e3a1,var(--gold) 70%);
+  border:4px solid #a8861d;display:flex;align-items:center;justify-content:center;
+  font-size:34px;font-weight:bold;color:var(--navy-deep);box-shadow:0 6px 14px rgba(168,134,29,.4);
+  transition:transform .15s;
+}
+#coinFace.flip{transform:rotateY(180deg) scale(1.06)}
+.hist{display:flex;gap:4px;flex-wrap:wrap;margin:10px 0;min-height:24px}
+.hist .dot{
+  width:22px;height:22px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;color:#fff;
+}
+.hist .dot.h{background:var(--gold);color:var(--navy-deep)}
+.hist .dot.t{background:var(--navy)}
+.predict-panel{
+  display:none;background:#fff;border:2px solid var(--gold);border-radius:14px;padding:16px;margin:12px 0;
+  animation:pop .25s;
+}
+.predict-panel.show{display:block}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fbfcfe;font-size:14px}
+.stat b{color:var(--navy);font-size:18px}
+.bar-wrap{background:#e6ecf3;border-radius:8px;height:14px;overflow:hidden;margin-top:6px}
+.bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));width:0;transition:width .3s}
+.fb{display:none;border-radius:10px;padding:10px 14px;margin-top:12px;font-size:14px}
+.fb.show{display:block;animation:pop .25s}
+.fb.ok{background:var(--right-bg);color:var(--right);border:1px solid var(--right)}
+.fb.no{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.fb.info{background:#eef3f9;color:var(--navy);border:1px solid var(--navy-soft)}
+.done{
+  display:none;margin-top:14px;background:var(--right-bg);border:1px solid var(--right);color:var(--right);
+  border-radius:12px;padding:10px 16px;font-weight:bold;
+}
+.done.show{display:inline-block;animation:pop .3s}
+/* 擂台 */
+.arena-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:12px}
+.acard{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfcfe}
+.acard .qtxt{font-size:15px;min-height:66px}
+.acard .opts{display:flex;gap:8px;margin-top:10px}
+.acard .opts button{
+  flex:1;border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;
+  padding:8px 6px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit;
+}
+.acard .opts button:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(15,45,78,.15)}
+.acard .opts button.right{background:var(--right-bg);border-color:var(--right);color:var(--right);font-weight:bold}
+.acard .opts button.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong)}
+.acard .opts button:disabled{cursor:default;transform:none;box-shadow:none;opacity:.85}
+.acard .afb{display:none;font-size:13px;margin-top:8px;border-radius:8px;padding:8px 10px;background:#eef3f9;color:var(--navy)}
+.acard .afb.show{display:block;animation:pop .25s}
+/* 辨析表 */
+table.cmp{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+table.cmp th,table.cmp td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.cmp th{background:var(--navy);color:#fff}
+table.cmp tr:nth-child(even) td{background:#f7fafc}
+.judge{
+  margin-top:16px;border:1px solid var(--gold);background:#fffdf2;border-radius:12px;padding:14px 16px;
+}
+/* 闯关 */
+#quiz .q{border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0;background:#fbfcfe}
+#quiz .q .qt{font-weight:bold;color:var(--navy);margin-bottom:8px}
+#quiz .q .qt .qn{color:var(--gold);margin-right:6px}
+#quiz .qo{
+  display:block;border:1px solid var(--line);border-radius:10px;padding:9px 14px;margin:6px 0;
+  cursor:pointer;transition:.15s;background:#fff;font-size:15px;
+}
+#quiz .qo:hover{border-color:var(--navy-soft);transform:translateX(3px)}
+#quiz .qo.picked{border-color:var(--gold);background:#fffdf0;box-shadow:inset 0 0 0 1px var(--gold)}
+#quiz .qo.right{border-color:var(--right);background:var(--right-bg);color:var(--right);font-weight:bold}
+#quiz .qo.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+#quiz .q .fb{font-size:14px}
+.pair-row{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.pair-row .pl{flex:1;min-width:230px;font-size:15px}
+.pair-row select{
+  border:1px solid var(--navy-soft);border-radius:8px;padding:7px 10px;font-size:14px;font-family:inherit;
+  background:#fff;color:var(--ink);min-width:170px;
+}
+.pair-row select.right{border-color:var(--right);background:var(--right-bg)}
+.pair-row select.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.qbar{position:sticky;bottom:14px;background:var(--navy);border-radius:14px;padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:18px;box-shadow:0 8px 20px rgba(8,28,51,.35)}
+.qbar .score{color:#fff;font-size:16px}
+.qbar .score b{color:var(--gold);font-size:22px}
+#badgeArea{color:var(--gold-soft);font-size:15px}
+.quiz-note{font-size:13px;color:var(--muted);margin-top:6px}
+/* tips / homework */
+.tips li{margin:10px 0;padding-left:6px}
+.hw{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0;background:#fbfcfe}
+/* teacher */
+details{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:#fbfcfe}
+summary{cursor:pointer;font-weight:bold;color:var(--navy);font-size:16px}
+table.plan{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+table.plan th,table.plan td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+table.plan th{background:var(--navy);color:#fff}
+table.plan tr:nth-child(even) td{background:#f7fafc}
+.tnote{margin-top:14px;font-size:14px;color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 10px 40px}
+@media (max-width:640px){
+  header.hero h1{font-size:28px}
+  section{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav id="topnav">
+  <a href="#concept">核心概念</a>
+  <a href="#cases">经典案例</a>
+  <a href="#coinlab">硬币实验</a>
+  <a href="#distinguish">概念辨析</a>
+  <a href="#arena">判断擂台</a>
+  <a href="#quiz">综合闯关</a>
+  <a href="#tips">要点总结</a>
+  <a href="#homework">课后作业</a>
+  <a href="#teacher">教师教案</a>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="badge-line">行为金融学 · 行为经济学 · 专题课件</div>
+  <h1>赌徒谬误<br><span class="gold">"下一次，该轮到我赢了吧？"</span></h1>
+  <p class="sub">Gambler's Fallacy —— 为什么连输之后我们会觉得"该赢了"？<br>一枚硬币、一个轮盘、一只股票，藏着同一个思维陷阱。</p>
+  <div class="meta">🕐 40 分钟 · 1 课时 · 大学选修课 / 成人通识</div>
+  <svg class="hero-svg" viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="金币、轮盘与K线插画">
+    <!-- 金币堆 -->
+    <g>
+      <ellipse cx="80" cy="120" rx="46" ry="14" fill="#c9a227"/>
+      <ellipse cx="80" cy="104" rx="46" ry="14" fill="#e9d489"/>
+      <ellipse cx="80" cy="88" rx="46" ry="14" fill="#c9a227"/>
+      <ellipse cx="80" cy="72" rx="46" ry="14" fill="#e9d489"/>
+      <circle cx="80" cy="46" r="26" fill="#c9a227" stroke="#e9d489" stroke-width="4"/>
+      <text x="80" y="54" text-anchor="middle" font-size="22" fill="#081c33" font-weight="bold">¥</text>
+    </g>
+    <!-- 轮盘 -->
+    <g transform="translate(320,78)">
+      <circle r="52" fill="#0f2d4e" stroke="#c9a227" stroke-width="5"/>
+      <g id="wheel"></g>
+      <circle r="14" fill="#c9a227"/>
+      <circle cx="0" cy="-60" r="6" fill="#e9d489"/>
+    </g>
+    <!-- K线 -->
+    <g transform="translate(440,30)">
+      <polyline points="0,80 25,60 50,70 75,40 100,50 125,20 150,30" fill="none" stroke="#c9a227" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="0" cy="80" r="5" fill="#e9d489"/><circle cx="75" cy="40" r="5" fill="#e9d489"/><circle cx="150" cy="30" r="5" fill="#e9d489"/>
+      <text x="30" y="105" font-size="13" fill="#8fa8c6">"连跌三天，该涨了？"</text>
+    </g>
+  </svg>
+  <div class="hook">🪙 课前之问：一枚公平硬币连续掷出 <b>5 次正面</b>，第 6 次你会押正面还是反面？记住你的第一反应——这节课结束时，再回来看看它。</div>
+</header>
+
+<main>
+
+<!-- 时间轴 -->
+<section id="timeline">
+  <h2>🗺️ 本课路线图 <span class="min">共 40 分钟</span></h2>
+  <div class="tl">
+    <div class="seg"><b>导入</b>直觉表态<span class="t">3'</span></div>
+    <div class="seg"><b>核心概念</b>什么是赌徒谬误<span class="t">6'</span></div>
+    <div class="seg"><b>经典案例</b>赌场·彩票·股市<span class="t">8'</span></div>
+    <div class="seg"><b>硬币实验</b>亲历直觉打脸<span class="t">6'</span></div>
+    <div class="seg"><b>概念辨析</b>四个易混概念<span class="t">6'</span></div>
+    <div class="seg"><b>判断擂台</b>独立还是相关<span class="t">5'</span></div>
+    <div class="seg"><b>综合闯关</b>25 分挑战<span class="t">4'</span></div>
+    <div class="seg"><b>总结作业</b>带走三句话<span class="t">2'</span></div>
+  </div>
+</section>
+
+<!-- 学习目标 -->
+<section id="goals">
+  <h2>🎯 学习目标</h2>
+  <ul class="goals">
+    <li><b>说出</b>赌徒谬误的定义，并解释"独立事件"为什么意味着"历史没有参考价值"；</li>
+    <li><b>识别</b>赌场、彩票、产房、股市中的赌徒谬误案例，说出它们共同的思维结构；</li>
+    <li><b>辨析</b>赌徒谬误 / 热手谬误 / 大数定律误用 / 小数定律四组概念，不再混淆；</li>
+    <li><b>迁移</b>到投资决策：先判断"事件是否独立"，再决定历史走势能不能用。</li>
+  </ul>
+</section>
+
+<!-- 模块一：核心概念 -->
+<section id="concept">
+  <h2>📖 模块一 · 核心概念 <span class="min">第 3–9 分钟</span></h2>
+
+  <div class="defbox">
+    <b>赌徒谬误（Gambler's Fallacy）</b>：面对<span class="hl">相互独立</span>的随机事件时，错误地认为过去的连续结果会影响下一次结果——"连出 5 次正面了，下一次<b>该</b>是反面了吧？"仿佛概率会"自我纠偏、找平衡"。
+  </div>
+
+  <h3>🔑 关键词一：独立事件</h3>
+  <p>如果每次试验的结果<b>互不影响</b>，这些事件就是独立的。同一枚公平硬币的两次抛掷、轮盘的两次旋转、两次新生儿的性别——都是独立事件。前一次的结果<b>不给下一次留下任何信息</b>。</p>
+
+  <h3>🔑 关键词二：条件概率</h3>
+  <div class="formula">P(第 6 次正面 ｜ 前 5 次都是正面) = P(正面) = <b>50%</b></div>
+  <p>无论前面连出多少次正面，下一次正面的概率<b>一分不多、一分不少</b>。这就是"硬币没有记忆"的数学表达。</p>
+
+  <h3>🔑 关键词三：硬币没有记忆</h3>
+  <p>赌徒谬误的本质，是把随机序列<b>拟人化</b>：好像硬币、轮盘、股市会"记账"，会在连出一边之后"不好意思"、主动补偿另一边。但物理世界从不记账——<b>概率不欠你任何东西</b>。</p>
+
+  <div class="mnemonic">💡 口诀：硬币无记忆，概率不记账；独立事件里，"该"字是幻觉。</div>
+</section>
+
+<!-- 模块二：经典案例 -->
+<section id="cases">
+  <h2>🎰 模块二 · 经典案例集 <span class="min">第 9–17 分钟</span></h2>
+  <p>同一个谬误，换五套衣服出现。请在阅读时追问自己：<b>这些场景的共同结构是什么？</b></p>
+
+  <svg viewBox="0 0 640 60" style="max-width:560px;display:block;margin:10px auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="蒙特卡洛连开26次黑色示意">
+    <g id="mcDots"></g>
+    <text x="0" y="54" font-size="12" fill="#5d6f82">1913·蒙特卡洛赌场：轮盘连续 26 次开出黑色 ⚫</text>
+  </svg>
+
+  <div class="cases">
+    <div class="case">
+      <div class="em">🎡</div>
+      <h4>1913 蒙特卡洛之夜</h4>
+      <p>1913 年 8 月 18 日，蒙特卡洛赌场一张轮盘桌<b>连续开出 26 次黑色</b>。从第 10 次连黑开始，赌徒们疯狂押红——"红了这么多次不可能，红色该来了！"结果连黑持续到 26 次，赌场净赚数百万法郎。这是赌徒谬误最著名、最昂贵的实证。</p>
+      <span class="tag">赌场 · 独立事件</span>
+    </div>
+    <div class="case">
+      <div class="em">🎫</div>
+      <h4>彩票"冷号"信仰</h4>
+      <p>某号码 100 期没开，彩民蜂拥追买："憋了这么久，该出了！"反过来，上期刚开过的号码被集体回避："刚出过，不会再出了。"两种操作方向相反，<b>犯的是同一个错</b>——开奖是独立事件，号码没有"憋着"也没有"累了"。</p>
+      <span class="tag">彩票 · 双重表现</span>
+    </div>
+    <div class="case">
+      <div class="em">👶</div>
+      <h4>产房的性别直觉</h4>
+      <p>某医院产房今天已连续出生 8 名女婴。护士们打赌："下一个肯定是男孩！"事实上，下一名新生儿为男婴的概率仍约为自然出生比（≈51%），与前面 8 名毫无关系。早期心理学实验（Kahneman &amp; Tversky）发现，连普通人凭直觉排出的"随机序列"，都系统性地回避连续重复。</p>
+      <span class="tag">生活 · 直觉偏差</span>
+    </div>
+    <div class="case">
+      <div class="em">📉</div>
+      <h4>"连跌三天，该涨了"</h4>
+      <p>不看基本面、不看估值，只因为"跌了好几天"就抄底——这是股民版的赌徒谬误。注意：股价并不严格独立（趋势、情绪、基本面会产生相关性），<b>问题在于判断依据</b>：如果唯一的理由只是"该反弹了"，那就是在用硬币逻辑做金融决策。后续"辨析"模块会讲何时历史走势真的有用。</p>
+      <span class="tag">股市 · 行为金融</span>
+    </div>
+    <div class="case">
+      <div class="em">🏀</div>
+      <h4>"热手"的另一面</h4>
+      <p>球员连中三分，队友认定他"手热"、拼命喂球；基金连涨四季，基民蜂拥申购。这是"连续成功会延续"的信念——方向与赌徒谬误<b>相反</b>，却常常出自同一个人之口。它叫<b>热手谬误</b>，Gilovich 等人 1985 年对 NBA 与大学投篮数据的经典研究并未找到"手热"的统计证据。两者都是小数定律的产物（详见辨析模块）。</p>
+      <span class="tag">伏笔 · 热手谬误</span>
+    </div>
+    <div class="case">
+      <div class="em">💸</div>
+      <h4>加倍下注的马丁格尔</h4>
+      <p>"输了就翻倍押，总有一把赢回来。"这套 18 世纪流行于法国的"马丁格尔策略"建立在赌徒谬误之上：它假设"该赢了"。现实中，连输几把后下注额呈指数爆炸，而赌桌有限注、钱包有上限——期望值为负的游戏里，没有任何下注策略能改变结局。</p>
+      <span class="tag">策略风险 · 数学现实</span>
+    </div>
+  </div>
+
+  <div class="mnemonic">💡 共同结构：独立随机序列 + 连续单边 + "该反转了"的补偿幻觉 = 赌徒谬误。</div>
+</section>
+
+<!-- 游戏一：抛硬币连胜预测实验 -->
+<section id="coinlab">
+  <h2>🪙 互动实验 · 抛硬币连胜预测 <span class="min">第 17–23 分钟</span></h2>
+  <p>规则：点击掷币。每当<b>连续出现 3 次及以上同一面</b>，系统会暂停并问你："下一次你押哪面？"——诚实作答，让数据来检验你的直觉。</p>
+
+  <div class="game">
+    <h3>🧪 实验台</h3>
+    <div class="coin-stage">
+      <div id="coinFace">?</div>
+      <div>
+        <button class="btn gold" id="btnFlip1" onclick="flipOnce()">掷 1 次</button>
+        <button class="btn" id="btnFlip10" onclick="flip10()">连掷 10 次</button>
+        <button class="btn ghost" onclick="resetCoin()">重置实验</button>
+      </div>
+    </div>
+
+    <div class="predict-panel" id="predictPanel">
+      <p style="font-weight:bold;color:var(--navy)" id="predictQ">已连续 N 次正面，下一次你押？</p>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="btn gold" onclick="predict('same')">押延续（还来同一面）</button>
+        <button class="btn" onclick="predict('reverse')">押反转（该换另一面了）</button>
+      </div>
+    </div>
+
+    <div class="fb" id="coinFb"></div>
+
+    <div class="hist" id="coinHist"></div>
+
+    <div class="stats">
+      <div class="stat">总投掷次数<br><b id="stTotal">0</b></div>
+      <div class="stat">正面频率<br><b id="stHeads">—</b>
+        <div class="bar-wrap"><div class="bar" id="barHeads"></div></div>
+      </div>
+      <div class="stat">连出≥3 后"延续同面"的实际比例<br><b id="stAfter">—</b><br><span style="font-size:12px;color:var(--muted)">理论值：50%</span></div>
+      <div class="stat">你的预测：押反转 / 押延续<br><b id="stPred">0 / 0</b></div>
+    </div>
+
+    <div class="done" id="coinDone">✔ 实验完成——对照一下：你的直觉押注，跑赢 50% 了吗？</div>
+  </div>
+</section>
+
+<!-- 模块三：概念辨析 -->
+<section id="distinguish">
+  <h2>⚖️ 模块三 · 概念辨析 <span class="min">第 23–29 分钟</span></h2>
+  <p>四个概念常被混为一谈。先看这张总表，再记关键判据。</p>
+
+  <table class="cmp">
+    <tr><th style="width:16%">概念</th><th style="width:28%">信念方向</th><th style="width:26%">典型表现</th><th>正解 / 实质</th></tr>
+    <tr>
+      <td><b>赌徒谬误</b></td>
+      <td>连续发生后押<b>反转</b>："该换了"</td>
+      <td>连黑押红、追冷号、"连跌该涨"</td>
+      <td>独立事件的历史无信息；反转不会"被亏欠"</td>
+    </tr>
+    <tr>
+      <td><b>热手谬误</b></td>
+      <td>连续发生后押<b>延续</b>："手正热"</td>
+      <td>给连中的球员喂球、追买连涨基金</td>
+      <td>Gilovich(1985)：投篮数据未见热手证据；方向相反、病根相同</td>
+    </tr>
+    <tr>
+      <td><b>大数定律</b><br>（正解 vs 误用）</td>
+      <td>—</td>
+      <td>误用版："连出 10 次正面，反面很快会补回来"</td>
+      <td>正解：试验次数足够多时，频率<b>趋近</b>概率——靠的是大样本<b>稀释</b>旧偏差，而非短期<b>补偿</b>纠偏。大数定律从不对"下一次"做任何承诺</td>
+    </tr>
+    <tr>
+      <td><b>小数定律</b></td>
+      <td>把小样本当总体代表</td>
+      <td>看 3 期业绩就断言"这基金稳赚"</td>
+      <td>Tversky &amp; Kahneman：人们期望小样本"长得就像"总体——这是赌徒谬误与热手谬误共同的心理根源（代表性启发）</td>
+    </tr>
+  </table>
+
+  <h3>🧭 关键判据：独立，还是相关？</h3>
+  <div class="judge">
+    <p><b>第一步：问机制。</b>上一次的结果有没有"物理通道"影响下一次？</p>
+    <p>· <b>独立事件</b>（硬币、轮盘、开奖、新生儿性别）→ 历史走势 <b>0</b> 信息量，任何"该涨了/该换了"都是谬误。</p>
+    <p>· <b>相关事件</b>（公司营收、球队状态、人口流入下的房价）→ 历史可能包含真实信息（基本面、趋势、自相关），此时"连涨看涨"不算谬误——<b>但依据必须是机制，不是感觉</b>。</p>
+    <p><b>第二步：问证据。</b>你说"该反转"或"会延续"时，拿得出机制与数据吗？拿不出的，大概率是幻觉。</p>
+  </div>
+
+  <div class="mnemonic">💡 口诀：先问独立再谈趋势；反转延续都别猜，机制证据说了算。</div>
+</section>
+
+<!-- 游戏二：该涨了吗？判断擂台 -->
+<section id="arena">
+  <h2>🥊 互动擂台 · "该涨了吗？" <span class="min">第 29–34 分钟</span></h2>
+  <p>8 个场景，逐一判断：<b>🅰 独立事件</b>（历史走势无参考价值）还是 <b>🅱 相关事件</b>（历史信息可参考）？答错会立即看到解析。</p>
+
+  <div class="game">
+    <h3>🏟️ 判断擂台 <span id="arenaScore" style="font-size:14px;color:var(--muted)">（0 / 8）</span></h3>
+    <div class="arena-grid" id="arenaGrid"></div>
+    <div class="done" id="arenaDone">✔ 已通关</div>
+    <div style="margin-top:12px"><button class="btn ghost" onclick="resetArena()">重新挑战</button></div>
+  </div>
+</section>
+
+<!-- 综合闯关 -->
+<section id="quiz">
+  <h2>🏆 综合闯关 · 25 分挑战 <span class="min">第 34–38 分钟</span></h2>
+  <p>单选 6 题（每题 1 分）+ 多选 4 题（每题 2 分，漏选得 1 分、错选不得分）+ 配对 11 空（每空 1 分）。作答后点击底部「提交判分」。</p>
+
+  <h3>一、单选题（每题 1 分，共 6 分）</h3>
+
+  <div class="q" data-type="s" data-a="2">
+    <div class="qt"><span class="qn">1.</span>1913 年蒙特卡洛赌场轮盘连开 26 次黑色后，赌徒们疯狂押红、最终血本无归。这最典型地体现了：</div>
+    <span class="qo">A. 锚定效应</span>
+    <span class="qo">B. 损失厌恶</span>
+    <span class="qo">C. 赌徒谬误</span>
+    <span class="qo">D. 热手谬误</span>
+    <div class="fb info">把独立的轮盘结果当成"会自我补偿"，正是赌徒谬误的定义场景。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="2">
+    <div class="qt"><span class="qn">2.</span>一枚公平硬币连出 5 次正面，第 6 次掷出正面的概率是：</div>
+    <span class="qo">A. 明显小于 50%</span>
+    <span class="qo">B. 明显大于 50%</span>
+    <span class="qo">C. 仍为 50%</span>
+    <span class="qo">D. 无法确定</span>
+    <div class="fb info">硬币没有记忆：P(正｜连5正) = P(正) = 50%。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">3.</span>下列哪一组是<b>独立事件</b>？</div>
+    <span class="qo">A. 球队连赢与士气</span>
+    <span class="qo">B. 同一枚硬币的连续两次抛掷</span>
+    <span class="qo">C. 股价与当日利好公告</span>
+    <span class="qo">D. 气温与冰淇淋销量</span>
+    <div class="fb info">其余三项都存在机制上的相互影响；只有硬币抛掷互不影响。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">4.</span>某产房今天已连续出生 8 名女婴，下一名新生儿为男婴的概率：</div>
+    <span class="qo">A. 明显大于 50%，"该轮到男孩了"</span>
+    <span class="qo">B. 仍约等于正常男婴出生比例</span>
+    <span class="qo">C. 等于 100%</span>
+    <span class="qo">D. 取决于前 8 名的性别</span>
+    <div class="fb info">每个新生儿的性别相互独立，历史不会"轮到"谁。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">5.</span>赌徒谬误的心理根源最接近下列哪条？</div>
+    <span class="qo">A. 人们完全不懂概率</span>
+    <span class="qo">B. 把小样本当成总体的代表（小数定律 / 代表性启发）</span>
+    <span class="qo">C. 人们天生喜欢冒险</span>
+    <span class="qo">D. 赌场操纵了概率</span>
+    <div class="fb info">人们期待小样本"长得像"总体——短序列也该五五开，于是期待反转。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">6.</span>对"大数定律"理解正确的是：</div>
+    <span class="qo">A. 连出 10 次正面后，反面很快会"补偿性"增多</span>
+    <span class="qo">B. 随着试验次数增加，频率趋近概率——靠大样本稀释，而非短期纠偏</span>
+    <span class="qo">C. 短期内频率必须等于概率</span>
+    <span class="qo">D. 它保证了"物极必反"</span>
+    <div class="fb info">大数定律只对长期频率作承诺，从不保证下一次的结果。</div>
+  </div>
+
+  <h3>二、多选题（每题 2 分，共 8 分）</h3>
+  <p class="quiz-note">评分规则：全部选对得 2 分；只选对了部分（且没有错选）得 1 分；有错选不得分。</p>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">7.</span>以下属于赌徒谬误表现的有：</div>
+    <span class="qo">A. 追买 100 期未出的彩票"冷号"</span>
+    <span class="qo">B. 股票连跌三天、未分析基本面就认为"该涨了"而抄底</span>
+    <span class="qo">C. 轮盘连黑后重押红</span>
+    <span class="qo">D. 分析财报后判断公司被低估而买入</span>
+    <div class="fb info">D 的依据是基本面而非"补偿幻觉"，不属于赌徒谬误。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">8.</span>关于热手谬误，正确的有：</div>
+    <span class="qo">A. 认为连续成功会延续</span>
+    <span class="qo">B. Gilovich 等对篮球投篮的研究未找到热手证据</span>
+    <span class="qo">C. 它与赌徒谬误方向相反，但同属小数定律的误用</span>
+    <span class="qo">D. 它只存在于体育领域</span>
+    <div class="fb info">追买连涨基金、连红股票都是投资里的热手谬误，D 错误。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">9.</span>独立随机事件的特征包括：</div>
+    <span class="qo">A. 各次结果互不影响</span>
+    <span class="qo">B. 条件概率等于无条件概率</span>
+    <span class="qo">C. 每次试验前概率"重置"，与历史无关</span>
+    <span class="qo">D. 短期结果必然自我纠偏</span>
+    <div class="fb info">D 正是赌徒谬误的幻觉——独立事件恰恰不纠偏。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">10.</span>投资者避免赌徒谬误的可行做法有：</div>
+    <span class="qo">A. 先判断事件是否独立，再决定历史走势能否参考</span>
+    <span class="qo">B. 决策基于基本面与估值，而非"该涨了"的感觉</span>
+    <span class="qo">C. 写下交易纪律并严格执行</span>
+    <span class="qo">D. 亏损后加倍下注摊平成本</span>
+    <div class="fb info">D 是马丁格尔策略，正是建立在"该赢了"的赌徒谬误之上，风险极高。</div>
+  </div>
+
+  <h3>三、配对题（每空 1 分，共 11 分）</h3>
+
+  <div class="q" data-type="p">
+    <div class="qt"><span class="qn">11.</span>配对组一：左边的现象 ↔ 右边的概念名称</div>
+    <div class="pair-row"><span class="pl">① 轮盘连开 10 次黑后押红</span>
+      <select data-a="赌徒谬误">
+        <option value="">— 请选择 —</option><option>赌徒谬误</option><option>热手谬误</option><option>小数定律</option><option>大数定律误用</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">② 球员连中三分后队友必传球给他</span>
+      <select data-a="热手谬误">
+        <option value="">— 请选择 —</option><option>赌徒谬误</option><option>热手谬误</option><option>小数定律</option><option>大数定律误用</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">③ 仅凭 3 次观察就断言"这只基金稳赚"</span>
+      <select data-a="小数定律">
+        <option value="">— 请选择 —</option><option>赌徒谬误</option><option>热手谬误</option><option>小数定律</option><option>大数定律误用</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">④ 认为连出 10 次正面后反面会"赶紧补回来"</span>
+      <select data-a="大数定律误用">
+        <option value="">— 请选择 —</option><option>赌徒谬误</option><option>热手谬误</option><option>小数定律</option><option>大数定律误用</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑤ 产房连生 8 名女婴后断言下一个是男孩</span>
+      <select data-a="赌徒谬误">
+        <option value="">— 请选择 —</option><option>赌徒谬误</option><option>热手谬误</option><option>小数定律</option><option>大数定律误用</option>
+      </select></div>
+    <div class="fb info">①⑤ 押反转=赌徒谬误；② 押延续=热手谬误；③ 小样本代表总体=小数定律；④ 要求短期纠偏=大数定律误用。</div>
+  </div>
+
+  <div class="q" data-type="p">
+    <div class="qt"><span class="qn">12.</span>配对组二：左边的决策 ↔ 是否赌徒谬误</div>
+    <div class="pair-row"><span class="pl">① 蒙特卡洛 1913：连黑后押红</span>
+      <select data-a="是">
+        <option value="">— 请选择 —</option><option>是</option><option>否</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">② 追买长期未出的彩票冷号</span>
+      <select data-a="是">
+        <option value="">— 请选择 —</option><option>是</option><option>否</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">③ 球队连胜后断言"下场必输"（物极必反）</span>
+      <select data-a="是">
+        <option value="">— 请选择 —</option><option>是</option><option>否</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">④ 因公司连续四季营收超预期而预期下季增长</span>
+      <select data-a="否">
+        <option value="">— 请选择 —</option><option>是</option><option>否</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑤ 基于估值模型判断股价被低估而买入</span>
+      <select data-a="否">
+        <option value="">— 请选择 —</option><option>是</option><option>否</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑥ 连抛 6 次正面后押反面"回本"</span>
+      <select data-a="是">
+        <option value="">— 请选择 —</option><option>是</option><option>否</option>
+      </select></div>
+    <div class="fb info">④⑤ 的依据是基本面机制（相关事件），不是补偿幻觉；其余都是赌徒谬误。</div>
+  </div>
+
+  <div class="qbar">
+    <button class="btn gold" onclick="gradeQuiz()">提交判分</button>
+    <button class="btn ghost" onclick="resetQuiz()">再闯一次</button>
+    <span class="score">得分：<b id="scoreNum">—</b> / 25</span>
+    <span id="badgeArea"></span>
+  </div>
+</section>
+
+<!-- 总结 -->
+<section id="tips">
+  <h2>📌 带走三句话 <span class="min">第 38–40 分钟</span></h2>
+  <ul class="tips">
+    <li><b>1.</b> 独立随机事件里，"该反转了"是幻觉——<span class="hl">硬币无记忆，概率不记账</span>。</li>
+    <li><b>2.</b> 赌徒谬误（押反转）与热手谬误（押延续）方向相反、病根相同：都是把小样本当成总体的代表。</li>
+    <li><b>3.</b> 投资中先用<b>机制</b>判断独立还是相关：独立则历史无用，相关也要有证据——感觉从来不是策略。</li>
+  </ul>
+  <div class="mnemonic">💡 总口诀：先问独立再谈趋势；反转延续都别猜，机制证据说了算。</div>
+</section>
+
+<!-- 作业 -->
+<section id="homework">
+  <h2>📝 课后作业</h2>
+  <div class="hw">
+    <b>作业一（必做）：</b>记录一次你自己或家人/朋友"犯赌徒谬误"的真实瞬间（买彩票、玩游戏抽卡、炒股、抢课……均可），写 150 字分析：当时的情境是什么？"该……了"的念头如何出现？用本课的概念给它下个诊断。
+  </div>
+  <div class="hw">
+    <b>作业二（选做）：</b>查一查"马丁格尔策略"为什么在必输期望的游戏里依然无法长期盈利，用 3-4 句话向同桌解释清楚（提示：下注上限、本金上限、期望值）。
+  </div>
+</section>
+
+<!-- 教师教案 -->
+<section id="teacher">
+  <h2>👩‍🏫 教师教案（课前展开）</h2>
+  <details>
+    <summary>点击展开 · 40 分钟教学流程与提示</summary>
+    <table class="plan">
+      <tr><th style="width:18%">环节与时间</th><th style="width:38%">教师活动</th><th>学生活动 / 设计意图</th></tr>
+      <tr><td>导入 0–3'</td><td>抛出"硬币连出 5 次正面，第 6 次押哪面"，组织举手表态</td><td>直觉表态，暴露前概念；认知冲突激发动机</td></tr>
+      <tr><td>概念 3–9'</td><td>讲授定义、独立事件、条件概率；板演 P(正)=0.5</td><td>记录定义，回答"硬币有记忆吗"；建立核心概念</td></tr>
+      <tr><td>案例 9–17'</td><td>讲蒙特卡洛 1913、彩票冷号、产房男女、股市"该涨了"；不断追问"共性是什么"</td><td>在案例卡中归纳共性；从故事中抽象谬误结构</td></tr>
+      <tr><td>实验 17–23'</td><td>组织硬币实验，巡视引导；投屏展示统计面板</td><td>亲历连出后下注，被数据"打脸"；体验概率不变</td></tr>
+      <tr><td>辨析 23–29'</td><td>用对比表讲赌徒谬误 / 热手谬误 / 大数定律 / 小数定律；强调"独立 vs 相关"判据</td><td>跟读对比表并口头填空；构建辨析框架</td></tr>
+      <tr><td>擂台 29–34'</td><td>组织判断擂台，对第 8 题（有偏硬币）重点追问</td><td>把判据迁移到 8 个场景；区分独立 / 相关事件</td></tr>
+      <tr><td>闯关 34–38'</td><td>发布综合闯关并计时；公布徽章分数线</td><td>独立完成单选 / 多选 / 配对；即时诊断</td></tr>
+      <tr><td>总结作业 38–40'</td><td>带读三句话与口诀，布置作业</td><td>齐声复述口诀；课下记录身边的赌徒谬误</td></tr>
+    </table>
+    <div class="tnote">
+      <p><b>常见误区预判：</b>① 学生把"热手"与赌徒谬误混为一谈——用"方向相反、病根相同"一句话收束；② 学生误以为大数定律保证短期平衡——强调"稀释≠补偿"。</p>
+      <p><b>追问话术：</b>"如果事件之间有关联呢？"（引出基本面、趋势、自相关）；"你说'该涨了'，证据是机制还是感觉？"</p>
+      <p><b>板书要点：</b>定义一句 / P(正)=0.5 / 四概念对比 / 判据：独立→历史无用。</p>
+    </div>
+  </details>
+</section>
+
+</main>
+
+<footer>
+  赌徒谬误 · 行为金融学互动课件 ｜ 单文件离线版 · 双击即可使用 ｜ 进度仅保存在当前页面
+</footer>
+
+<script>
+/* ===== 顶部进度条 ===== */
+(function(){
+  var bar=document.getElementById('progress'),ticking=false;
+  function upd(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';
+    ticking=false;
+  }
+  window.addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(upd);ticking=true;}});
+  upd();
+})();
+
+/* ===== Hero 轮盘 + 蒙特卡洛黑球序列（内联 SVG 生成） ===== */
+(function(){
+  var wheel=document.getElementById('wheel');
+  if(wheel){
+    for(var i=0;i<12;i++){
+      var a=i*30*Math.PI/180;
+      var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx',(Math.cos(a)*38).toFixed(1));
+      c.setAttribute('cy',(Math.sin(a)*38).toFixed(1));
+      c.setAttribute('r','7');
+      c.setAttribute('fill',i%2?'#b03a2e':'#111');
+      wheel.appendChild(c);
+    }
+  }
+  var mc=document.getElementById('mcDots');
+  if(mc){
+    for(var j=0;j<26;j++){
+      var d=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      d.setAttribute('cx',12+j*24);
+      d.setAttribute('cy','22');
+      d.setAttribute('r','9');
+      d.setAttribute('fill','#111');
+      d.setAttribute('stroke','#b03a2e');
+      d.setAttribute('stroke-width', j>=9?'2':'0');
+      mc.appendChild(d);
+    }
+  }
+})();
+
+/* ===== 游戏一：抛硬币连胜预测实验 ===== */
+(function(){
+  var flips=[], afterStreak=[], predReverse=0, predSame=0, pending=false;
+  function sideName(s){return s==='H'?'正面':'反面';}
+  function streak(){
+    if(!flips.length)return{side:null,len:0};
+    var s=flips[flips.length-1],n=1;
+    for(var i=flips.length-2;i>=0;i--){if(flips[i]===s)n++;else break;}
+    return{side:s,len:n};
+  }
+  function render(){
+    var total=flips.length;
+    var heads=flips.filter(function(x){return x==='H';}).length;
+    document.getElementById('stTotal').textContent=total;
+    document.getElementById('stHeads').textContent=total?Math.round(heads/total*100)+'%':'—';
+    document.getElementById('barHeads').style.width=total?(heads/total*100)+'%':'0';
+    var st=document.getElementById('stAfter');
+    if(afterStreak.length){
+      var cont=afterStreak.filter(function(x){return x.same;}).length;
+      st.textContent=cont+'/'+afterStreak.length+' = '+Math.round(cont/afterStreak.length*100)+'%';
+    }else st.textContent='—';
+    document.getElementById('stPred').textContent=predReverse+' / '+predSame;
+    var cf=document.getElementById('coinFace');
+    cf.textContent=total?sideName(flips[total-1]):'?';
+    var hist=document.getElementById('coinHist');
+    hist.innerHTML='';
+    flips.slice(-26).forEach(function(f){
+      var d=document.createElement('span');
+      d.className='dot '+(f==='H'?'h':'t');
+      d.textContent=f==='H'?'正':'反';
+      hist.appendChild(d);
+    });
+    if(total>=30&&(predReverse+predSame)>=3){
+      document.getElementById('coinDone').classList.add('show');
+    }
+  }
+  function doFlip(){
+    var r=Math.random()<0.5?'H':'T';
+    flips.push(r);
+    var cf=document.getElementById('coinFace');
+    cf.classList.add('flip');
+    setTimeout(function(){cf.classList.remove('flip');},160);
+    render();
+    var s=streak();
+    if(s.len>=3){
+      pending=true;
+      document.getElementById('predictQ').textContent=
+        '已连续 '+s.len+' 次'+sideName(s.side)+'！下一次你押哪面？';
+      document.getElementById('predictPanel').classList.add('show');
+      document.getElementById('btnFlip1').disabled=true;
+      document.getElementById('btnFlip10').disabled=true;
+    }
+  }
+  window.flipOnce=function(){if(pending)return;doFlip();};
+  window.flip10=function(){
+    if(pending)return;
+    var n=0;
+    var t=setInterval(function(){
+      if(pending||n>=10){clearInterval(t);return;}
+      doFlip();n++;
+    },180);
+  };
+  window.predict=function(dir){
+    if(!pending)return;
+    var s=streak();
+    if(dir==='same')predSame++;else predReverse++;
+    pending=false;
+    document.getElementById('predictPanel').classList.remove('show');
+    var r=Math.random()<0.5?'H':'T';
+    flips.push(r);
+    afterStreak.push({same:r===s.side});
+    var cont=(r===s.side);
+    var hit=(dir==='same')===cont;
+    var fb=document.getElementById('coinFb');
+    fb.className='fb show '+(hit?'ok':'no');
+    fb.textContent='结果：'+sideName(r)+'。'+(hit?'你押对了——':'没押中——')+
+      '但请记住：这一次'+sideName(s.side)+'的概率从头到尾都是 50%，硬币没有记忆，概率不记账。';
+    document.getElementById('btnFlip1').disabled=false;
+    document.getElementById('btnFlip10').disabled=false;
+    render();
+  };
+  window.resetCoin=function(){
+    flips=[];afterStreak=[];predReverse=0;predSame=0;pending=false;
+    document.getElementById('predictPanel').classList.remove('show');
+    document.getElementById('coinFb').className='fb';
+    document.getElementById('coinDone').classList.remove('show');
+    document.getElementById('btnFlip1').disabled=false;
+    document.getElementById('btnFlip10').disabled=false;
+    render();
+  };
+  render();
+})();
+
+/* ===== 游戏二：该涨了吗？判断擂台 ===== */
+(function(){
+  var scenes=[
+    {t:'轮盘连开 8 次红色。下一把的历史走势有参考价值吗？',a:'A',fb:'独立事件：轮盘每次旋转互不影响，球没有记忆。'},
+    {t:'公司连续 4 季营收超预期。判断下季营收时，历史有参考价值吗？',a:'B',fb:'相关事件：营收反映真实经营基本面，历史包含有用信息。'},
+    {t:'抛硬币连出 5 次反面。预测下一次时有参考价值吗？',a:'A',fb:'独立事件：P(正) 永远是 50%。'},
+    {t:'球队主力受伤、连输 3 场。预测下一场时历史有参考价值吗？',a:'B',fb:'相关事件：伤病与状态是真实机制，连败包含信息。'},
+    {t:'彩票某号码 100 期未出。选号时这段历史有参考价值吗？',a:'A',fb:'独立事件：开奖互不影响，"冷号该出了"是幻觉。'},
+    {t:'某城市房价连涨且人口持续流入。判断走势时历史可参考吗？',a:'B',fb:'相关事件：人口流入是基本面，趋势背后有机制（但仍需证据验证）。'},
+    {t:'产房今天连生 6 个女孩。预测下一个的性别时历史有用吗？',a:'A',fb:'独立事件：每个新生儿的性别与之前无关。'},
+    {t:'一枚硬币被怀疑动了手脚，且已连出 20 次正面。这段历史有信息吗？',a:'B',fb:'高阶题：若硬币可能有偏，连出 20 次正面本身就是"硬币有偏"的强证据——序列提供了关于机制的信息。'}
+  ];
+  var grid=document.getElementById('arenaGrid');
+  var correctCount=0, answered=0;
+  function build(){
+    grid.innerHTML='';correctCount=0;answered=0;
+    document.getElementById('arenaScore').textContent='（0 / 8）';
+    document.getElementById('arenaDone').classList.remove('show');
+    scenes.forEach(function(sc,idx){
+      var card=document.createElement('div');
+      card.className='acard';
+      var q=document.createElement('div');q.className='qtxt';
+      q.textContent=(idx+1)+'. '+sc.t;
+      var opts=document.createElement('div');opts.className='opts';
+      var done=false;
+      [['A','🅰 独立·历史无参考'],['B','🅱 相关·历史可参考']].forEach(function(pair){
+        var b=document.createElement('button');
+        b.textContent=pair[1];
+        b.onclick=function(){
+          if(done)return;done=true;
+          var hit=pair[0]===sc.a;
+          if(hit){b.classList.add('right');correctCount++;}
+          else{b.classList.add('wrong');}
+          var btns=opts.querySelectorAll('button');
+          btns.forEach(function(x){x.disabled=true;});
+          if(!hit){
+            btns[sc.a==='A'?0:1].classList.add('right');
+          }
+          var afb=document.createElement('div');
+          afb.className='afb show';
+          afb.textContent=(hit?'✔ 答对。':'✘ 再想想。')+sc.fb;
+          card.appendChild(afb);
+          answered++;
+          document.getElementById('arenaScore').textContent='（'+correctCount+' / 8）';
+          if(answered===8){
+            var d=document.getElementById('arenaDone');
+            d.textContent='✔ 已通关——答对 '+correctCount+'/8'+(correctCount===8?'，完美！独立与相关，你已能分清。':'，错题记得回看解析。');
+            d.classList.add('show');
+          }
+        };
+        opts.appendChild(b);
+      });
+      card.appendChild(q);card.appendChild(opts);
+      grid.appendChild(card);
+    });
+  }
+  window.resetArena=build;
+  build();
+})();
+
+/* ===== 综合闯关：单选/多选/配对 + 判分 + 徽章 ===== */
+(function(){
+  document.querySelectorAll('#quiz .q').forEach(function(q){
+    var type=q.dataset.type;
+    if(type==='s'){
+      var opts=q.querySelectorAll('.qo');
+      opts.forEach(function(o){
+        o.addEventListener('click',function(){
+          opts.forEach(function(x){x.classList.remove('picked');});
+          o.classList.add('picked');
+        });
+      });
+    }else if(type==='m'){
+      q.querySelectorAll('.qo').forEach(function(o){
+        o.addEventListener('click',function(){o.classList.toggle('picked');});
+      });
+    }
+  });
+
+  window.gradeQuiz=function(){
+    var score=0;
+    document.querySelectorAll('#quiz .q').forEach(function(q){
+      var type=q.dataset.type;
+      var fb=q.querySelector('.fb');
+      if(type==='s'){
+        var ans=parseInt(q.dataset.a,10);
+        var opts=q.querySelectorAll('.qo');
+        opts.forEach(function(o,i){
+          o.classList.remove('right','wrong');
+          if(i===ans)o.classList.add('right');
+          else if(o.classList.contains('picked'))o.classList.add('wrong');
+        });
+        var picked=-1;
+        opts.forEach(function(o,i){if(o.classList.contains('picked'))picked=i;});
+        if(picked===ans)score+=1;
+      }else if(type==='m'){
+        var set={};
+        q.dataset.a.split(',').forEach(function(x){set[parseInt(x,10)]=true;});
+        var mopts=q.querySelectorAll('.qo');
+        var hasWrongPick=false, hitCnt=0, ansCnt=Object.keys(set).length;
+        mopts.forEach(function(o,i){
+          o.classList.remove('right','wrong');
+          var p=o.classList.contains('picked');
+          if(set[i])o.classList.add('right');
+          if(p&&set[i])hitCnt++;
+          if(p&&!set[i]){hasWrongPick=true;o.classList.add('wrong');}
+        });
+        if(hasWrongPick)score+=0;
+        else if(hitCnt===ansCnt)score+=2;
+        else if(hitCnt>0)score+=1;
+      }else if(type==='p'){
+        q.querySelectorAll('select').forEach(function(sel){
+          sel.classList.remove('right','wrong');
+          if(sel.value==='')return;
+          if(sel.value===sel.dataset.a){sel.classList.add('right');score+=1;}
+          else sel.classList.add('wrong');
+        });
+      }
+      if(fb)fb.classList.add('show');
+    });
+    document.getElementById('scoreNum').textContent=score;
+    var badge='';
+    if(score>=22)badge='🥇 金牌风控官——你已对"该涨了"免疫！';
+    else if(score>=15)badge='🥈 理性投资者——再巩固一下辨析题。';
+    else badge='🥉 待修炼的"赌徒"——别灰心，回看案例与辨析，再闯一次！';
+    document.getElementById('badgeArea').textContent=badge;
+    document.getElementById('scoreNum').scrollIntoView({behavior:'smooth',block:'center'});
+  };
+
+  window.resetQuiz=function(){
+    document.querySelectorAll('#quiz .qo').forEach(function(o){o.classList.remove('picked','right','wrong');});
+    document.querySelectorAll('#quiz select').forEach(function(s){s.value='';s.classList.remove('right','wrong');});
+    document.querySelectorAll('#quiz .fb').forEach(function(f){f.classList.remove('show');});
+    document.getElementById('scoreNum').textContent='—';
+    document.getElementById('badgeArea').textContent='';
+  };
+})();
+</script>
+</body>
+</html>
