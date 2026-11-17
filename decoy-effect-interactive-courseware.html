@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>诱饵效应与折中效应 · 消费心理学互动课件（40分钟）</title>
+<style>
+:root{
+  --wine:#7a2332;
+  --wine-deep:#4d121d;
+  --wine-soft:#a04050;
+  --gold:#d99a2b;
+  --gold-soft:#f2d48a;
+  --bg:#faf6f1;
+  --card:#ffffff;
+  --ink:#2d2226;
+  --muted:#7a6d70;
+  --right:#1e7a55;
+  --right-bg:#e1f1e9;
+  --wrong:#b03a2e;
+  --wrong-bg:#fae7e3;
+  --line:#eadfd8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.7;
+}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-soft));z-index:999;transition:width .1s linear}
+nav#topnav{
+  position:sticky;top:0;z-index:900;background:var(--wine);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px;
+  padding:8px 10px;box-shadow:0 2px 10px rgba(77,18,29,.35);
+}
+nav#topnav a{
+  color:#f5e3e6;text-decoration:none;font-size:14px;padding:6px 12px;border-radius:20px;
+  transition:.2s;
+}
+nav#topnav a:hover{background:var(--wine-soft);color:var(--gold-soft)}
+header.hero{
+  background:linear-gradient(135deg,var(--wine-deep),var(--wine));
+  color:#fff;text-align:center;padding:56px 20px 44px;
+}
+header.hero .badge-line{font-size:14px;color:var(--gold-soft);letter-spacing:2px;margin-bottom:10px}
+header.hero h1{font-size:38px;letter-spacing:3px;margin-bottom:12px}
+header.hero h1 .gold{color:var(--gold)}
+header.hero p.sub{color:#eccdd3;font-size:17px;max-width:760px;margin:0 auto 8px}
+header.hero .meta{margin-top:16px;display:inline-block;border:1px solid var(--gold);color:var(--gold-soft);padding:6px 18px;border-radius:24px;font-size:14px}
+.hero-svg{margin:22px auto 0;max-width:600px;display:block}
+.hook{
+  max-width:780px;margin:26px auto 0;background:rgba(217,154,43,.12);
+  border:1px dashed var(--gold);border-radius:14px;padding:14px 18px;font-size:16px;color:#f7ead0;text-align:left;
+}
+main{max-width:980px;margin:0 auto;padding:26px 16px 60px}
+section{background:var(--card);border-radius:18px;padding:28px 26px;margin-bottom:26px;box-shadow:0 4px 14px rgba(122,35,50,.08)}
+section h2{font-size:24px;color:var(--wine);margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+section h2 .min{font-size:13px;background:var(--gold);color:#fff;border-radius:12px;padding:2px 10px;font-weight:normal}
+h3{color:var(--wine);font-size:18px;margin:18px 0 8px}
+p{margin:8px 0}
+.hl{background:linear-gradient(transparent 60%,var(--gold-soft) 60%);font-weight:bold;padding:0 2px}
+.defbox{
+  border-left:5px solid var(--gold);background:#fdf8ec;border-radius:0 12px 12px 0;
+  padding:14px 18px;margin:14px 0;
+}
+.mnemonic{
+  margin-top:18px;background:#fdf6e3;border-left:6px solid var(--gold);border-radius:0 12px 12px 0;
+  padding:12px 16px;font-size:17px;color:#8a6510;font-weight:bold;
+}
+.tl{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.tl .seg{
+  flex:1;min-width:90px;background:#fdf6f0;border:1px solid var(--line);border-radius:10px;
+  padding:10px 8px;text-align:center;font-size:13px;transition:.2s;
+}
+.tl .seg:hover{transform:translateY(-3px);box-shadow:0 6px 12px rgba(122,35,50,.12)}
+.tl .seg b{display:block;color:var(--wine);font-size:14px}
+.tl .seg .t{color:var(--gold);font-weight:bold}
+.goals{list-style:none}
+.goals li{padding:10px 14px;border:1px solid var(--line);border-radius:12px;margin:8px 0;background:#fffdfb}
+.goals li::before{content:"🎯 ";margin-right:4px}
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px}
+.case{
+  border:1px solid var(--line);border-radius:14px;padding:16px;background:#fffdfb;
+  transition:.2s;
+}
+.case:hover{transform:translateY(-3px);box-shadow:0 8px 16px rgba(122,35,50,.12)}
+.case .em{font-size:26px}
+.case h4{color:var(--wine);margin:6px 0;font-size:16px}
+.case p{font-size:14px;color:var(--muted)}
+.case .tag{display:inline-block;font-size:12px;color:var(--gold);border:1px solid var(--gold);border-radius:10px;padding:0 8px;margin-top:8px}
+a.video-card{display:block;text-decoration:none;color:inherit}
+a.video-card:hover{border-color:var(--gold)}
+a.video-card .watch{display:inline-block;margin-top:10px;font-size:13px;font-weight:bold;color:var(--wine)}
+.game{
+  border:2px dashed var(--gold);border-radius:16px;padding:20px;margin-top:16px;background:#fffdf6;
+}
+.game h3{margin-top:0}
+button.btn{
+  background:var(--wine);color:#fff;border:none;border-radius:10px;padding:10px 20px;
+  font-size:15px;cursor:pointer;transition:.2s;font-family:inherit;
+}
+button.btn:hover{background:var(--wine-soft);transform:translateY(-2px);box-shadow:0 6px 12px rgba(122,35,50,.25)}
+button.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+button.btn.gold{background:var(--gold);color:var(--wine-deep);font-weight:bold}
+button.btn.gold:hover{background:#e8b043}
+button.btn.ghost{background:#fff;color:var(--wine);border:1px solid var(--wine)}
+button.btn.ghost:hover{background:#fdf2f3}
+.fb{display:none;border-radius:10px;padding:10px 14px;margin-top:12px;font-size:14px}
+.fb.show{display:block;animation:pop .25s}
+.fb.ok{background:var(--right-bg);color:var(--right);border:1px solid var(--right)}
+.fb.no{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.fb.info{background:#fdf2f3;color:var(--wine);border:1px solid var(--wine-soft)}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.done{
+  display:none;margin-top:14px;background:var(--right-bg);border:1px solid var(--right);color:var(--right);
+  border-radius:12px;padding:10px 16px;font-weight:bold;
+}
+.done.show{display:inline-block;animation:pop .3s}
+/* 定价实验室 */
+.lab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.decoy-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fffdfb;cursor:pointer;transition:.2s;text-align:center}
+.decoy-card:hover{transform:translateY(-3px);box-shadow:0 8px 16px rgba(122,35,50,.15);border-color:var(--gold)}
+.decoy-card .cup{font-size:30px}
+.decoy-card .price{font-size:20px;font-weight:bold;color:var(--wine);margin:4px 0}
+.decoy-card .desc{font-size:13px;color:var(--muted)}
+.sim-bars{margin-top:14px}
+.sim-row{display:flex;align-items:center;gap:10px;margin:8px 0}
+.sim-row .lab{width:150px;font-size:14px;text-align:right}
+.sim-row .bar-wrap{flex:1;background:#f3e9e4;border-radius:8px;height:22px;overflow:hidden}
+.sim-row .bar{height:100%;width:0;transition:width .8s cubic-bezier(.2,.8,.2,1);border-radius:8px;
+  display:flex;align-items:center;justify-content:flex-end;color:#fff;font-size:12px;padding-right:8px;font-weight:bold}
+.sim-row .bar.b0{background:#c9b8a8}
+.sim-row .bar.b1{background:var(--wine-soft)}
+.sim-row .bar.b2{background:var(--gold)}
+.sim-note{font-size:13px;color:var(--muted);margin-top:6px}
+/* 擂台 */
+.arena-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:12px}
+.acard{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fffdfb}
+.acard .qtxt{font-size:15px;min-height:66px}
+.acard .opts{display:flex;gap:8px;margin-top:10px}
+.acard .opts button{
+  flex:1;border:1px solid var(--wine);background:#fff;color:var(--wine);border-radius:10px;
+  padding:8px 6px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit;
+}
+.acard .opts button:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(122,35,50,.15)}
+.acard .opts button.right{background:var(--right-bg);border-color:var(--right);color:var(--right);font-weight:bold}
+.acard .opts button.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong)}
+.acard .opts button:disabled{cursor:default;transform:none;box-shadow:none;opacity:.85}
+.acard .afb{display:none;font-size:13px;margin-top:8px;border-radius:8px;padding:8px 10px;background:#fdf2f3;color:var(--wine)}
+.acard .afb.show{display:block;animation:pop .25s}
+table.cmp{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+table.cmp th,table.cmp td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.cmp th{background:var(--wine);color:#fff}
+table.cmp tr:nth-child(even) td{background:#fdf8f5}
+.judge{margin-top:16px;border:1px solid var(--gold);background:#fffdf2;border-radius:12px;padding:14px 16px}
+/* 闯关 */
+#quiz .q{border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0;background:#fffdfb}
+#quiz .q .qt{font-weight:bold;color:var(--wine);margin-bottom:8px}
+#quiz .q .qt .qn{color:var(--gold);margin-right:6px}
+#quiz .qo{
+  display:block;border:1px solid var(--line);border-radius:10px;padding:9px 14px;margin:6px 0;
+  cursor:pointer;transition:.15s;background:#fff;font-size:15px;
+}
+#quiz .qo:hover{border-color:var(--wine-soft);transform:translateX(3px)}
+#quiz .qo.picked{border-color:var(--gold);background:#fffdf0;box-shadow:inset 0 0 0 1px var(--gold)}
+#quiz .qo.right{border-color:var(--right);background:var(--right-bg);color:var(--right);font-weight:bold}
+#quiz .qo.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+#quiz .q .fb{font-size:14px}
+.pair-row{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.pair-row .pl{flex:1;min-width:230px;font-size:15px}
+.pair-row select{
+  border:1px solid var(--wine-soft);border-radius:8px;padding:7px 10px;font-size:14px;font-family:inherit;
+  background:#fff;color:var(--ink);min-width:170px;
+}
+.pair-row select.right{border-color:var(--right);background:var(--right-bg)}
+.pair-row select.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.qbar{position:sticky;bottom:14px;background:var(--wine);border-radius:14px;padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:18px;box-shadow:0 8px 20px rgba(77,18,29,.35)}
+.qbar .score{color:#fff;font-size:16px}
+.qbar .score b{color:var(--gold);font-size:22px}
+#badgeArea{color:var(--gold-soft);font-size:15px}
+.quiz-note{font-size:13px;color:var(--muted);margin-top:6px}
+.tips li{margin:10px 0;padding-left:6px}
+.hw{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0;background:#fffdfb}
+details{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:#fffdfb}
+summary{cursor:pointer;font-weight:bold;color:var(--wine);font-size:16px}
+table.plan{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+table.plan th,table.plan td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+table.plan th{background:var(--wine);color:#fff}
+table.plan tr:nth-child(even) td{background:#fdf8f5}
+.tnote{margin-top:14px;font-size:14px;color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 10px 40px}
+@media (max-width:640px){
+  header.hero h1{font-size:26px}
+  section{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav id="topnav">
+  <a href="#concept">双概念</a>
+  <a href="#cases">经典案例</a>
+  <a href="#lab">定价实验室</a>
+  <a href="#distinguish">概念辨析</a>
+  <a href="#arena">拆招擂台</a>
+  <a href="#quiz">综合闯关</a>
+  <a href="#tips">要点总结</a>
+  <a href="#homework">课后作业</a>
+  <a href="#videos">拓展视频</a>
+  <a href="#teacher">教师教案</a>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="badge-line">消费心理学 · 行为经济学 · 专题课件</div>
+  <h1>诱饵效应 × 折中效应<br><span class="gold">你以为你在选，其实选项在"演"你</span></h1>
+  <p class="sub">Decoy Effect &amp; Compromise Effect ——<br>商家货架上的每个选项，可能都是被精心安排过的"演员"。</p>
+  <div class="meta">🕐 40 分钟 · 1 课时 · 大学选修课 / 成人通识</div>
+  <svg class="hero-svg" viewBox="0 0 600 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三档爆米花与价签插画">
+    <!-- 三档爆米花 -->
+    <g transform="translate(120,20)">
+      <path d="M-28,30 L-22,100 L22,100 L28,30 Z" fill="#c9b8a8"/>
+      <rect x="-28" y="18" width="56" height="14" rx="6" fill="#f4e8dd"/>
+      <text x="0" y="138" text-anchor="middle" font-size="14" fill="#eccdd3">小杯 ¥3</text>
+    </g>
+    <g transform="translate(270,10)">
+      <path d="M-32,30 L-26,105 L26,105 L32,30 Z" fill="#a04050"/>
+      <rect x="-32" y="16" width="64" height="16" rx="7" fill="#f4e8dd"/>
+      <text x="0" y="148" text-anchor="middle" font-size="14" fill="#f2d48a">中杯 ¥6.5（诱饵）</text>
+    </g>
+    <g transform="translate(440,0)">
+      <path d="M-36,30 L-29,110 L29,110 L36,30 Z" fill="#d99a2b"/>
+      <rect x="-36" y="14" width="72" height="18" rx="8" fill="#f4e8dd"/>
+      <text x="0" y="158" text-anchor="middle" font-size="14" fill="#fff">大杯 ¥7 ✓ 主推</text>
+    </g>
+  </svg>
+  <div class="hook">🎬 课前之问：《经济学人》杂志曾挂出三个订阅方案——<b>网页版 ¥59</b>｜<b>印刷版 ¥125</b>｜<b>印刷版＋网页版 ¥125</b>。中间那个"印刷版单订"看起来毫无道理、几乎没人选。<b>既然没人选，为什么还要挂在那里？</b>带着这个疑问上课。</div>
+</header>
+
+<main>
+
+<!-- 时间轴 -->
+<section id="timeline">
+  <h2>🗺️ 本课路线图 <span class="min">共 40 分钟</span></h2>
+  <div class="tl">
+    <div class="seg"><b>导入</b>订阅之谜<span class="t">3'</span></div>
+    <div class="seg"><b>双概念</b>诱饵+折中<span class="t">6'</span></div>
+    <div class="seg"><b>经典案例</b>货架上的演员<span class="t">8'</span></div>
+    <div class="seg"><b>定价实验室</b>你来放诱饵<span class="t">6'</span></div>
+    <div class="seg"><b>概念辨析</b>别认错亲戚<span class="t">5'</span></div>
+    <div class="seg"><b>拆招擂台</b>8 场景判断<span class="t">5'</span></div>
+    <div class="seg"><b>综合闯关</b>25 分挑战<span class="t">5'</span></div>
+    <div class="seg"><b>总结作业</b>带走三句话<span class="t">2'</span></div>
+  </div>
+</section>
+
+<!-- 学习目标 -->
+<section id="goals">
+  <h2>🎯 学习目标</h2>
+  <ul class="goals">
+    <li><b>说出</b>诱饵效应与折中效应的定义，并能指出选项结构中"哪个是演员"；</li>
+    <li><b>识别</b>订阅定价、爆米花三档、手机容量、菜单、房产带看中的真实案例；</li>
+    <li><b>辨析</b>诱饵效应 vs 折中效应 vs 锚定效应 vs 免费效应，不再混淆；</li>
+    <li><b>双向应用</b>：站在商家立场会"布阵"，站在消费者立场会"拆招"。</li>
+  </ul>
+</section>
+
+<!-- 模块一：双概念 -->
+<section id="concept">
+  <h2>📖 模块一 · 一对"孪生"概念 <span class="min">第 3–9 分钟</span></h2>
+
+  <h3>🎣 概念一：诱饵效应（Decoy Effect）</h3>
+  <div class="defbox">
+    在选项集合中加入一个<b>明显比目标选项差、却又与它接近可比</b>的"诱饵"，目标选项的吸引力会立刻上升。学术上叫<span class="hl">不对称占优效应</span>（Huber, Payne &amp; Puto, 1982）——诱饵被目标"占优"（处处不如它），却不被竞争对手占优。<b>诱饵从不指望被卖出去，它存在的唯一意义，是让主推款显得更值。</b>
+  </div>
+  <p>回到课前的《经济学人》之谜（Dan Ariely 在 MIT 的实测）：</p>
+  <p>· <b>有诱饵时</b>：网页版 ¥59（16 人）｜印刷版单订 ¥125（<b>0 人</b>）｜印刷＋网页 ¥125（<b>84 人</b>）</p>
+  <p>· <b>撤掉没人选的诱饵后</b>：网页版 ¥59（<b>68 人</b>）｜印刷＋网页 ¥125（<b>仅 32 人</b>）</p>
+  <p>一个没人选的选项，竟然让高价方案的选择率从 32% 翻到 84%。<b>偏好不是天生的，是被选项结构"构造"出来的。</b></p>
+
+  <h3>⚖️ 概念二：折中效应（Compromise Effect）</h3>
+  <div class="defbox">
+    面对一组选项时，人们倾向于选择<span class="hl">中间档</span>——既怕买最贵的"被宰"，又怕买最便宜的"掉价/不好用"。这叫<b>极端厌恶</b>（Simonson, 1989）：极端选项让人焦虑，中间选项让人"安全"。所以商家只要把想卖的那款放在中间，再配一个更贵的"陪跑款"即可。
+  </div>
+  <p>两者的微妙差别：<b>诱饵效应</b>里有一个"明显不划算的陪衬"（它会被主推款碾压）；<b>折中效应</b>里没有谁碾压谁，只是"中间的位置"本身在发力。商家常常<b>双管齐下</b>：三档定价里，中档既是"安全的中间"，旁边还站着一个衬托它的诱饵。</p>
+
+  <div class="mnemonic">💡 口诀：选项会演戏，诱饵不卖货；三档选中档，先问要不要。</div>
+</section>
+
+<!-- 模块二：经典案例 -->
+<section id="cases">
+  <h2>🍿 模块二 · 货架上的"演员" <span class="min">第 9–17 分钟</span></h2>
+  <p>阅读时追问：<b>每个案例里，商家真正想卖的是哪一个？"演员"又是哪一个？</b></p>
+
+  <div class="cases">
+    <div class="case">
+      <div class="em">🍿</div>
+      <h4>电影院爆米花三档</h4>
+      <p>小杯 ¥3、大杯 ¥7 时，多数人买小杯。加上<b>中杯 ¥6.5</b>（只比大杯便宜 5 毛）后，大杯销量大涨——中杯就是那颗被大杯"碾压"的诱饵：只差 5 毛钱，当然买大的！你觉得自己"会算账"，其实是账被设计好了。</p>
+      <span class="tag">诱饵 + 折中</span>
+    </div>
+    <div class="case">
+      <div class="em">🍞</div>
+      <h4>面包机的逆袭</h4>
+      <p>Williams-Sonoma 的 ¥279 面包机上市时卖不动。后来他们上架了一台 ¥429 的更大号面包机——贵的那台依然卖不动，但 ¥279 的销量几乎<b>翻倍</b>。消费者原本不知道"面包机该值多少钱"，新机型给了他们一个"贵"的参照，原款立刻显得合理了。</p>
+      <span class="tag">诱饵/锚定双机制</span>
+    </div>
+    <div class="case">
+      <div class="em">📱</div>
+      <h4>手机容量三档</h4>
+      <p>128GB ¥5999｜256GB ¥6799｜512GB ¥8599。多数人最终选 256GB——这正是厂商的"销量甜点"。最低档拉低门槛，最高档负责"陪跑"让你觉得中间档稳妥，加 800 元换翻倍容量还显得"会过日子"。</p>
+      <span class="tag">折中效应</span>
+    </div>
+    <div class="case">
+      <div class="em">🥩</div>
+      <h4>菜单上的"镇店天价菜"</h4>
+      <p>高级餐厅菜单第一页常有一道 ¥999 的战斧牛排，没几个人点。但它旁边的 ¥299 龙虾销量很好——"才 299，比牛排便宜多了"。天价菜不是用来卖的，是用来<b>重新标定你的价格感</b>的（这一招还叠加了锚定效应，辨析模块细讲）。</p>
+      <span class="tag">诱饵 + 锚定</span>
+    </div>
+    <div class="case">
+      <div class="em">🏠</div>
+      <h4>中介的"托底房"</h4>
+      <p>房产中介带你先看一套又贵又破的房子，再带你看"目标房源"——同样的预算，第二套立刻显得性价比高到发光。第一套房就是现实版诱饵：它存在的意义是<b>被比下去</b>。老练的租客会要求"打乱看房顺序"。</p>
+      <span class="tag">诱饵效应</span>
+    </div>
+    <div class="case">
+      <div class="em">💳</div>
+      <h4>SaaS 与会员卡三档</h4>
+      <p>免费版（功能阉割）｜Pro 版 ¥99/月（主推）｜企业版 ¥999/月（绝大多数人用不上）。免费版和企业版一左一右，把 Pro 版衬成"理性之选"。健身房年卡、视频会员、机场休息室，都是同一套阵法。</p>
+      <span class="tag">折中 + 诱饵</span>
+    </div>
+  </div>
+
+  <div class="mnemonic">💡 共同结构：一个"主推款" + 至少一个"陪跑演员"（碾压它的诱饵，或拔高价格感的贵款）= 你的选择被剧透了。</div>
+</section>
+
+<!-- 游戏一：定价实验室 -->
+<section id="lab">
+  <h2>🧪 互动实验 · 定价实验室 <span class="min">第 17–23 分钟</span></h2>
+  <p>你是咖啡店老板：中杯 ¥15（350ml）是基本款，你想主推<b>大杯 ¥22（500ml）</b>。先看不加诱饵时的市场，再从三个候选中选一个"新选项"上架，观察大杯销量的变化——<b>亲手验证诱饵的威力</b>。</p>
+
+  <div class="game">
+    <h3>☕ 第一步：先看没有诱饵的市场</h3>
+    <p style="font-size:14px;color:var(--muted)">货架上只有中杯 ¥15 和大杯 ¥22，模拟 100 名顾客的选择：</p>
+    <button class="btn gold" onclick="runBase()">▶ 模拟 100 名顾客（仅两档）</button>
+
+    <h3 style="margin-top:20px">🧃 第二步：选择一个"新选项"上架</h3>
+    <p style="font-size:14px;color:var(--muted)">你的目标是让<b>大杯</b>卖得更多。三个候选里只有一个是最有效的诱饵——选选看（都可以试）：</p>
+    <div class="lab-grid">
+      <div class="decoy-card" onclick="runDecoy(0)">
+        <div class="cup">🥤</div>
+        <div class="price">小杯 ¥6</div>
+        <div class="desc">200ml，拉低门槛的入门款</div>
+      </div>
+      <div class="decoy-card" onclick="runDecoy(1)">
+        <div class="cup">🥤</div>
+        <div class="price">标准杯 ¥21</div>
+        <div class="desc">380ml——只比大杯便宜 1 元，容量却小了一大截</div>
+      </div>
+      <div class="decoy-card" onclick="runDecoy(2)">
+        <div class="cup">🥤</div>
+        <div class="price">迷你杯 ¥19</div>
+        <div class="desc">150ml，贵得离谱的"笑话款"</div>
+      </div>
+    </div>
+
+    <div class="sim-bars" id="simBars" style="display:none">
+      <div class="sim-row"><span class="lab" id="lab0">—</span><div class="bar-wrap"><div class="bar b0" id="bar0">0%</div></div></div>
+      <div class="sim-row"><span class="lab" id="lab1">—</span><div class="bar-wrap"><div class="bar b1" id="bar1">0%</div></div></div>
+      <div class="sim-row"><span class="lab" id="lab2">大杯 ¥22（主推）</span><div class="bar-wrap"><div class="bar b2" id="bar2">0%</div></div></div>
+      <div class="sim-note" id="simNote"></div>
+    </div>
+
+    <div class="fb" id="labFb"></div>
+    <div class="done" id="labDone">✔ 实验完成——你亲手验证了：一个"没人买"的选项，如何让主推款销量翻倍。</div>
+    <div style="margin-top:12px"><button class="btn ghost" onclick="resetLab()">重置实验</button></div>
+  </div>
+</section>
+
+<!-- 模块三：概念辨析 -->
+<section id="distinguish">
+  <h2>⚖️ 模块三 · 别认错"亲戚" <span class="min">第 23–28 分钟</span></h2>
+  <p>这几个效应常一起出现，但机制不同。看准这张表：</p>
+
+  <table class="cmp">
+    <tr><th style="width:15%">效应</th><th style="width:30%">机制（靠什么起作用）</th><th style="width:27%">典型长相</th><th>一句话区分</th></tr>
+    <tr>
+      <td><b>诱饵效应</b></td>
+      <td>加入一个被主推款<b>碾压</b>的陪衬，让比较变容易</td>
+      <td>中杯只比大杯便宜 5 毛；印刷版单订</td>
+      <td>有个"明显不划算"的选项在衬托别人</td>
+    </tr>
+    <tr>
+      <td><b>折中效应</b></td>
+      <td>极端厌恶：中间档让人"安全"</td>
+      <td>手机容量三档，大家买中间</td>
+      <td>没有谁碾压谁，是"中间的位置"在发力</td>
+    </tr>
+    <tr>
+      <td><b>锚定效应</b></td>
+      <td>先出现的<b>数字</b>成为参照点，后续判断被它"拖住"</td>
+      <td>菜单上的 ¥999 牛排；原价划线 ¥1999</td>
+      <td>起作用的是一个"参照数字"，不是选项结构</td>
+    </tr>
+    <tr>
+      <td><b>免费效应</b></td>
+      <td>"0 元"带来情绪溢价，让人忽视真实成本</td>
+      <td>包邮凑单、免费领小样</td>
+      <td>关键是价格为"零"，不是选项之间的对比</td>
+    </tr>
+  </table>
+
+  <h3>🛡️ 消费者拆招三步</h3>
+  <div class="judge">
+    <p><b>第一步：问需求。</b>不看货架，先写下"我到底要什么、预算多少"——需求清单是你自带的"防诱饵盾"。</p>
+    <p><b>第二步：拆单位。</b>算单价（每 ml、每 GB、每月），把"相对划算"还原成"绝对值不值"。</p>
+    <p><b>第三步：找演员。</b>看到三档定价时主动问："哪一档是商家根本不想卖的？"——找到演员，戏就拆穿了。</p>
+  </div>
+
+  <div class="mnemonic">💡 口诀：诱饵靠陪衬，折中靠位置，锚定靠数字，免费靠零蛋；拆招先问真需求。</div>
+</section>
+
+<!-- 游戏二：拆招擂台 -->
+<section id="arena">
+  <h2>🥊 互动擂台 · 拆招高手 <span class="min">第 28–33 分钟</span></h2>
+  <p>8 个真实场景，判断：🅰 <b>有"演员"</b>（诱饵/折中结构在起作用）还是 🅱 <b>没设局</b>（正常定价，无选项结构陷阱）？</p>
+
+  <div class="game">
+    <h3>🏟️ 拆招擂台 <span id="arenaScore" style="font-size:14px;color:var(--muted)">（0 / 8）</span></h3>
+    <div class="arena-grid" id="arenaGrid"></div>
+    <div class="done" id="arenaDone">✔ 已通关</div>
+    <div style="margin-top:12px"><button class="btn ghost" onclick="resetArena()">重新挑战</button></div>
+  </div>
+</section>
+
+<!-- 综合闯关 -->
+<section id="quiz">
+  <h2>🏆 综合闯关 · 25 分挑战 <span class="min">第 33–38 分钟</span></h2>
+  <p>单选 6 题（每题 1 分）+ 多选 4 题（每题 2 分，漏选得 1 分、错选不得分）+ 配对 11 空（每空 1 分）。作答后点击底部「提交判分」。</p>
+
+  <h3>一、单选题（每题 1 分，共 6 分）</h3>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">1.</span>《经济学人》订阅实验中，"印刷版单订 ¥125"这个 0 人选择的选项，其作用是：</div>
+    <span class="qo">A. 满足不同读者的需求</span>
+    <span class="qo">B. 作为诱饵，让"印刷＋网页 ¥125"显得超值</span>
+    <span class="qo">C. 提供免费的增值服务</span>
+    <span class="qo">D. 利用从众心理带动销量</span>
+    <div class="fb info">它处处被捆绑版占优，是典型的不对称占优诱饵——不为卖，只为衬托。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">2.</span>撤掉那个没人选的诱饵后，高价方案选择率从 84% 跌到 32%。这说明：</div>
+    <span class="qo">A. 学生的偏好本来就稳定一致</span>
+    <span class="qo">B. 偏好会被选项结构"构造"，并非完全来自内心</span>
+    <span class="qo">C. 印刷版杂志质量下降了</span>
+    <span class="qo">D. 价格越低选择的人一定越多</span>
+    <div class="fb info">这是行为经济学的核心洞见之一：偏好是"构建"出来的，选项结构本身就是影响力。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="2">
+    <div class="qt"><span class="qn">3.</span>电影院在"小杯 ¥3、大杯 ¥7"之间插入"中杯 ¥6.5"后，大杯销量大涨。中杯主要扮演了：</div>
+    <span class="qo">A. 锚定效应里的参照数字</span>
+    <span class="qo">B. 免费效应里的赠品</span>
+    <span class="qo">C. 被大杯占优的诱饵</span>
+    <span class="qo">D. 社会证明</span>
+    <div class="fb info">只差 5 毛、容量差一大截——中杯被大杯明显占优，目的就是让大杯"赢在对比"。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">4.</span>折中效应的心理根源最接近：</div>
+    <span class="qo">A. 人们喜欢最贵的选项</span>
+    <span class="qo">B. 极端厌恶——极端选项带来焦虑，中间档带来安全感</span>
+    <span class="qo">C. 人们总能精确计算性价比</span>
+    <span class="qo">D. 中间档的成本一定最低</span>
+    <div class="fb info">Simonson 提出的"极端厌恶"：怕被宰也怕掉价，于是中间档成了"安全区"。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="2">
+    <div class="qt"><span class="qn">5.</span>房产中介先带你看一套又贵又破的房子，再看目标房源。这运用了：</div>
+    <span class="qo">A. 折中效应</span>
+    <span class="qo">B. 免费效应</span>
+    <span class="qo">C. 诱饵效应</span>
+    <span class="qo">D. 损失厌恶</span>
+    <div class="fb info">破房子是"托底"的诱饵：它存在的意义就是被比下去，让目标房源发光。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">6.</span>作为消费者，拆解选项陷阱的<b>第一步</b>应该是：</div>
+    <span class="qo">A. 选中间档，最稳妥</span>
+    <span class="qo">B. 先明确自己的真实需求与预算，再看选项</span>
+    <span class="qo">C. 直接买最贵的，一分钱一分货</span>
+    <span class="qo">D. 跟着销量最高的人买</span>
+    <div class="fb info">需求清单是自带的"防诱饵盾"：先定需求，再看货架，戏就演不动了。</div>
+  </div>
+
+  <h3>二、多选题（每题 2 分，共 8 分）</h3>
+  <p class="quiz-note">评分规则：全部选对得 2 分；只选对部分（且没有错选）得 1 分；有错选不得分。</p>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">7.</span>一个"有效诱饵"通常具备的特征有：</div>
+    <span class="qo">A. 与主推款接近、容易直接比较</span>
+    <span class="qo">B. 明显比主推款差（被主推款占优）</span>
+    <span class="qo">C. 商家本就不指望它卖出去</span>
+    <span class="qo">D. 是全场的最低价选项</span>
+    <div class="fb info">诱饵要"够近、够差、不为卖"；最低价选项往往是拉低门槛的入门款，不是诱饵。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">8.</span>下列场景中，主要运用了折中效应的有：</div>
+    <span class="qo">A. 手机容量三档，主推中间档</span>
+    <span class="qo">B. 会员卡三档，中间档标"最受欢迎"</span>
+    <span class="qo">C. 咖啡三杯型，中杯为销量甜点</span>
+    <span class="qo">D. 季末清仓全场五折</span>
+    <div class="fb info">清仓打折没有"选项结构"，属于直接降价促销，不涉及折中效应。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">9.</span>消费者拆解"选项结构陷阱"的有效做法有：</div>
+    <span class="qo">A. 先列出真实需求和预算，再看选项</span>
+    <span class="qo">B. 换算单位价格，做绝对价值比较</span>
+    <span class="qo">C. 主动寻找"商家不想卖的那一档"</span>
+    <span class="qo">D. 一律选中间档，肯定不会错</span>
+    <div class="fb info">D 恰恰是折中效应想让你做的事——"选中间"不是策略，是被设计好的反应。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">10.</span>关于这几个效应的区分，正确的有：</div>
+    <span class="qo">A. 锚定效应起作用的关键是"参照数字"</span>
+    <span class="qo">B. 诱饵效应起作用的关键是"选项结构"</span>
+    <span class="qo">C. 免费效应起作用的关键是"价格为零"</span>
+    <span class="qo">D. 诱饵效应与从众心理是同一件事</span>
+    <div class="fb info">诱饵效应与从众（社会证明）完全不同：一个靠选项结构，一个靠"别人都在买"。</div>
+  </div>
+
+  <h3>三、配对题（每空 1 分，共 11 分）</h3>
+
+  <div class="q" data-type="p">
+    <div class="qt"><span class="qn">11.</span>配对组一：左边的现象 ↔ 右边的效应名称（含复习）</div>
+    <div class="pair-row"><span class="pl">① 印刷版单订 ¥125 衬托捆绑版</span>
+      <select data-a="诱饵效应">
+        <option value="">— 请选择 —</option><option>诱饵效应</option><option>折中效应</option><option>锚定效应</option><option>免费效应</option><option>赌徒谬误</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">② 手机容量三档，人人选中间档</span>
+      <select data-a="折中效应">
+        <option value="">— 请选择 —</option><option>诱饵效应</option><option>折中效应</option><option>锚定效应</option><option>免费效应</option><option>赌徒谬误</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">③ 菜单首页的 ¥999 镇店牛排</span>
+      <select data-a="锚定效应">
+        <option value="">— 请选择 —</option><option>诱饵效应</option><option>折中效应</option><option>锚定效应</option><option>免费效应</option><option>赌徒谬误</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">④ 为了"包邮"硬凑单买不需要的东西</span>
+      <select data-a="免费效应">
+        <option value="">— 请选择 —</option><option>诱饵效应</option><option>折中效应</option><option>锚定效应</option><option>免费效应</option><option>赌徒谬误</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑤ 连输几把后觉得"下一把该赢了"</span>
+      <select data-a="赌徒谬误">
+        <option value="">— 请选择 —</option><option>诱饵效应</option><option>折中效应</option><option>锚定效应</option><option>免费效应</option><option>赌徒谬误</option>
+      </select></div>
+    <div class="fb info">③ 靠"参照数字"是锚定；① 靠"被碾压的陪衬"是诱饵；② 靠"中间的位置"是折中；④ 靠"零元情绪"是免费效应；⑤ 是上节课的赌徒谬误。</div>
+  </div>
+
+  <div class="q" data-type="p">
+    <div class="qt"><span class="qn">12.</span>配对组二：左边的消费者行为 ↔ "中招了吗？"</div>
+    <div class="pair-row"><span class="pl">① 三档手机里选中间档，只因"看起来稳妥"</span>
+      <select data-a="中招了">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">② 算完每 ml 单价后，按真实需求选了小杯爆米花</span>
+      <select data-a="没中招">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">③ 因"印刷版单订不划算"而改选捆绑版</span>
+      <select data-a="中招了">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">④ 按事先写好的预算清单买咖啡，没升级大杯</span>
+      <select data-a="没中招">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑤ 因为"比 ¥999 牛排便宜多了"点了 ¥299 龙虾</span>
+      <select data-a="中招了">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑥ 清仓五折区里只买自己需要的两件</span>
+      <select data-a="没中招">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="fb info">中招与否不看买了什么，而看<b>决策依据</b>：凭"感觉稳妥/显得便宜"是中招；凭需求、预算、单位价值是没中招。</div>
+  </div>
+
+  <div class="qbar">
+    <button class="btn gold" onclick="gradeQuiz()">提交判分</button>
+    <button class="btn ghost" onclick="resetQuiz()">再闯一次</button>
+    <span class="score">得分：<b id="scoreNum">—</b> / 25</span>
+    <span id="badgeArea"></span>
+  </div>
+</section>
+
+<!-- 总结 -->
+<section id="tips">
+  <h2>📌 带走三句话 <span class="min">第 38–40 分钟</span></h2>
+  <ul class="tips">
+    <li><b>1.</b> 偏好不是天生的，是被选项结构"构造"出来的——<span class="hl">你以为你在选，其实选项在演你</span>。</li>
+    <li><b>2.</b> 诱饵靠"被碾压的陪衬"，折中靠"中间的位置"；三档定价里，先找出商家不想卖的那一档。</li>
+    <li><b>3.</b> 拆招三步：<b>先问需求、再拆单价、最后找演员</b>；商家立场则反过来：想让哪款好卖，就为它安排"演员"。</li>
+  </ul>
+  <div class="mnemonic">💡 总口诀：选项会演戏，诱饵不卖货；比价不如比需求，结构会替你做主。</div>
+</section>
+
+<!-- 作业 -->
+<section id="homework">
+  <h2>📝 课后作业</h2>
+  <div class="hw">
+    <b>作业一（必做）：</b>在手机里找一张真实的三档定价截图（视频会员、外卖、咖啡、手机容量均可），标注：哪档是"主推款"、哪档是"演员"（诱饵或陪跑贵款），并用 100 字说明你的判断依据。
+  </div>
+  <div class="hw">
+    <b>作业二（选做）：</b>假设你要为学校咖啡店设计"小/中/大"三杯型定价，目标是让大杯好卖。写出你的三档价格与容量，并说明你把"演员"放在了哪里、为什么这样安排有效。
+  </div>
+</section>
+
+<!-- 拓展视频 -->
+<section id="videos">
+  <h2>📺 拓展视频</h2>
+  <p>两支短视频与课程配套：<b>第一支适合课前导入</b>（系统讲解诱饵效应），<b>第二支适合课后放松复盘</b>（47 秒生活短剧，看完请回答：视频里的"妈妈"中的是什么招？）。</p>
+  <div class="cases">
+    <a class="case video-card" href="https://www.bilibili.com/video/BV1Uz4y1j7xQ/" target="_blank" rel="noopener">
+      <div class="em">🎬</div>
+      <h4>【中英双字】钱都去哪了？解密诱饵效应</h4>
+      <p>你的大脑如何偷偷被选项结构操控——动画讲解诱饵效应，与本课"定价实验室"完全呼应，中英双字顺便练听力。</p>
+      <span class="tag">课前导入 · 诱饵效应</span><br>
+      <span class="watch">▶ 点击观看（B 站，新窗口打开）</span>
+    </a>
+    <a class="case video-card" href="https://www.bilibili.com/video/BV1wZJj6TEBP/" target="_blank" rel="noopener">
+      <div class="em">📱</div>
+      <h4>用折中效应轻松拿捏我妈（47 秒）</h4>
+      <p>生活化短剧：三档选项往桌上一摆，"妈妈"自动选了中间档。看完请用本课概念拆解：三档里哪档是主推、哪档是演员？</p>
+      <span class="tag">课后复盘 · 折中效应</span><br>
+      <span class="watch">▶ 点击观看（B 站，新窗口打开）</span>
+    </a>
+  </div>
+</section>
+
+<!-- 教师教案 -->
+<section id="teacher">
+  <h2>👩‍🏫 教师教案（课前展开）</h2>
+  <details>
+    <summary>点击展开 · 40 分钟教学流程与提示</summary>
+    <table class="plan">
+      <tr><th style="width:18%">环节与时间</th><th style="width:38%">教师活动</th><th>学生活动 / 设计意图</th></tr>
+      <tr><td>导入 0–3'</td><td>展示《经济学人》三方案，现场投票"你选哪个"；追问"0 人选项为何存在"</td><td>直觉投票，制造悬念；带着疑问进入新课</td></tr>
+      <tr><td>概念 3–9'</td><td>讲授诱饵效应（不对称占优）与折中效应（极端厌恶）；公布实验数据 84%→32%</td><td>记录双概念；对比自己刚才的投票，体验"被构造的偏好"</td></tr>
+      <tr><td>案例 9–17'</td><td>讲爆米花、面包机、手机容量、菜单、中介带看、SaaS 三档；反复追问"谁是演员"</td><td>在每个案例中找主推款与陪跑款；归纳共同结构</td></tr>
+      <tr><td>实验 17–23'</td><td>组织定价实验室：先跑两档基准，再让学生尝试三种"新选项"；对错误选项追问原因</td><td>亲手验证有效诱饵让大杯销量翻倍；理解"近、差、不为卖"三要素</td></tr>
+      <tr><td>辨析 23–28'</td><td>用对比表区分诱饵/折中/锚定/免费；带读"拆招三步"</td><td>口头填空式跟读；建立辨析框架与防身策略</td></tr>
+      <tr><td>擂台 28–33'</td><td>组织拆招擂台 8 场景；对菜单牛排题（兼有锚定成分）重点追问</td><td>迁移判据，区分"有演员"与"正常定价"</td></tr>
+      <tr><td>闯关 33–38'</td><td>发布综合闯关并计时；公布徽章分数线</td><td>独立完成单选/多选/配对；即时诊断</td></tr>
+      <tr><td>总结作业 38–40'</td><td>带读三句话与口诀，布置作业</td><td>齐声复述口诀；课下完成三档定价截图分析</td></tr>
+    </table>
+    <div class="tnote">
+      <p><b>常见误区预判：</b>① 学生把"诱饵"与"锚定"混为一谈——用"靠陪衬 vs 靠数字"一句收束；② 学生以为"选中间档"是理性策略——指出这正是商家设计好的反射动作。</p>
+      <p><b>追问话术：</b>"这档商家想卖出去吗？""如果没有中间档，你还会买这个吗？""你的选择是在货架前才有的，还是进门之前就有的？"</p>
+      <p><b>板书要点：</b>诱饵三要素（近/差/不为卖）/ 折中=极端厌恶 / 拆招三步（需求→单价→找演员）。</p>
+    </div>
+  </details>
+</section>
+
+</main>
+
+<footer>
+  诱饵效应 × 折中效应 · 消费心理学互动课件 ｜ 单文件离线版 · 双击即可使用 ｜ 进度仅保存在当前页面
+</footer>
+
+<script>
+/* ===== 顶部进度条 ===== */
+(function(){
+  var bar=document.getElementById('progress'),ticking=false;
+  function upd(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';
+    ticking=false;
+  }
+  window.addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(upd);ticking=true;}});
+  upd();
+})();
+
+/* ===== 游戏一：定价实验室 ===== */
+(function(){
+  var found=false;
+  function jitter(v){return Math.max(2,Math.min(98,Math.round(v+(Math.random()*6-3))));}
+  function showBars(labels,vals,note){
+    document.getElementById('simBars').style.display='block';
+    for(var i=0;i<3;i++){
+      document.getElementById('lab'+i).textContent=labels[i];
+      var b=document.getElementById('bar'+i);
+      b.style.width='0%';
+      (function(bar,v){setTimeout(function(){bar.style.width=v+'%';bar.textContent=v+'%';},60);})(b,vals[i]);
+    }
+    document.getElementById('simNote').textContent=note;
+  }
+  function fb(cls,txt){
+    var f=document.getElementById('labFb');
+    f.className='fb show '+cls;
+    f.innerHTML=txt;
+  }
+  window.runBase=function(){
+    var small=jitter(70), big=jitter(30);
+    showBars(['中杯 ¥15（基本款）','（暂无第三档）','大杯 ¥22（主推）'],[small,0,big],
+      '两档市场：大杯只拿到约 30% 的份额——多数人嫌贵。');
+    fb('info','基准行情：中杯约 '+small+'%，大杯约 '+big+'%。大杯"贵"是相对的——接下来给它安排一个"演员"试试。');
+  };
+  window.runDecoy=function(i){
+    if(i===0){
+      var s=jitter(30),m=jitter(42),b=jitter(28);
+      showBars(['小杯 ¥6（新上架）','中杯 ¥15','大杯 ¥22（主推）'],[s,m,b],
+        '加入小杯后：门槛被拉低，预算型顾客分流去了小杯，大杯份额几乎没涨。');
+      fb('no','✘ 小杯是"入门款"不是"诱饵"——它吸引走了价格敏感顾客，对大杯帮助不大。想想：诱饵应该<b>接近大杯、又被大杯碾压</b>。');
+    }else if(i===1){
+      var s2=jitter(8),m2=jitter(25),b2=jitter(67);
+      showBars(['标准杯 ¥21（诱饵）','中杯 ¥15','大杯 ¥22（主推）'],[s2,m2,b2],
+        '加入标准杯后：大杯份额从约 30% 飙到约 67%！标准杯几乎没人买，但它让大杯显得"只贵 1 元却多一大截"。');
+      fb('ok','✔ 这就是有效诱饵！满足三要素：<b>近</b>（与大杯直接可比）、<b>差</b>（只便宜 1 元容量小一大截，被大杯占优）、<b>不为卖</b>（没人选它，它的任务就是衬托）。你亲手复现了爆米花实验。');
+      found=true;
+      document.getElementById('labDone').classList.add('show');
+    }else{
+      var s3=jitter(6),m3=jitter(52),b3=jitter(42);
+      showBars(['迷你杯 ¥19（新上架）','中杯 ¥15','大杯 ¥22（主推）'],[s3,m3,b3],
+        '加入迷你杯后：大杯份额略有上升，但远不及预期。');
+      fb('info','△ 迷你杯确实也"不划算"，但离大杯太远了——价格离谱得像笑话，顾客不觉得它和大杯是"一类东西"，比较没有发生。诱饵必须<b>贴近主推款</b>才有杀伤力。');
+    }
+  };
+  window.resetLab=function(){
+    document.getElementById('simBars').style.display='none';
+    document.getElementById('labFb').className='fb';
+    document.getElementById('labDone').classList.remove('show');
+    found=false;
+  };
+})();
+
+/* ===== 游戏二：拆招擂台 ===== */
+(function(){
+  var scenes=[
+    {t:'电影院爆米花：小杯 ¥3 / 中杯 ¥6.5 / 大杯 ¥7，中杯几乎没人买。',a:'A',fb:'有演员：中杯是被大杯碾压的诱饵，只差 5 毛逼你"当然买大的"。'},
+    {t:'超市自有品牌只有一档、直接标"全场最低价"，无其他规格。',a:'B',fb:'没设局：单一选项、直接比价格，没有选项结构陷阱。'},
+    {t:'订阅服务：网页版 ¥59 / 印刷版 ¥125 / 印刷＋网页 ¥125。',a:'A',fb:'有演员：中间的"印刷版单订"就是《经济学人》经典诱饵。'},
+    {t:'某手机只有一个容量、一个价格，没有档位可选。',a:'B',fb:'没设局：没有档位结构，就谈不上折中或诱饵。'},
+    {t:'餐厅菜单首页一道 ¥999 招牌牛排，旁边 ¥299 龙虾卖得最好。',a:'A',fb:'有演员：天价菜重新标定价格感，让次贵菜"显得便宜"（兼有锚定成分）。'},
+    {t:'健身房只卖一种月卡，明码标价，没有年卡季卡。',a:'B',fb:'没设局：单一产品无结构可比。'},
+    {t:'房产中介先带你看一套又贵又破的房，再看"正好合适"的目标房源。',a:'A',fb:'有演员：破房子是"托底房"，存在的意义就是被比下去。'},
+    {t:'便利店每件商品单独明码标价，没有套餐也没有档位。',a:'B',fb:'没设局：单件标价，按需购买，无选项结构。'}
+  ];
+  var grid=document.getElementById('arenaGrid');
+  var correctCount=0, answered=0;
+  function build(){
+    grid.innerHTML='';correctCount=0;answered=0;
+    document.getElementById('arenaScore').textContent='（0 / 8）';
+    document.getElementById('arenaDone').classList.remove('show');
+    scenes.forEach(function(sc,idx){
+      var card=document.createElement('div');
+      card.className='acard';
+      var q=document.createElement('div');q.className='qtxt';
+      q.textContent=(idx+1)+'. '+sc.t;
+      var opts=document.createElement('div');opts.className='opts';
+      var done=false;
+      [['A','🅰 有"演员"（设局了）'],['B','🅱 没设局（正常定价）']].forEach(function(pair){
+        var b=document.createElement('button');
+        b.textContent=pair[1];
+        b.onclick=function(){
+          if(done)return;done=true;
+          var hit=pair[0]===sc.a;
+          if(hit){b.classList.add('right');correctCount++;}
+          else{b.classList.add('wrong');}
+          var btns=opts.querySelectorAll('button');
+          btns.forEach(function(x){x.disabled=true;});
+          if(!hit){btns[sc.a==='A'?0:1].classList.add('right');}
+          var afb=document.createElement('div');
+          afb.className='afb show';
+          afb.textContent=(hit?'✔ 答对。':'✘ 再想想。')+sc.fb;
+          card.appendChild(afb);
+          answered++;
+          document.getElementById('arenaScore').textContent='（'+correctCount+' / 8）';
+          if(answered===8){
+            var d=document.getElementById('arenaDone');
+            d.textContent='✔ 已通关——答对 '+correctCount+'/8'+(correctCount===8?'，火眼金睛！货架上的演员都逃不过你的眼睛。':'，错题记得回看解析。');
+            d.classList.add('show');
+          }
+        };
+        opts.appendChild(b);
+      });
+      card.appendChild(q);card.appendChild(opts);
+      grid.appendChild(card);
+    });
+  }
+  window.resetArena=build;
+  build();
+})();
+
+/* ===== 综合闯关：单选/多选/配对 + 判分 + 徽章 ===== */
+(function(){
+  document.querySelectorAll('#quiz .q').forEach(function(q){
+    var type=q.dataset.type;
+    if(type==='s'){
+      var opts=q.querySelectorAll('.qo');
+      opts.forEach(function(o){
+        o.addEventListener('click',function(){
+          opts.forEach(function(x){x.classList.remove('picked');});
+          o.classList.add('picked');
+        });
+      });
+    }else if(type==='m'){
+      q.querySelectorAll('.qo').forEach(function(o){
+        o.addEventListener('click',function(){o.classList.toggle('picked');});
+      });
+    }
+  });
+
+  window.gradeQuiz=function(){
+    var score=0;
+    document.querySelectorAll('#quiz .q').forEach(function(q){
+      var type=q.dataset.type;
+      var fb=q.querySelector('.fb');
+      if(type==='s'){
+        var ans=parseInt(q.dataset.a,10);
+        var opts=q.querySelectorAll('.qo');
+        opts.forEach(function(o,i){
+          o.classList.remove('right','wrong');
+          if(i===ans)o.classList.add('right');
+          else if(o.classList.contains('picked'))o.classList.add('wrong');
+        });
+        var picked=-1;
+        opts.forEach(function(o,i){if(o.classList.contains('picked'))picked=i;});
+        if(picked===ans)score+=1;
+      }else if(type==='m'){
+        var set={};
+        q.dataset.a.split(',').forEach(function(x){set[parseInt(x,10)]=true;});
+        var mopts=q.querySelectorAll('.qo');
+        var hasWrongPick=false, hitCnt=0, ansCnt=Object.keys(set).length;
+        mopts.forEach(function(o,i){
+          o.classList.remove('right','wrong');
+          var p=o.classList.contains('picked');
+          if(set[i])o.classList.add('right');
+          if(p&&set[i])hitCnt++;
+          if(p&&!set[i]){hasWrongPick=true;o.classList.add('wrong');}
+        });
+        if(hasWrongPick)score+=0;
+        else if(hitCnt===ansCnt)score+=2;
+        else if(hitCnt>0)score+=1;
+      }else if(type==='p'){
+        q.querySelectorAll('select').forEach(function(sel){
+          sel.classList.remove('right','wrong');
+          if(sel.value==='')return;
+          if(sel.value===sel.dataset.a){sel.classList.add('right');score+=1;}
+          else sel.classList.add('wrong');
+        });
+      }
+      if(fb)fb.classList.add('show');
+    });
+    document.getElementById('scoreNum').textContent=score;
+    var badge='';
+    if(score>=22)badge='🥇 金牌定价官——货架上的演员都被你识破了！';
+    else if(score>=15)badge='🥈 精明消费者——再巩固一下辨析题。';
+    else badge='🥉 容易被"钓"的钱包——别灰心，回看案例与辨析，再闯一次！';
+    document.getElementById('badgeArea').textContent=badge;
+    document.getElementById('scoreNum').scrollIntoView({behavior:'smooth',block:'center'});
+  };
+
+  window.resetQuiz=function(){
+    document.querySelectorAll('#quiz .qo').forEach(function(o){o.classList.remove('picked','right','wrong');});
+    document.querySelectorAll('#quiz select').forEach(function(s){s.value='';s.classList.remove('right','wrong');});
+    document.querySelectorAll('#quiz .fb').forEach(function(f){f.classList.remove('show');});
+    document.getElementById('scoreNum').textContent='—';
+    document.getElementById('badgeArea').textContent='';
+  };
+})();
+</script>
+</body>
+</html>
