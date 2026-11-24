@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>幸存者偏差 · 批判性思维互动课件（40分钟）</title>
+<style>
+:root{
+  --petrol:#0e4d5c;
+  --petrol-deep:#082f38;
+  --petrol-soft:#2e7183;
+  --amber:#e08a2e;
+  --amber-soft:#f4cd8a;
+  --bg:#f3f7f7;
+  --card:#ffffff;
+  --ink:#1e2b2e;
+  --muted:#64767b;
+  --right:#1e7a55;
+  --right-bg:#e1f1e9;
+  --wrong:#b03a2e;
+  --wrong-bg:#fae7e3;
+  --line:#d5e2e3;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.7;
+}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--amber),var(--amber-soft));z-index:999;transition:width .1s linear}
+nav#topnav{
+  position:sticky;top:0;z-index:900;background:var(--petrol);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px;
+  padding:8px 10px;box-shadow:0 2px 10px rgba(8,47,56,.35);
+}
+nav#topnav a{
+  color:#d6e8ec;text-decoration:none;font-size:14px;padding:6px 12px;border-radius:20px;
+  transition:.2s;
+}
+nav#topnav a:hover{background:var(--petrol-soft);color:var(--amber-soft)}
+header.hero{
+  background:linear-gradient(135deg,var(--petrol-deep),var(--petrol));
+  color:#fff;text-align:center;padding:56px 20px 44px;
+}
+header.hero .badge-line{font-size:14px;color:var(--amber-soft);letter-spacing:2px;margin-bottom:10px}
+header.hero h1{font-size:38px;letter-spacing:3px;margin-bottom:12px}
+header.hero h1 .gold{color:var(--amber)}
+header.hero p.sub{color:#bcd7de;font-size:17px;max-width:760px;margin:0 auto 8px}
+header.hero .meta{margin-top:16px;display:inline-block;border:1px solid var(--amber);color:var(--amber-soft);padding:6px 18px;border-radius:24px;font-size:14px}
+.hero-svg{margin:22px auto 0;max-width:640px;display:block}
+.hook{
+  max-width:780px;margin:26px auto 0;background:rgba(224,138,46,.12);
+  border:1px dashed var(--amber);border-radius:14px;padding:14px 18px;font-size:16px;color:#f5e5c8;text-align:left;
+}
+main{max-width:980px;margin:0 auto;padding:26px 16px 60px}
+section{background:var(--card);border-radius:18px;padding:28px 26px;margin-bottom:26px;box-shadow:0 4px 14px rgba(14,77,92,.08)}
+section h2{font-size:24px;color:var(--petrol);margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+section h2 .min{font-size:13px;background:var(--amber);color:#fff;border-radius:12px;padding:2px 10px;font-weight:normal}
+h3{color:var(--petrol);font-size:18px;margin:18px 0 8px}
+p{margin:8px 0}
+.hl{background:linear-gradient(transparent 60%,var(--amber-soft) 60%);font-weight:bold;padding:0 2px}
+.defbox{
+  border-left:5px solid var(--amber);background:#fdf8ec;border-radius:0 12px 12px 0;
+  padding:14px 18px;margin:14px 0;
+}
+.mnemonic{
+  margin-top:18px;background:#fdf6e3;border-left:6px solid var(--amber);border-radius:0 12px 12px 0;
+  padding:12px 16px;font-size:17px;color:#8a6510;font-weight:bold;
+}
+.tl{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.tl .seg{
+  flex:1;min-width:90px;background:#f2f8f9;border:1px solid var(--line);border-radius:10px;
+  padding:10px 8px;text-align:center;font-size:13px;transition:.2s;
+}
+.tl .seg:hover{transform:translateY(-3px);box-shadow:0 6px 12px rgba(14,77,92,.12)}
+.tl .seg b{display:block;color:var(--petrol);font-size:14px}
+.tl .seg .t{color:var(--amber);font-weight:bold}
+.goals{list-style:none}
+.goals li{padding:10px 14px;border:1px solid var(--line);border-radius:12px;margin:8px 0;background:#fbfdfd}
+.goals li::before{content:"🎯 ";margin-right:4px}
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px}
+.case{
+  border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfdfd;
+  transition:.2s;
+}
+.case:hover{transform:translateY(-3px);box-shadow:0 8px 16px rgba(14,77,92,.12)}
+.case .em{font-size:26px}
+.case h4{color:var(--petrol);margin:6px 0;font-size:16px}
+.case p{font-size:14px;color:var(--muted)}
+.case .tag{display:inline-block;font-size:12px;color:var(--amber);border:1px solid var(--amber);border-radius:10px;padding:0 8px;margin-top:8px}
+.game{
+  border:2px dashed var(--amber);border-radius:16px;padding:20px;margin-top:16px;background:#fffdf6;
+}
+.game h3{margin-top:0}
+button.btn{
+  background:var(--petrol);color:#fff;border:none;border-radius:10px;padding:10px 20px;
+  font-size:15px;cursor:pointer;transition:.2s;font-family:inherit;
+}
+button.btn:hover{background:var(--petrol-soft);transform:translateY(-2px);box-shadow:0 6px 12px rgba(14,77,92,.25)}
+button.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+button.btn.gold{background:var(--amber);color:var(--petrol-deep);font-weight:bold}
+button.btn.gold:hover{background:#efa044}
+button.btn.ghost{background:#fff;color:var(--petrol);border:1px solid var(--petrol)}
+button.btn.ghost:hover{background:#eef6f7}
+.fb{display:none;border-radius:10px;padding:10px 14px;margin-top:12px;font-size:14px}
+.fb.show{display:block;animation:pop .25s}
+.fb.ok{background:var(--right-bg);color:var(--right);border:1px solid var(--right)}
+.fb.no{background:var(--wrong-bg);color:var(--wrong);border:1px solid var(--wrong)}
+.fb.info{background:#eef6f7;color:var(--petrol);border:1px solid var(--petrol-soft)}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.done{
+  display:none;margin-top:14px;background:var(--right-bg);border:1px solid var(--right);color:var(--right);
+  border-radius:12px;padding:10px 16px;font-weight:bold;
+}
+.done.show{display:inline-block;animation:pop .3s}
+/* 弹孔实验室 */
+.plane-wrap{max-width:560px;margin:10px auto;display:block}
+.zone{cursor:pointer;transition:.2s}
+.zone:hover{fill:rgba(224,138,46,.25)}
+.zone.correct{fill:rgba(30,122,85,.3);stroke:var(--right);stroke-width:2}
+.zone.wrongpick{fill:rgba(176,58,46,.25);stroke:var(--wrong);stroke-width:2}
+.lab-note{font-size:13px;color:var(--muted);text-align:center}
+/* 擂台 */
+.arena-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:12px}
+.acard{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfdfd}
+.acard .qtxt{font-size:15px;min-height:66px}
+.acard .opts{display:flex;gap:8px;margin-top:10px}
+.acard .opts button{
+  flex:1;border:1px solid var(--petrol);background:#fff;color:var(--petrol);border-radius:10px;
+  padding:8px 6px;font-size:13px;cursor:pointer;transition:.2s;font-family:inherit;
+}
+.acard .opts button:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(14,77,92,.15)}
+.acard .opts button.right{background:var(--right-bg);border-color:var(--right);color:var(--right);font-weight:bold}
+.acard .opts button.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:var(--wrong)}
+.acard .opts button:disabled{cursor:default;transform:none;box-shadow:none;opacity:.85}
+.acard .afb{display:none;font-size:13px;margin-top:8px;border-radius:8px;padding:8px 10px;background:#eef6f7;color:var(--petrol)}
+.acard .afb.show{display:block;animation:pop .25s}
+table.cmp{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+table.cmp th,table.cmp td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+table.cmp th{background:var(--petrol);color:#fff}
+table.cmp tr:nth-child(even) td{background:#f4f9fa}
+.judge{margin-top:16px;border:1px solid var(--amber);background:#fffdf2;border-radius:12px;padding:14px 16px}
+/* 闯关 */
+#quiz .q{border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0;background:#fbfdfd}
+#quiz .q .qt{font-weight:bold;color:var(--petrol);margin-bottom:8px}
+#quiz .q .qt .qn{color:var(--amber);margin-right:6px}
+#quiz .qo{
+  display:block;border:1px solid var(--line);border-radius:10px;padding:9px 14px;margin:6px 0;
+  cursor:pointer;transition:.15s;background:#fff;font-size:15px;
+}
+#quiz .qo:hover{border-color:var(--petrol-soft);transform:translateX(3px)}
+#quiz .qo.picked{border-color:var(--amber);background:#fffdf0;box-shadow:inset 0 0 0 1px var(--amber)}
+#quiz .qo.right{border-color:var(--right);background:var(--right-bg);color:var(--right);font-weight:bold}
+#quiz .qo.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+#quiz .q .fb{font-size:14px}
+.pair-row{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.pair-row .pl{flex:1;min-width:230px;font-size:15px}
+.pair-row select{
+  border:1px solid var(--petrol-soft);border-radius:8px;padding:7px 10px;font-size:14px;font-family:inherit;
+  background:#fff;color:var(--ink);min-width:170px;
+}
+.pair-row select.right{border-color:var(--right);background:var(--right-bg)}
+.pair-row select.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
+.qbar{position:sticky;bottom:14px;background:var(--petrol);border-radius:14px;padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:18px;box-shadow:0 8px 20px rgba(8,47,56,.35)}
+.qbar .score{color:#fff;font-size:16px}
+.qbar .score b{color:var(--amber);font-size:22px}
+#badgeArea{color:var(--amber-soft);font-size:15px}
+.quiz-note{font-size:13px;color:var(--muted);margin-top:6px}
+.tips li{margin:10px 0;padding-left:6px}
+.hw{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0;background:#fbfdfd}
+details{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:#fbfdfd}
+summary{cursor:pointer;font-weight:bold;color:var(--petrol);font-size:16px}
+table.plan{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+table.plan th,table.plan td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+table.plan th{background:var(--petrol);color:#fff}
+table.plan tr:nth-child(even) td{background:#f4f9fa}
+.tnote{margin-top:14px;font-size:14px;color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:24px 10px 40px}
+@media (max-width:640px){
+  header.hero h1{font-size:26px}
+  section{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav id="topnav">
+  <a href="#concept">核心概念</a>
+  <a href="#cases">经典案例</a>
+  <a href="#lab">弹孔实验室</a>
+  <a href="#distinguish">概念辨析</a>
+  <a href="#arena">拆招擂台</a>
+  <a href="#quiz">综合闯关</a>
+  <a href="#tips">要点总结</a>
+  <a href="#homework">课后作业</a>
+  <a href="#teacher">教师教案</a>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="badge-line">批判性思维 · 行为经济学 · 专题课件</div>
+  <h1>幸存者偏差<br><span class="gold">你看到的，都是"活下来"的</span></h1>
+  <p class="sub">Survivorship Bias ——<br>失败者不会说话。只听幸存者的故事，你会得出离谱的结论。</p>
+  <div class="meta">🕐 40 分钟 · 1 课时 · 大学选修课 / 成人通识</div>
+  <svg class="hero-svg" viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="返航轰炸机弹孔示意插画">
+    <g transform="translate(320,78)">
+      <!-- 机身 -->
+      <rect x="-14" y="-62" width="28" height="118" rx="13" fill="#2e7183"/>
+      <!-- 座舱 -->
+      <ellipse cx="0" cy="-62" rx="12" ry="12" fill="#f4cd8a"/>
+      <!-- 机翼 -->
+      <polygon points="-130,-12 -14,6 -14,30 -130,20" fill="#2e7183"/>
+      <polygon points="130,-12 14,6 14,30 130,20" fill="#2e7183"/>
+      <!-- 引擎 -->
+      <circle cx="-52" cy="14" r="11" fill="#e08a2e"/>
+      <circle cx="52" cy="14" r="11" fill="#e08a2e"/>
+      <!-- 尾翼 -->
+      <polygon points="-40,44 -14,52 -14,64 -40,60" fill="#2e7183"/>
+      <polygon points="40,44 14,52 14,64 40,60" fill="#2e7183"/>
+      <!-- 弹孔：集中在机翼和机身，引擎座舱几乎没有 -->
+      <g fill="#b03a2e">
+        <circle cx="-105" cy="8" r="4"/><circle cx="-86" cy="14" r="4"/><circle cx="-100" cy="20" r="4"/>
+        <circle cx="-70" cy="8" r="4"/><circle cx="98" cy="6" r="4"/><circle cx="82" cy="16" r="4"/>
+        <circle cx="110" cy="16" r="4"/><circle cx="-4" cy="-30" r="4"/><circle cx="6" cy="-12" r="4"/>
+        <circle cx="-6" cy="24" r="4"/><circle cx="5" cy="38" r="4"/><circle cx="-2" cy="48" r="4"/>
+      </g>
+      <text x="150" y="-40" font-size="13" fill="#f4cd8a">弹孔都在机翼和机身上——</text>
+      <text x="150" y="-22" font-size="13" fill="#f4cd8a">该加固哪里？</text>
+    </g>
+  </svg>
+  <div class="hook">✈️ 课前之问：二战时，军方统计了<b>返航轰炸机</b>的弹孔分布——机翼和机身弹孔密布，引擎和座舱附近几乎没有。军方第一反应："加固弹孔最多的地方！"统计学家<b>亚伯拉罕·瓦尔德</b>却给出了完全相反的答案。他看到了什么别人没看到的东西？</div>
+</header>
+
+<main>
+
+<!-- 时间轴 -->
+<section id="timeline">
+  <h2>🗺️ 本课路线图 <span class="min">共 40 分钟</span></h2>
+  <div class="tl">
+    <div class="seg"><b>导入</b>弹孔之谜<span class="t">3'</span></div>
+    <div class="seg"><b>核心概念</b>沉默的证据<span class="t">6'</span></div>
+    <div class="seg"><b>经典案例</b>六个领域<span class="t">8'</span></div>
+    <div class="seg"><b>弹孔实验室</b>你来当参谋<span class="t">6'</span></div>
+    <div class="seg"><b>概念辨析</b>别认错亲戚<span class="t">5'</span></div>
+    <div class="seg"><b>拆招擂台</b>8 场景判断<span class="t">5'</span></div>
+    <div class="seg"><b>综合闯关</b>25 分挑战<span class="t">5'</span></div>
+    <div class="seg"><b>总结作业</b>带走三句话<span class="t">2'</span></div>
+  </div>
+</section>
+
+<!-- 学习目标 -->
+<section id="goals">
+  <h2>🎯 学习目标</h2>
+  <ul class="goals">
+    <li><b>说出</b>幸存者偏差的定义，并解释"筛选机制"如何让样本说谎；</li>
+    <li><b>识别</b>军事、基金、创业、养生、成功学、短视频六个领域中的幸存者偏差；</li>
+    <li><b>辨析</b>幸存者偏差 vs 确认偏误 vs 后见之明 vs 赌徒谬误，不再混淆；</li>
+    <li><b>掌握</b>破解三步：找分母、问筛选、反向想——并用它评估一条"成功建议"。</li>
+  </ul>
+</section>
+
+<!-- 模块一：核心概念 -->
+<section id="concept">
+  <h2>📖 模块一 · 核心概念：沉默的证据 <span class="min">第 3–9 分钟</span></h2>
+
+  <div class="defbox">
+    <b>幸存者偏差（Survivorship Bias）</b>：当数据在到达你眼前之前，已经经过了一道"生死筛选"——你只看得见<span class="hl">通过筛选的幸存者</span>，看不见没能幸存的沉默大多数，于是基于残缺样本得出系统性错误的结论。
+  </div>
+
+  <h3>🔍 回到弹孔之谜</h3>
+  <p>军方的逻辑：弹孔多 = 最危险 = 该加固。瓦尔德（Abraham Wald，统计研究小组 SRG）的逻辑恰恰相反：</p>
+  <p>· 统计样本是<b>返航的飞机</b>——被击落的飞机根本不在数据里；</p>
+  <p>· 机翼弹孔密布却能返航，说明<b>机翼中弹不致命</b>；</p>
+  <p>· 引擎和座舱"几乎没有弹孔"，恰恰因为<b>这些部位中弹的飞机都没回来</b>——弹孔的空白处，就是坠机的原因。</p>
+  <p>结论：应该加固的，是<b>弹孔最少的地方</b>。军方采纳后，轰炸机战损率显著下降。这被视为统计史上最漂亮的推理之一。</p>
+
+  <h3>🧩 结构拆解</h3>
+  <p><b>总体</b>（所有飞机）→ <b>筛选机制</b>（能不能返航）→ <b>你拿到的样本</b>（返航机）→ <b>错误结论</b>（加固机翼）。</p>
+  <p>塔勒布（《随机漫步的傻瓜》）把看不见的那部分叫做<span class="hl">"沉默的证据"（Silent Evidence）</span>：它不出声、不上榜、不接受采访，但它才是多数。</p>
+
+  <div class="mnemonic">💡 口诀：能说话的都不是大多数；先问"没回来的那些在哪"。</div>
+</section>
+
+<!-- 模块二：经典案例 -->
+<section id="cases">
+  <h2>🕵️ 模块二 · 六个领域的"幸存者" <span class="min">第 9–17 分钟</span></h2>
+  <p>阅读时追问：<b>每个案例里，"没说话的那部分人"是谁？</b></p>
+
+  <div class="cases">
+    <div class="case">
+      <div class="em">📈</div>
+      <h4>"十年十佳基金"榜单</h4>
+      <p>媒体热捧的长期绩优基金，年化收益看着很美。但榜单里<b>从来不包括清盘、合并的基金</b>——它们亏到消失，业绩也随之"蒸发"。研究发现，计入清盘基金后，行业平均收益明显缩水。你看到的"平均"，是被淘汰者退场后的平均。</p>
+      <span class="tag">投资 · 数据筛选</span>
+    </div>
+    <div class="case">
+      <div class="em">🎓</div>
+      <h4>辍学创业神话</h4>
+      <p>比尔·盖茨、乔布斯、扎克伯格都辍学成了巨头，于是"读书无用"听起来很有道理。沉默的证据：成千上万辍学后<b>既没上市也没上新闻</b>的人。同样逻辑还有"我老乡没读大学当了大老板"——你看不到他的几万个同乡。</p>
+      <span class="tag">教育 · 名人故事</span>
+    </div>
+    <div class="case">
+      <div class="em">📚</div>
+      <h4>成功学的"复盘"</h4>
+      <p>励志书总结成功人士的习惯：早起、冥想、每天读书……然后暗示"照做就能成功"。问题是，<b>拥有同样习惯却失败的人不会被写进书里</b>。从幸存者倒推原因，就像从返航飞机的弹孔倒推哪里该挨打——方向反了。</p>
+      <span class="tag">成功学 · 倒果为因</span>
+    </div>
+    <div class="case">
+      <div class="em">👴</div>
+      <h4>百岁老人的"养生秘诀"</h4>
+      <p>记者采访百岁老人，有人说"每天二两白酒一根烟"。但<b>同样抽烟喝酒却没能活到一百岁的人，无法接受采访</b>。个例能登上新闻，恰恰因为它是罕见的幸存者，而不是普遍规律。</p>
+      <span class="tag">健康 · 个例误导</span>
+    </div>
+    <div class="case">
+      <div class="em">💊</div>
+      <h4>"我亲戚吃这个就好了"</h4>
+      <p>保健品宣传最爱用现身说法："王阿姨吃了三个月，指标全正常！"吃了没用的人不会出来作证（甚至不会承认买了）。医学之所以要求<b>随机对照试验</b>，就是为了堵住这个筛选漏洞——有效无效、康复恶化，全部计入。</p>
+      <span class="tag">消费 · 伪证据</span>
+    </div>
+    <div class="case">
+      <div class="em">📱</div>
+      <h4>"做自媒体月入十万"</h4>
+      <p>短视频里全是晒收入的博主，让人以为进场就能赚。但算法只把<b>头部 1%</b> 推到你面前，成千上万播放量个位数的账号沉在水底。你看到的不是行业平均，而是金字塔尖——塔尖的定义就是"活下来的极少数"。</p>
+      <span class="tag">新媒体 · 算法放大</span>
+    </div>
+  </div>
+
+  <div class="mnemonic">💡 共同结构：筛选机制（返航/存活/上榜/被算法推荐）→ 你只见幸存者 → 结论系统性偏乐观、偏极端。</div>
+</section>
+
+<!-- 游戏一：弹孔实验室 -->
+<section id="lab">
+  <h2>✈️ 互动实验 · 弹孔实验室 <span class="min">第 17–23 分钟</span></h2>
+  <p>你是军方参谋。下面是统计部门绘制的<b>返航轰炸机弹孔分布图</b>（红点为弹孔）。<b>点击你认为最该加固的部位</b>——共有两个正确答案，找齐才算完成任务。</p>
+
+  <div class="game">
+    <h3>🛩️ 返航机弹孔分布图</h3>
+    <svg class="plane-wrap" viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="可点击的轰炸机弹孔分布图">
+      <g transform="translate(160,95)">
+        <!-- 可点击区域（透明热区） -->
+        <polygon id="zone-wings" class="zone" points="-145,-20 -20,0 -20,26 -145,16 145,-20 20,0 20,26 145,16" fill="rgba(46,113,131,0.18)" onclick="pickZone('wings')"></polygon>
+        <rect id="zone-fuselage" class="zone" x="-22" y="-70" width="44" height="130" rx="20" fill="rgba(46,113,131,0.18)" onclick="pickZone('fuselage')"></rect>
+        <g id="zone-engines" class="zone" onclick="pickZone('engines')">
+          <circle cx="-58" cy="8" r="16" fill="rgba(224,138,46,0.30)"/>
+          <circle cx="58" cy="8" r="16" fill="rgba(224,138,46,0.30)"/>
+        </g>
+        <ellipse id="zone-cockpit" class="zone" cx="0" cy="-62" rx="16" ry="14" fill="rgba(224,138,46,0.30)" onclick="pickZone('cockpit')"></ellipse>
+        <!-- 机身本体 -->
+        <rect x="-13" y="-58" width="26" height="112" rx="12" fill="none" stroke="#0e4d5c" stroke-width="2.5"/>
+        <polygon points="-132,-14 -13,4 -13,26 -132,18" fill="none" stroke="#0e4d5c" stroke-width="2.5"/>
+        <polygon points="132,-14 13,4 13,26 132,18" fill="none" stroke="#0e4d5c" stroke-width="2.5"/>
+        <polygon points="-42,40 -13,48 -13,58 -42,54" fill="none" stroke="#0e4d5c" stroke-width="2.5"/>
+        <polygon points="42,40 13,48 13,58 42,54" fill="none" stroke="#0e4d5c" stroke-width="2.5"/>
+        <circle cx="-58" cy="8" r="9" fill="none" stroke="#0e4d5c" stroke-width="2.5"/>
+        <circle cx="58" cy="8" r="9" fill="none" stroke="#0e4d5c" stroke-width="2.5"/>
+        <!-- 弹孔 -->
+        <g fill="#b03a2e">
+          <circle cx="-112" cy="2" r="3.5"/><circle cx="-94" cy="8" r="3.5"/><circle cx="-105" cy="14" r="3.5"/>
+          <circle cx="-80" cy="4" r="3.5"/><circle cx="104" cy="0" r="3.5"/><circle cx="88" cy="10" r="3.5"/>
+          <circle cx="116" cy="12" r="3.5"/><circle cx="-4" cy="-32" r="3.5"/><circle cx="6" cy="-16" r="3.5"/>
+          <circle cx="-6" cy="20" r="3.5"/><circle cx="5" cy="34" r="3.5"/><circle cx="-2" cy="44" r="3.5"/>
+          <circle cx="-34" cy="48" r="3.5"/><circle cx="36" cy="50" r="3.5"/>
+        </g>
+      </g>
+    </svg>
+    <p class="lab-note">点击部位：🟦 机翼 / 机身 / 尾翼　🟧 引擎 / 座舱　——你的任务：找出<b>两个</b>最该加固的部位</p>
+
+    <div class="fb" id="labFb"></div>
+    <div class="done" id="labDone">✔ 任务完成——你和瓦尔德想到一起去了：加固"没有弹孔"的地方，因为那里的飞机没回来。</div>
+    <div style="margin-top:12px"><button class="btn ghost" onclick="resetLab()">重新思考</button></div>
+  </div>
+</section>
+
+<!-- 模块三：概念辨析 -->
+<section id="distinguish">
+  <h2>⚖️ 模块三 · 别认错"亲戚" <span class="min">第 23–28 分钟</span></h2>
+  <p>幸存者偏差常和这几种偏差结伴出现，但病根不同：</p>
+
+  <table class="cmp">
+    <tr><th style="width:16%">概念</th><th style="width:30%">问题出在哪</th><th style="width:26%">典型长相</th><th>一句话区分</th></tr>
+    <tr>
+      <td><b>幸存者偏差</b></td>
+      <td><b>样本</b>被筛选过：失败者从你眼前消失</td>
+      <td>基金榜单、辍学神话、弹孔分布</td>
+      <td>数据在到你眼前之前，已经死过一批</td>
+    </tr>
+    <tr>
+      <td><b>确认偏误</b></td>
+      <td><b>你自己</b>主动只找支持既有观点的证据</td>
+      <td>只搜"XX 股票利好"的文章</td>
+      <td>数据是全的，是你只挑了顺眼的看</td>
+    </tr>
+    <tr>
+      <td><b>后见之明</b></td>
+      <td>事后觉得"早就知道会这样"，倒推合理化</td>
+      <td>牛市后人人自称早知道</td>
+      <td>问题在记忆和解释，不在样本筛选</td>
+    </tr>
+    <tr>
+      <td><b>赌徒谬误</b></td>
+      <td>误以为独立随机事件会"自我补偿"</td>
+      <td>连黑之后押红</td>
+      <td>问题在概率直觉，与样本无关</td>
+    </tr>
+  </table>
+  <p style="font-size:14px;color:var(--muted)">注意：它们经常<b>叠加</b>——成功学大师先靠幸存者偏差拿到"成功案例"，你再用确认偏误只记住其中顺耳的部分。</p>
+
+  <h3>🛡️ 破解三步</h3>
+  <div class="judge">
+    <p><b>第一步：找分母。</b>"他说 10 个学员 9 个赚钱"——那总共收过多少学员？基数是多少？<b>没有分母的比例都是故事。</b></p>
+    <p><b>第二步：问筛选。</b>这组数据在到我眼前之前，被什么机制筛过一遍？（返航？存活？上榜？算法推荐？）</p>
+    <p><b>第三步：反向想。</b>刻意去找失败案例：清盘的基金、倒闭的同行、退学后的普通人——<b>沉默的证据往往更有信息量</b>。</p>
+  </div>
+
+  <div class="mnemonic">💡 口诀：先找分母再问筛，反向思考找失败；沉默证据不说话，信息量它最大。</div>
+</section>
+
+<!-- 游戏二：拆招擂台 -->
+<section id="arena">
+  <h2>🥊 互动擂台 · 找出"沉默者" <span class="min">第 28–33 分钟</span></h2>
+  <p>8 个场景，判断其结论是否受了幸存者偏差影响：🅰 <b>有偏差</b>（样本被筛选过）还是 🅱 <b>没偏差</b>（样本完整/方法可靠）？</p>
+
+  <div class="game">
+    <h3>🏟️ 拆招擂台 <span id="arenaScore" style="font-size:14px;color:var(--muted)">（0 / 8）</span></h3>
+    <div class="arena-grid" id="arenaGrid"></div>
+    <div class="done" id="arenaDone">✔ 已通关</div>
+    <div style="margin-top:12px"><button class="btn ghost" onclick="resetArena()">重新挑战</button></div>
+  </div>
+</section>
+
+<!-- 综合闯关 -->
+<section id="quiz">
+  <h2>🏆 综合闯关 · 25 分挑战 <span class="min">第 33–38 分钟</span></h2>
+  <p>单选 6 题（每题 1 分）+ 多选 4 题（每题 2 分，漏选得 1 分、错选不得分）+ 配对 11 空（每空 1 分）。作答后点击底部「提交判分」。</p>
+
+  <h3>一、单选题（每题 1 分，共 6 分）</h3>
+
+  <div class="q" data-type="s" data-a="2">
+    <div class="qt"><span class="qn">1.</span>瓦尔德建议加固引擎和座舱、而不是弹孔最多的机翼，他的理由是：</div>
+    <span class="qo">A. 引擎和座舱的装甲材料更便宜</span>
+    <span class="qo">B. 弹孔统计图是敌人伪造的</span>
+    <span class="qo">C. 这些部位中弹的飞机都坠毁了，根本没进入"返航机"样本</span>
+    <span class="qo">D. 机翼面积大，弹孔自然多，属正常现象</span>
+    <div class="fb info">统计样本只有返航机：机翼中弹能回来，引擎/座舱中弹回不来——弹孔的空白处才是要害。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">2.</span>下列对幸存者偏差最准确的概括是：</div>
+    <span class="qo">A. 人们只愿意听成功者的故事</span>
+    <span class="qo">B. 样本在观察前被筛选过，只看到"通过筛选"的部分，导致结论系统性偏离真相</span>
+    <span class="qo">C. 人们高估自己的运气</span>
+    <span class="qo">D. 成功者普遍比失败者更努力</span>
+    <div class="fb info">核心在于"筛选机制让样本残缺"——A 只说了心理偏好，没抓住样本被筛选这个结构。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">3.</span>"十年十佳基金"榜单上的基金长期业绩亮眼，据此认为"买榜单基金稳赚"，问题在于：</div>
+    <span class="qo">A. 榜单印刷有错误</span>
+    <span class="qo">B. 亏损清盘的基金不在榜单里，榜单只是幸存者的成绩单</span>
+    <span class="qo">C. 基金经理都会退休</span>
+    <span class="qo">D. 榜单年份太久远</span>
+    <div class="fb info">清盘基金的业绩随其消失而"蒸发"，计入它们后行业平均明显缩水。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="2">
+    <div class="qt"><span class="qn">4.</span>用"比尔·盖茨辍学后成为世界首富"论证"读书无用"，最主要的逻辑漏洞是：</div>
+    <span class="qo">A. 比尔·盖茨是美国人，情况不同</span>
+    <span class="qo">B. 世界首富只有一个，不可复制</span>
+    <span class="qo">C. 看不到成千上万辍学后默默无闻的失败者，分母被藏起来了</span>
+    <span class="qo">D. 比尔盖茨其实读过很多书</span>
+    <div class="fb info">同样是"幸存者"讲故事：沉默的大多数不发声，个别塔尖被当成了普遍规律。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="0">
+    <div class="qt"><span class="qn">5.</span>面对"10 个学员 9 个赚钱"的培训广告，破解幸存者偏差的<b>第一步</b>是：</div>
+    <span class="qo">A. 追问"总共收过多少学员？基数（分母）是多少？"</span>
+    <span class="qo">B. 立刻报名，抢占名额</span>
+    <span class="qo">C. 找那 9 个赚钱的学员核实</span>
+    <span class="qo">D. 看看广告做得专不专业</span>
+    <div class="fb info">先找分母：没有基数，任何比例都是故事。那"9 个"可能是从几千人里筛出来的。</div>
+  </div>
+
+  <div class="q" data-type="s" data-a="1">
+    <div class="qt"><span class="qn">6.</span>百岁老人说"我每天抽烟喝酒照样长寿"，这个证据最大的问题是：</div>
+    <span class="qo">A. 老人记忆力不好，可能记错</span>
+    <span class="qo">B. 同样抽烟喝酒但早逝的人无法接受采访——他是被筛选出来的个例</span>
+    <span class="qo">C. 记者提问方式不专业</span>
+    <span class="qo">D. 烟酒品牌赞助了采访</span>
+    <div class="fb info">个例能上新闻恰恰因为罕见；沉默的证据（早逝者）数量庞大却无法发声。</div>
+  </div>
+
+  <h3>二、多选题（每题 2 分，共 8 分）</h3>
+  <p class="quiz-note">评分规则：全部选对得 2 分；只选对部分（且没有错选）得 1 分；有错选不得分。</p>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">7.</span>下列哪些结论最可能受了幸存者偏差的影响？</div>
+    <span class="qo">A. "看十年业绩榜单买基金稳赚"</span>
+    <span class="qo">B. "成功人士的共同习惯是早起，照做就能成功"</span>
+    <span class="qo">C. "做自媒体的都月入十万"</span>
+    <span class="qo">D. 随机双盲对照试验得出的药物有效率</span>
+    <div class="fb info">D 的试验设计刻意把所有受试者（有效无效、康复恶化）全部计入，正是为了堵住筛选漏洞。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">8.</span>破解幸存者偏差的有效做法包括：</div>
+    <span class="qo">A. 追问分母和基数："总共多少人？比例的分母是谁？"</span>
+    <span class="qo">B. 追问筛选机制："这组数据到我眼前之前被筛过什么？"</span>
+    <span class="qo">C. 主动寻找失败案例和"沉默的证据"</span>
+    <span class="qo">D. 只看头部案例，因为它们最成功</span>
+    <div class="fb info">D 恰恰是掉入偏差的方式——头部案例正是"幸存者"，最没有代表性。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">9.</span>关于幸存者偏差与确认偏误的区分，正确的有：</div>
+    <span class="qo">A. 幸存者偏差的问题出在样本被筛选</span>
+    <span class="qo">B. 确认偏误的问题出在人主动只找支持性证据</span>
+    <span class="qo">C. 两者可能叠加出现、互相强化</span>
+    <span class="qo">D. 两者是同一种偏差的不同叫法</span>
+    <div class="fb info">一个是"数据死过一批"，一个是"你只挑顺眼的看"——机制不同，但经常结伴出现。</div>
+  </div>
+
+  <div class="q" data-type="m" data-a="0,1,2">
+    <div class="qt"><span class="qn">10.</span>投资者避免幸存者偏差的可行做法有：</div>
+    <span class="qo">A. 使用包含清盘基金的全样本数据评估行业收益</span>
+    <span class="qo">B. 用指数/平均值思维，而非只盯明星基金</span>
+    <span class="qo">C. 研究失败的投资案例，做"尸检报告"</span>
+    <span class="qo">D. 跟随"冠军基金经理"全仓买入</span>
+    <div class="fb info">冠军经理只是众多基金经理中的幸存者，明年能否继续冠军并无保证（历年冠军次年表现常回归平庸）。</div>
+  </div>
+
+  <h3>三、配对题（每空 1 分，共 11 分）</h3>
+
+  <div class="q" data-type="p">
+    <div class="qt"><span class="qn">11.</span>配对组一：左边的现象 ↔ 右边的概念名称（含复习）</div>
+    <div class="pair-row"><span class="pl">① 根据返航机弹孔决定加固机翼</span>
+      <select data-a="幸存者偏差">
+        <option value="">— 请选择 —</option><option>幸存者偏差</option><option>确认偏误</option><option>赌徒谬误</option><option>诱饵效应</option><option>折中效应</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">② 只搜索支持自己持仓观点的文章</span>
+      <select data-a="确认偏误">
+        <option value="">— 请选择 —</option><option>幸存者偏差</option><option>确认偏误</option><option>赌徒谬误</option><option>诱饵效应</option><option>折中效应</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">③ 连输几把后坚信"下一把该赢了"</span>
+      <select data-a="赌徒谬误">
+        <option value="">— 请选择 —</option><option>幸存者偏差</option><option>确认偏误</option><option>赌徒谬误</option><option>诱饵效应</option><option>折中效应</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">④ 中杯 ¥6.5 衬托得大杯 ¥7 超值</span>
+      <select data-a="诱饵效应">
+        <option value="">— 请选择 —</option><option>幸存者偏差</option><option>确认偏误</option><option>赌徒谬误</option><option>诱饵效应</option><option>折中效应</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑤ 手机容量三档，大家扎堆选中间档</span>
+      <select data-a="折中效应">
+        <option value="">— 请选择 —</option><option>幸存者偏差</option><option>确认偏误</option><option>赌徒谬误</option><option>诱饵效应</option><option>折中效应</option>
+      </select></div>
+    <div class="fb info">①样本被筛选=幸存者偏差；②主动只找顺眼的=确认偏误；③④⑤是前两课内容——本系列的概念要串成网。</div>
+  </div>
+
+  <div class="q" data-type="p">
+    <div class="qt"><span class="qn">12.</span>配对组二：左边的行为 ↔ "中招了吗？"</div>
+    <div class="pair-row"><span class="pl">① 看"十年十佳"榜单直接买入基金</span>
+      <select data-a="中招了">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">② 用含清盘基金的全样本数据评估基金行业</span>
+      <select data-a="没中招">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">③ 因"辍学当老板"的故事动了退学念头</span>
+      <select data-a="中招了">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">④ 创业前先查行业的失败率和常见死因</span>
+      <select data-a="没中招">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑤ 照着百岁烟民的"秘诀"安排自己的生活</span>
+      <select data-a="中招了">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="pair-row"><span class="pl">⑥ 判断保健品疗效时只信随机对照试验证据</span>
+      <select data-a="没中招">
+        <option value="">— 请选择 —</option><option>中招了</option><option>没中招</option>
+      </select></div>
+    <div class="fb info">中招与否看依据：只信幸存者讲的故事=中招；主动补全分母、寻找失败者、要求全样本证据=没中招。</div>
+  </div>
+
+  <div class="qbar">
+    <button class="btn gold" onclick="gradeQuiz()">提交判分</button>
+    <button class="btn ghost" onclick="resetQuiz()">再闯一次</button>
+    <span class="score">得分：<b id="scoreNum">—</b> / 25</span>
+    <span id="badgeArea"></span>
+  </div>
+</section>
+
+<!-- 总结 -->
+<section id="tips">
+  <h2>📌 带走三句话 <span class="min">第 38–40 分钟</span></h2>
+  <ul class="tips">
+    <li><b>1.</b> 你看到的样本可能"死过一批"——<span class="hl">失败者不说话，但沉默的证据信息量最大</span>。</li>
+    <li><b>2.</b> 弹孔最少的地方才最该加固：数据里的"空白"往往比"密集"更值得追问。</li>
+    <li><b>3.</b> 破解三步：<b>找分母、问筛选、反向想</b>——任何成功故事，先问"没回来的那些在哪"。</li>
+  </ul>
+  <div class="mnemonic">💡 总口诀：先找分母再问筛，反向思考找失败；沉默证据不说话，信息量它最大。</div>
+</section>
+
+<!-- 作业 -->
+<section id="homework">
+  <h2>📝 课后作业</h2>
+  <div class="hw">
+    <b>作业一（必做）：</b>找一条你最近看到的"成功故事"（短视频、推文、广告、亲戚转述均可），用本课的拆解结构写 150 字分析：它的"筛选机制"是什么？"没说话的那部分人"是谁？补上分母后结论还成立吗？
+  </div>
+  <div class="hw">
+    <b>作业二（选做）：</b>查一查"沉没问题"（file drawer problem）：为什么医学期刊发表的几乎都是"有效"的研究？这和幸存者偏差有什么关系？用 3-4 句话讲给同桌听。
+  </div>
+</section>
+
+<!-- 教师教案 -->
+<section id="teacher">
+  <h2>👩‍🏫 教师教案（课前展开）</h2>
+  <details>
+    <summary>点击展开 · 40 分钟教学流程与提示</summary>
+    <table class="plan">
+      <tr><th style="width:18%">环节与时间</th><th style="width:38%">教师活动</th><th>学生活动 / 设计意图</th></tr>
+      <tr><td>导入 0–3'</td><td>讲弹孔之谜，先不揭底："军方要加固弹孔最多的地方，对吗？"组织举手</td><td>凭直觉表态；认知冲突制造悬念</td></tr>
+      <tr><td>概念 3–9'</td><td>揭晓瓦尔德的推理；板书"总体→筛选机制→样本→错误结论"结构；引出"沉默的证据"</td><td>记录结构图；理解"弹孔空白处=坠机原因"</td></tr>
+      <tr><td>案例 9–17'</td><td>讲基金榜单、辍学神话、成功学、百岁老人、保健品、自媒体六个案例；反复追问"谁没说话"</td><td>在每个案例中找出"沉默的大多数"；归纳共同结构</td></tr>
+      <tr><td>实验 17–23'</td><td>组织弹孔实验室：学生点击部位，对选"机翼"的反馈重点引导</td><td>亲手"犯错"再被数据纠正，体验瓦尔德的视角</td></tr>
+      <tr><td>辨析 23–28'</td><td>用对比表区分幸存者偏差/确认偏误/后见之明/赌徒谬误；带读破解三步</td><td>口头填空式跟读；建立辨析框架</td></tr>
+      <tr><td>擂台 28–33'</td><td>组织拆招擂台 8 场景；对错率高的题当堂追问</td><td>迁移判据：区分"被筛选的样本"与"完整样本/可靠方法"</td></tr>
+      <tr><td>闯关 33–38'</td><td>发布综合闯关并计时；公布徽章分数线</td><td>独立完成单选/多选/配对；即时诊断</td></tr>
+      <tr><td>总结作业 38–40'</td><td>带读三句话与口诀，布置作业</td><td>齐声复述口诀；课下拆解一条真实"成功故事"</td></tr>
+    </table>
+    <div class="tnote">
+      <p><b>常见误区预判：</b>① 学生把幸存者偏差理解成"成功者都很努力"的鸡汤反题——强调这是<b>样本结构问题</b>，不是道德评价；② 与确认偏误混淆——用"数据死过一批 vs 你只挑顺眼的看"一句收束。</p>
+      <p><b>追问话术：</b>"这数据是怎么来的？""没上榜的那些去哪了？""如果失败者也接受采访，故事会怎么变？"</p>
+      <p><b>板书要点：</b>定义一句 / 结构图（总体→筛选→样本）/ 破解三步（分母→筛选→反向）/ 口诀。</p>
+    </div>
+  </details>
+</section>
+
+</main>
+
+<footer>
+  幸存者偏差 · 批判性思维互动课件 ｜ 单文件离线版 · 双击即可使用 ｜ 进度仅保存在当前页面
+</footer>
+
+<script>
+/* ===== 顶部进度条 ===== */
+(function(){
+  var bar=document.getElementById('progress'),ticking=false;
+  function upd(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';
+    ticking=false;
+  }
+  window.addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(upd);ticking=true;}});
+  upd();
+})();
+
+/* ===== 游戏一：弹孔实验室 ===== */
+(function(){
+  var found={engines:false,cockpit:false};
+  var triedWrong={};
+  function fb(cls,txt){
+    var f=document.getElementById('labFb');
+    f.className='fb show '+cls;
+    f.innerHTML=txt;
+  }
+  window.pickZone=function(z){
+    var el=document.getElementById('zone-'+z);
+    if(found[z])return;
+    if(z==='engines'||z==='cockpit'){
+      found[z]=true;
+      el.classList.remove('wrongpick');
+      el.classList.add('correct');
+      var name=z==='engines'?'引擎':'座舱';
+      var msg='✔ 正确！<b>'+name+'</b>是最该加固的部位之一——这里"没有弹孔"，恰恰因为中弹的飞机都没能返航。弹孔的空白处，就是坠机的原因。';
+      if(found.engines&&found.cockpit){
+        fb('ok',msg+'<br><br>两个部位都找到了——你就是本节课的"瓦尔德"：当别人只看见返航飞机上的弹孔时，你看见了那些<b>没能回来的飞机</b>。');
+        document.getElementById('labDone').classList.add('show');
+      }else{
+        fb('ok',msg+'<br>还有一个部位，继续找！');
+      }
+    }else{
+      triedWrong[z]=true;
+      el.classList.add('wrongpick');
+      var name2=z==='wings'?'机翼（含尾翼）':'机身';
+      fb('no','✘ 再想想：<b>'+name2+'</b>弹孔确实密密麻麻——但别忘了，这些都是<b>成功返航</b>的飞机。这里中弹还能飞回来，说明它不致命。真正的要害，是那些"没有弹孔"的地方……');
+    }
+  };
+  window.resetLab=function(){
+    found={engines:false,cockpit:false};triedWrong={};
+    ['wings','fuselage','engines','cockpit'].forEach(function(z){
+      document.getElementById('zone-'+z).classList.remove('correct','wrongpick');
+    });
+    document.getElementById('labFb').className='fb';
+    document.getElementById('labDone').classList.remove('show');
+  };
+})();
+
+/* ===== 游戏二：拆招擂台 ===== */
+(function(){
+  var scenes=[
+    {t:'军方根据返航轰炸机的弹孔分布，决定加固弹孔最多的机翼。',a:'A',fb:'有偏差：样本只有返航机；被击中引擎/座舱的飞机坠毁了，不在数据里。'},
+    {t:'国家统计局按随机抽样入户调查，估算全国失业率。',a:'B',fb:'没偏差：随机抽样刻意覆盖全体人口，不依赖"自愿出现"的幸存者。'},
+    {t:'百岁老人说"每天抽烟喝酒照样长寿"，观众据此认为烟酒无害。',a:'A',fb:'有偏差：同样生活习惯但早逝的人无法接受采访——他是被筛出来的个例。'},
+    {t:'新药上市前做随机双盲对照试验，有效无效病例全部计入统计。',a:'B',fb:'没偏差：试验设计刻意堵住筛选漏洞，所有受试者都计入。'},
+    {t:'听多了"辍学当老板"的故事，得出"读书不如早点创业"的结论。',a:'A',fb:'有偏差：聚光灯只打向成功者，成千上万辍学后默默无闻的人不可见。'},
+    {t:'学校用全校学生的体测全员数据，分析锻炼与成绩的关系。',a:'B',fb:'没偏差：全员数据没有筛选环节，样本即总体。'},
+    {t:'某手机"用了五年还流畅"的好评刷屏，好评全部来自仍在使用的用户。',a:'A',fb:'有偏差：手机坏掉的用户早就换机离场了，不会出现在"老用户"调查里。'},
+    {t:'研究者统计了某行业全部公司（含已倒闭）的十年存活率。',a:'B',fb:'没偏差：把倒闭者也计入，正是"反向找失败案例"的正确姿势。'}
+  ];
+  var grid=document.getElementById('arenaGrid');
+  var correctCount=0, answered=0;
+  function build(){
+    grid.innerHTML='';correctCount=0;answered=0;
+    document.getElementById('arenaScore').textContent='（0 / 8）';
+    document.getElementById('arenaDone').classList.remove('show');
+    scenes.forEach(function(sc,idx){
+      var card=document.createElement('div');
+      card.className='acard';
+      var q=document.createElement('div');q.className='qtxt';
+      q.textContent=(idx+1)+'. '+sc.t;
+      var opts=document.createElement('div');opts.className='opts';
+      var done=false;
+      [['A','🅰 有偏差（样本被筛过）'],['B','🅱 没偏差（样本可靠）']].forEach(function(pair){
+        var b=document.createElement('button');
+        b.textContent=pair[1];
+        b.onclick=function(){
+          if(done)return;done=true;
+          var hit=pair[0]===sc.a;
+          if(hit){b.classList.add('right');correctCount++;}
+          else{b.classList.add('wrong');}
+          var btns=opts.querySelectorAll('button');
+          btns.forEach(function(x){x.disabled=true;});
+          if(!hit){btns[sc.a==='A'?0:1].classList.add('right');}
+          var afb=document.createElement('div');
+          afb.className='afb show';
+          afb.textContent=(hit?'✔ 答对。':'✘ 再想想。')+sc.fb;
+          card.appendChild(afb);
+          answered++;
+          document.getElementById('arenaScore').textContent='（'+correctCount+' / 8）';
+          if(answered===8){
+            var d=document.getElementById('arenaDone');
+            d.textContent='✔ 已通关——答对 '+correctCount+'/8'+(correctCount===8?'，完美！沉默的证据再也逃不过你的眼睛。':'，错题记得回看解析。');
+            d.classList.add('show');
+          }
+        };
+        opts.appendChild(b);
+      });
+      card.appendChild(q);card.appendChild(opts);
+      grid.appendChild(card);
+    });
+  }
+  window.resetArena=build;
+  build();
+})();
+
+/* ===== 综合闯关：单选/多选/配对 + 判分 + 徽章 ===== */
+(function(){
+  document.querySelectorAll('#quiz .q').forEach(function(q){
+    var type=q.dataset.type;
+    if(type==='s'){
+      var opts=q.querySelectorAll('.qo');
+      opts.forEach(function(o){
+        o.addEventListener('click',function(){
+          opts.forEach(function(x){x.classList.remove('picked');});
+          o.classList.add('picked');
+        });
+      });
+    }else if(type==='m'){
+      q.querySelectorAll('.qo').forEach(function(o){
+        o.addEventListener('click',function(){o.classList.toggle('picked');});
+      });
+    }
+  });
+
+  window.gradeQuiz=function(){
+    var score=0;
+    document.querySelectorAll('#quiz .q').forEach(function(q){
+      var type=q.dataset.type;
+      var fb=q.querySelector('.fb');
+      if(type==='s'){
+        var ans=parseInt(q.dataset.a,10);
+        var opts=q.querySelectorAll('.qo');
+        opts.forEach(function(o,i){
+          o.classList.remove('right','wrong');
+          if(i===ans)o.classList.add('right');
+          else if(o.classList.contains('picked'))o.classList.add('wrong');
+        });
+        var picked=-1;
+        opts.forEach(function(o,i){if(o.classList.contains('picked'))picked=i;});
+        if(picked===ans)score+=1;
+      }else if(type==='m'){
+        var set={};
+        q.dataset.a.split(',').forEach(function(x){set[parseInt(x,10)]=true;});
+        var mopts=q.querySelectorAll('.qo');
+        var hasWrongPick=false, hitCnt=0, ansCnt=Object.keys(set).length;
+        mopts.forEach(function(o,i){
+          o.classList.remove('right','wrong');
+          var p=o.classList.contains('picked');
+          if(set[i])o.classList.add('right');
+          if(p&&set[i])hitCnt++;
+          if(p&&!set[i]){hasWrongPick=true;o.classList.add('wrong');}
+        });
+        if(hasWrongPick)score+=0;
+        else if(hitCnt===ansCnt)score+=2;
+        else if(hitCnt>0)score+=1;
+      }else if(type==='p'){
+        q.querySelectorAll('select').forEach(function(sel){
+          sel.classList.remove('right','wrong');
+          if(sel.value==='')return;
+          if(sel.value===sel.dataset.a){sel.classList.add('right');score+=1;}
+          else sel.classList.add('wrong');
+        });
+      }
+      if(fb)fb.classList.add('show');
+    });
+    document.getElementById('scoreNum').textContent=score;
+    var badge='';
+    if(score>=22)badge='🥇 金牌数据侦探——沉默的证据都被你听见了！';
+    else if(score>=15)badge='🥈 清醒观察者——再巩固一下辨析题。';
+    else badge='🥉 只看得到幸存者——别灰心，回看案例与辨析，再闯一次！';
+    document.getElementById('badgeArea').textContent=badge;
+    document.getElementById('scoreNum').scrollIntoView({behavior:'smooth',block:'center'});
+  };
+
+  window.resetQuiz=function(){
+    document.querySelectorAll('#quiz .qo').forEach(function(o){o.classList.remove('picked','right','wrong');});
+    document.querySelectorAll('#quiz select').forEach(function(s){s.value='';s.classList.remove('right','wrong');});
+    document.querySelectorAll('#quiz .fb').forEach(function(f){f.classList.remove('show');});
+    document.getElementById('scoreNum').textContent='—';
+    document.getElementById('badgeArea').textContent='';
+  };
+})();
+</script>
+</body>
+</html>
